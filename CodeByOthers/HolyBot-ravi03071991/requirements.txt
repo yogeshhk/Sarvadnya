@@ -1,3 +1,0 @@
-pinecone-client
-openai
-gradio
