@@ -11,9 +11,9 @@ temp = pathlib.PosixPath
 pathlib.PosixPath = pathlib.WindowsPath
 
 # Load the LangChain.
-index = faiss.read_index("C:/YogeshKulkarni/Personal/SaaSGPT/Projects/AskAlmanack/docs.index")
+index = faiss.read_index("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/docs.index")
 
-with open("C:/YogeshKulkarni/Personal/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "rb") as f:
+with open("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "rb") as f:
     store = pickle.load(f)
 
 store.index = index

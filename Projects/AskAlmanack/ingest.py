@@ -8,7 +8,7 @@ import pickle
 
 
 # Here we load in the data in the format that Notion exports it in.
-ps = list(Path("C:/YogeshKulkarni/Personal/SaaSGPT/Projects/AskAlmanack/almanack/").glob("**/*.txt"))
+ps = list(Path("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/almanack/").glob("**/*.txt"))
 
 data = []
 sources = []
@@ -30,7 +30,7 @@ for i, d in enumerate(data):
 
 # Here we create a vector store from the documents and save it to disk.
 store = FAISS.from_texts(docs, OpenAIEmbeddings(), metadatas=metadatas)
-faiss.write_index(store.index, "C:/YogeshKulkarni/Personal/SaaSGPT/Projects/AskAlmanack/docs.index")
+faiss.write_index(store.index, "D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/docs.index")
 store.index = None
-with open("C:/YogeshKulkarni/Personal/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "wb") as f:
+with open("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "wb") as f:
     pickle.dump(store, f)
