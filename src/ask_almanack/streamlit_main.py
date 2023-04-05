@@ -33,13 +33,16 @@ if "past" not in st.session_state:
 
 
 def get_text():
-    input_text = st.text_input("You: ", "Put your question here", key="input")
+    input_text = st.text_input("You: ", "<type here>", key="input")
     return input_text
 
 
 user_input = get_text()
+prev_input = "<type here>"
 
-if user_input:
+if prev_input != user_input:
+    prev_input = user_input
+
     result = chain({"question": user_input})
     output = f"Answer: {result['answer']}\nSources: {result['sources']}"
 

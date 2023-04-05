@@ -15,13 +15,12 @@ sources = []
 for p in ps:
     with open(p, encoding='utf-8') as f:
         data.append(f.read())
-    print(type(p))
     filename = str(p).replace(BASE_DIR, "")
     sources.append(filename)
 
 # Here we split the documents, as needed, into smaller chunks.
 # We do this due to the context limits of the LLMs.
-text_splitter = CharacterTextSplitter(chunk_size=1500, separator="\n")
+text_splitter = CharacterTextSplitter(chunk_size=5000, separator="\n") # YHK: smaller size gives RATE ERROR
 docs = []
 metadatas = []
 for i, d in enumerate(data):
