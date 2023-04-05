@@ -5,10 +5,10 @@ import faiss
 from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 import pickle
-
+from config import *
 
 # Here we load in the data in the format that Notion exports it in.
-ps = list(Path("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/almanack/").glob("**/*.txt"))
+ps = list(Path(DATA_FOLDER).glob("**/*.txt")) # "D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/data/"
 
 data = []
 sources = []
@@ -30,7 +30,7 @@ for i, d in enumerate(data):
 
 # Here we create a vector store from the documents and save it to disk.
 store = FAISS.from_texts(docs, OpenAIEmbeddings(), metadatas=metadatas)
-faiss.write_index(store.index, "D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/docs.index")
+faiss.write_index(store.index, DOCS_INDEX)
 store.index = None
-with open("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "wb") as f:
+with open(FAISS_STORE, "wb") as f:
     pickle.dump(store, f)

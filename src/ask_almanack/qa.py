@@ -4,6 +4,7 @@ from langchain import OpenAI
 from langchain.chains import VectorDBQAWithSourcesChain
 import pickle
 import argparse
+from config import *
 
 import pathlib
 temp = pathlib.PosixPath
@@ -14,9 +15,9 @@ parser.add_argument('question', type=str, help='The question to ask the notion D
 args = parser.parse_args()
 
 # Load the LangChain.
-index = faiss.read_index("docs.index")
+index = faiss.read_index(DOCS_INDEX)
 
-with open("faiss_store.pkl", "rb") as f:
+with open(FAISS_STORE, "rb") as f:
     store = pickle.load(f)
 
 store.index = index

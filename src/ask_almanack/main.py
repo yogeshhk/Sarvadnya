@@ -5,15 +5,16 @@ import faiss
 from langchain import OpenAI
 from langchain.chains import VectorDBQAWithSourcesChain
 import pickle
+from config import *
 
 import pathlib
 temp = pathlib.PosixPath
 pathlib.PosixPath = pathlib.WindowsPath
 
 # Load the LangChain.
-index = faiss.read_index("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/docs.index")
+index = faiss.read_index(DOCS_INDEX) # "D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/models/docs.index"
 
-with open("D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/faiss_store.pkl", "rb") as f:
+with open(FAISS_STORE_PKL, "rb") as f: #"D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/models/faiss_store.pkl"
     store = pickle.load(f)
 
 store.index = index
@@ -21,8 +22,8 @@ chain = VectorDBQAWithSourcesChain.from_llm(llm=OpenAI(temperature=0), vectorsto
 
 
 # From here down is all the StreamLit UI.
-st.set_page_config(page_title="Ask Almanack Bot", page_icon=":robot:")
-st.header("Ask Almanack Bot")
+st.set_page_config(page_title=APP_NAME, page_icon=":robot:")
+st.header(APP_NAME)
 
 if "generated" not in st.session_state:
     st.session_state["generated"] = []
