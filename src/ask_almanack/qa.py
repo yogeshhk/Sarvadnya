@@ -17,7 +17,7 @@ args = parser.parse_args()
 # Load the LangChain.
 index = faiss.read_index(DOCS_INDEX)
 
-with open(FAISS_STORE, "rb") as f:
+with open(FAISS_STORE_PKL, "rb") as f:
     store = pickle.load(f)
 
 store.index = index

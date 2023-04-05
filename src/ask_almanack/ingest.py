@@ -6,16 +6,18 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 import pickle
 from config import *
+import os
 
-# Here we load in the data in the format that Notion exports it in.
-ps = list(Path(DATA_FOLDER).glob("**/*.txt")) # "D:/Yogesh/Projects/SaaSGPT/Projects/AskAlmanack/data/"
+# Here we load in the data
+ps = list(Path(DATA_FOLDER).glob("**/*.txt"))
 
 data = []
 sources = []
 for p in ps:
     with open(p, encoding='utf-8') as f:
         data.append(f.read())
-    sources.append(p)
+    fname = os.path.basename(p)
+    sources.append(fname)
 
 # Here we split the documents, as needed, into smaller chunks.
 # We do this due to the context limits of the LLMs.
@@ -32,5 +34,5 @@ for i, d in enumerate(data):
 store = FAISS.from_texts(docs, OpenAIEmbeddings(), metadatas=metadatas)
 faiss.write_index(store.index, DOCS_INDEX)
 store.index = None
-with open(FAISS_STORE, "wb") as f:
+with open(FAISS_STORE_PKL, "wb") as f:
     pickle.dump(store, f)
