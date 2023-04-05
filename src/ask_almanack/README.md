@@ -34,7 +34,7 @@ Few pages were downloaded 22 March 2023 so may have changed slightly since then!
 In order to ask a question, run a command like:
 
 ```shell
-python qa.py "What is judgment?"
+python cmd_main.py "What is judgment?"
 ```
 
 You can switch out `What is Happiness` for any question of your liking!
@@ -49,8 +49,7 @@ Note that when setting up your StreamLit app you should make sure to add `OPENAI
 
 ## Local changes - YHK
 - Had to give full paths to docs.index, pkl files
-- For 'Access Denied' error, need to add `python -m` before
-- Had to add following lines in `qa.py` and `main.py`
+- Had to add following lines in `cmd_main.py` and `streamlit_main.py`
 ```shell
 import pathlib
 temp = pathlib.PosixPath
@@ -58,7 +57,7 @@ pathlib.PosixPath = pathlib.WindowsPath
 ```
 - Command to run streamlit app was
 ```shell
-python -m streamlit run <full path to main.py>
+streamlit run <full path to streamlit_main.py>
 ```
 
 ## Instructions for ingesting your own dataset
@@ -69,11 +68,11 @@ Save as txt some pages from Almanack site and put them chapter-wise in `almanack
 Run the following command to ingest the data.
 
 ```shell
-python -m ingest
+python ingest.py
 ```
 
 Boom! Now you're done, and you can ask it questions like:
 
 ```shell
-python -m qa.py "What is judgement?"
+python cmd_main.py "What is judgement?"
 ```

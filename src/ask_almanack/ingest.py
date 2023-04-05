@@ -6,7 +6,6 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 import pickle
 from config import *
-import os
 
 # Here we load in the data
 ps = list(Path(DATA_FOLDER).glob("**/*.txt"))
@@ -16,8 +15,9 @@ sources = []
 for p in ps:
     with open(p, encoding='utf-8') as f:
         data.append(f.read())
-    fname = os.path.basename(p)
-    sources.append(fname)
+    print(type(p))
+    filename = str(p).replace(BASE_DIR, "")
+    sources.append(filename)
 
 # Here we split the documents, as needed, into smaller chunks.
 # We do this due to the context limits of the LLMs.
