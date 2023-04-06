@@ -11,7 +11,7 @@ Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW cha
 - Open source: LangChain using HuggingFace free models (Open AI models are cheap also), for local, data-secure solution
 - Google Cloud: End-yo-end VertexAI MLOps, easy deployment, for enterprise internal solution.
 
-## Contours
+<!-- ## Contours
 - Theme: Automation MicroSaas
 - Product: 
 - Payment: Pay per use
@@ -20,7 +20,7 @@ Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW cha
 - Input: scraping , docAI(GDE)->KG (neo4j)
 - Output: Wow chatbot, APIs
 - Give back: Talks, sketchnotes, 
-- Side outcomes: consultancy, open source contribution
+- Side outcomes: consultancy, open source contribution -->
 
 ## Publications
 - [SaasGPT](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
