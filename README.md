@@ -1,12 +1,12 @@
 # SaaS GPT
 
 Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW chatbot, essentially.
-
+<!-- 
 ## Why me?
 - Reasonable popularity due to Sketchnote and talks on ChatGPT
 - Specific Knowledge: Theoretical background of NLP/GPT due to trainings, plus, professional experience on customizing GPTs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
 - IKIGAI: I love, I like, World needs, Can get paid
-
+ -->
 ## Approaches
 - Open source: LangChain using HuggingFace free models (Open AI models are cheap also), for local, data-secure solution
 - Google Cloud: End-yo-end VertexAI MLOps, easy deployment, for enterprise internal solution.
@@ -22,12 +22,9 @@ Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW cha
 - Give back: Talks, sketchnotes, 
 - Side outcomes: consultancy, open source contribution
 
-## ToDos
-### Ask Almanack
-- Make sure answers are coming from given corpus, debug ingestion
-- Make paths relative and not absolute
-- Remove extract prompt-repetition and icons from streamlit UI
-- Add rest of the chapters
+## Publications
+- [SaasGPT](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
+- [AskAlmanackBot](https://www.linkedin.com/feed/update/urn:li:ugcPost:7049347127029698560/)
 
 ### Learning Path
 - [Building the Future with LLMs, LangChain, & Pinecone](https://www.youtube.com/watch?v=nMniwlGyX-c)
