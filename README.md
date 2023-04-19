@@ -13,20 +13,21 @@ Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW cha
 
 <!-- ## Contours
 - Theme: Automation MicroSaas
-- Product: 
-- Payment: Pay per use
-- Income: Passive, remote
-- Working: self, remote
+- Product: Micro SaaS, auto upgrade, Serverless, scale as you go
+- Payment: Pay per use, Passive Income, forever
+- Income: Passive, remote fully, global reach
+- Working: Solo, remote, no team, no HR issues, salaries
 - Input: scraping , docAI(GDE)->KG (neo4j)
-- Output: Wow chatbot, APIs
-- Give back: Talks, sketchnotes, 
+- Output: Wow chatbot, APIs, Network effects, more connection, more $$
+- Moat/Entry Barrier, IKIGAI, Sp Knowledge
+- Give back: Talks, sketchnotes, Tech explanations
 - Side outcomes: consultancy, open source contribution -->
 
 ## Publications
 - [SaasGPT](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
 - [AskAlmanackBot](https://www.linkedin.com/feed/update/urn:li:ugcPost:7049347127029698560/)
 
-### Learning Path
+## Learning Path
 - [Building the Future with LLMs, LangChain, & Pinecone](https://www.youtube.com/watch?v=nMniwlGyX-c)
 - [LangChain for Gen AI and LLMs - James Briggs](https://www.youtube.com/playlist?list=PLIUOU7oqGTLieV9uTIFMm6_4PXg-hlN6F)
 - [Finetuning GPT-3 David Shapiro ~ AI](https://www.youtube.com/playlist?list=PLV3Fr1UUO9bFg3tKw_-6djIhgId1z74JU)
@@ -34,3 +35,7 @@ Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW cha
 - [Learn about AI Language Models and Reinforcement Learning Kamalraj M M](https://www.youtube.com/playlist?list=PLbzjzOKeYPCpp3NCeQioevM0YpZa5VqcS)
 - [GPT-4 & LangChain Tutorial: How to Chat With A 56-Page PDF Document (w/Pinecone)](https://www.youtube.com/watch?v=ih9PBGVVOO4)
 - [LangChain - Data Independent](https://www.youtube.com/playlist?list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5)
+
+## Follow
+- [Practical AI by Ramsri](https://www.youtube.com/@PracticalAIbyRamsri) NLP, GPT, MicroSaaS
+- [Dhramesh Shah](https://www.youtube.com/watch?v=fayBEXSKyoI) ChatSpot, ChatUX
