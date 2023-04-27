@@ -14,11 +14,11 @@ bool_score = True
 total_score = 0
 count = 0
 
-template = "{context} {prompt}"
-prompt = PromptTemplate(template=template, input_variables=['context', 'prompt'])
+template = "{context} {query}"
+prompt = PromptTemplate(template=template, input_variables=['context', 'query'])
 
-llms = [{'name': 'OpenAI', 'model': OpenAI(temperature=0)}]#,
-       # {'name': 'Flan', 'model':  HuggingFaceHub(repo_id="google/flan-t5-xl", model_kwargs={"temperature": 1e-10})}]
+llms = [{'name': 'Flan', 'model': HuggingFaceHub(repo_id="google/flan-t5-small", model_kwargs={"temperature": 1e-10})},
+        {'name': 'OpenAI', 'model': OpenAI(temperature=0)}]
 
 df = pd.read_excel(r'data/Test2.xlsx')
 
@@ -30,16 +30,18 @@ for llm_dict in llms:
     df.reset_index()
     for index, row in df.iterrows():
         context = (row['Context']).replace("\n", " ")
-        prompts = (row['Prompts']).split("\n")
+        queries = (row['Queries']).split("\n")
         labels = (row['Labels']).split("\n")
-        for prompt, label in zip(prompts, labels):
-            print(f"Context: {context}\nPrompt:{prompt}\nLabel: {label}")
-            keywords = {'context': context, 'prompt': prompt}
-            print(f"Response: {chain.run(keywords).strip()}")
+        for query, label in zip(queries, labels):
+            print(f"Context: {context}\nQuery:{query}\nLabel: {label}")
+            keywords = {'context': context, 'query': query}
+            print(f"{llm_name} Response: {chain.run(keywords).strip()}")
             if bool_score:
                 str_score = input('Score? 0 for Wrong, 1 for Perfect : ')
                 total_score += float(str_score)
                 count += 1
+            print("---\n")
 
     if count:
-        print(f"LLM score for {llm_name}: {total_score / count}")
+        print(f"Overall score for {llm_name}: {total_score / count}")
+    print("===========================\n")
