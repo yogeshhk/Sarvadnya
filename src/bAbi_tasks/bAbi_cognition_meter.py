@@ -9,6 +9,7 @@ from langchain.llms import OpenAI, HuggingFaceHub
 from langchain import PromptTemplate
 from langchain import LLMChain
 import pandas as pd
+from colorama import Fore
 
 bool_score = True
 total_score = 0
@@ -33,15 +34,17 @@ for llm_dict in llms:
         queries = (row['Queries']).split("\n")
         labels = (row['Labels']).split("\n")
         for query, label in zip(queries, labels):
-            print(f"Context: {context}\nQuery:{query}\nLabel: {label}")
+            print(Fore.BLUE + f"Context: {context}")
+            print(Fore.YELLOW + f"Query:{query}")
+            print(Fore.GREEN + f"Label: {label}")
             keywords = {'context': context, 'query': query}
-            print(f"{llm_name} Response: {chain.run(keywords).strip()}")
+            print(Fore.MAGENTA + f"{llm_name} Response: {chain.run(keywords).strip()}")
             if bool_score:
-                str_score = input('Score? 0 for Wrong, 1 for Perfect : ')
+                str_score = input(Fore.RED + 'Score? 0 for Wrong, 1 for Perfect : ')
                 total_score += float(str_score)
                 count += 1
-            print("---\n")
+            print(Fore.CYAN + "---")
 
     if count:
-        print(f"Overall score for {llm_name}: {total_score / count}")
-    print("===========================\n")
+        print(f"Overall score for {llm_name}: {(total_score / count):.2f}")
+    print(Fore.CYAN + "===========================")
