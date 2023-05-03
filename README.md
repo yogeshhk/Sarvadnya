@@ -1,6 +1,15 @@
 # SaaS GPT
 
-Large Language Models fine-tuned on custom corpus in end-to-end MLOps. A WOW chatbot, essentially.
+Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
+
+Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals dont have any ways ($$, time, expertise) to train own LLMs.
+Some do have facility to get fine-tuned on custom corpus, but limited. This repo explores this further. Wish to build that end-to-end MLOps for fine-tuning LLMs.
+
+Goal: build fine-tuning on LLMs on own corpus:
+- corpus can be documents: FAQs, manuals medical papers, etc (many tutorials are available to do this via Vector Databases)
+- corpus can be tables, so need SQL/BI conversion from natural language
+- corpus can be graphs: social networks, need conversion to GraphGPT, cypher
+
 <!-- 
 ## Why me?
 - Reasonable popularity due to Sketchnote and talks on ChatGPT
