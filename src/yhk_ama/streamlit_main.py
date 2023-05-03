@@ -7,6 +7,12 @@ from streamlit_chat import message
 from langchain.chains import ConversationChain
 from langchain.llms import OpenAI, HuggingFaceHub
 from PIL import Image
+from io import StringIO
+
+# Model names
+OPENAI = "GPT 3.5 (Open AI)"
+FLAN = "Flan T5 (Google)"
+DOLLY = "Dolly (Databricks)"
 
 # Setting page title and header
 st.set_page_config(page_title="AMA", page_icon=":teacher:")
@@ -24,21 +30,42 @@ if 'messages' not in st.session_state:
 if 'model_name' not in st.session_state:
     st.session_state['model_name'] = []
 
+if 'training_data' not in st.session_state:
+    st.session_state['training_data'] = []
 
 # Sidebar - let user choose model, show total cost of current conversation, and let user clear the current conversation
 img = Image.open('logo.png')
-st.sidebar.image(img, width=100) #use_column_width=True)
+st.sidebar.image(img, width=100)  # use_column_width=True
 st.sidebar.title("Options")
-model_name = st.sidebar.radio("Choose LLM:", ("OpenAI", "Flan-T5"))
+training_files = st.sidebar.file_uploader("Training file", accept_multiple_files=True)
+model_name = st.sidebar.radio("Choose LLM:", (OPENAI, FLAN, DOLLY))
 clear_button = st.sidebar.button("Clear", key="clear")
+
+
+def upload_training_data():
+    training_data = []
+    if training_files is not None:
+        for file in training_files:
+            stringio = StringIO(file.getvalue().decode("utf-8"))
+            string_data = stringio.read()
+            training_data.append(string_data)
+    return training_data
+
+
+content = upload_training_data()
+if len(content) > 0:
+    st.session_state['training_data'] = content
 
 
 def load_chain(llm_name):
     """Logic for loading the chain you want to use should go here."""
-    if llm_name == "OpenAI":
+    llm = None
+    if llm_name == OPENAI:
         llm = OpenAI(temperature=0)
-    else:
+    elif llm_name == FLAN:
         llm = HuggingFaceHub(repo_id="google/flan-t5-small", model_kwargs={"temperature": 1e-10})
+    elif llm_name == DOLLY:
+        llm = HuggingFaceHub(repo_id="databricks/dolly-v2-3b", model_kwargs={"temperature": 0, "max_length": 64})
     conversation_chain = ConversationChain(llm=llm)
     return conversation_chain
 
@@ -53,6 +80,7 @@ if clear_button:
         {"role": "system", "content": "You are a helpful assistant."}
     ]
     st.session_state['model_name'] = []
+    st.session_state['training_data'] = []
 
 
 # generate a response
@@ -77,11 +105,9 @@ with container:
         st.session_state['generated'].append(output)
         st.session_state['model_name'].append(model_name)
 
-
 if st.session_state['generated']:
     with response_container:
         for i in range(len(st.session_state['generated'])):
             message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
             message(st.session_state["generated"][i], key=str(i))
             st.write(f"Model used: {st.session_state['model_name'][i]}")
-
