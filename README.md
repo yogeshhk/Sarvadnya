@@ -1,4 +1,4 @@
-# Sarvadnya (सर्वज्ञ), an All-Knowing, (Ask-Me-Anything) Chatbot!!
+# Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
 
 Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
 
