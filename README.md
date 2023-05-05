@@ -1,4 +1,4 @@
-# SaaS GPT
+# Sarvadnya (सर्वज्ञ) All-Knowing, AMA (Ask-Me-Anything) Chatbot.
 
 Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
 
@@ -12,8 +12,8 @@ Goal: build fine-tuning on LLMs on own corpus:
 
 <!-- 
 ## Why me?
-- Reasonable popularity due to Sketchnote and talks on ChatGPT
-- Specific Knowledge: Theoretical background of NLP/GPT due to trainings, plus, professional experience on customizing GPTs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
+- Reasonable popularity due to Sketchnote and talks on ChatGPT or LLMs (Large Language Models)
+- Specific Knowledge: Theoretical background of NLP/LLMs due to trainings, plus, professional experience on customizing LLMs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
 - IKIGAI: I love, I like, World needs, Can get paid
  -->
 ## Approaches
@@ -33,7 +33,7 @@ Goal: build fine-tuning on LLMs on own corpus:
 - Side outcomes: consultancy, open source contribution -->
 
 ## Publications
-- [SaasGPT](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
+- [SaaS LLM](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
 - [AskAlmanackBot](https://www.linkedin.com/feed/update/urn:li:ugcPost:7049347127029698560/)
 
 ## Learning Path
@@ -46,5 +46,5 @@ Goal: build fine-tuning on LLMs on own corpus:
 - [LangChain - Data Independent](https://www.youtube.com/playlist?list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5)
 
 ## Follow
-- [Practical AI by Ramsri](https://www.youtube.com/@PracticalAIbyRamsri) NLP, GPT, MicroSaaS
+- [Practical AI by Ramsri](https://www.youtube.com/@PracticalAIbyRamsri) NLP, LLM, GPT, MicroSaaS
 - [Dhramesh Shah](https://www.youtube.com/watch?v=fayBEXSKyoI) ChatSpot, ChatUX
