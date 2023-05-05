@@ -1,4 +1,4 @@
-# Sarvadnya (सर्वज्ञ) All-Knowing, AMA (Ask-Me-Anything) Chatbot.
+# Sarvadnya (सर्वज्ञ) All-Knowing, AMA (Ask-Me-Anything) Chatbot
 
 Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
 
