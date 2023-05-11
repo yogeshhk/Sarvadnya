@@ -8,7 +8,7 @@ Some do have facility to get fine-tuned on custom corpus, but limited. This repo
 Goal: build fine-tuning on LLMs on own corpus:
 - corpus can be documents: FAQs, manuals medical papers, etc (many tutorials are available to do this via Vector Databases)
 - corpus can be tables, so need SQL/BI conversion from natural language
-- corpus can be graphs: social networks, need conversion to GraphGPT, cypher
+- corpus can be graphs: social networks, need conversion to GraphGPT, Cypher
 
 <!-- 
 ## Why me?
@@ -16,8 +16,9 @@ Goal: build fine-tuning on LLMs on own corpus:
 - Specific Knowledge: Theoretical background of NLP/LLMs due to trainings, plus, professional experience on customizing LLMs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
 - IKIGAI: I love, I like, World needs, Can get paid
  -->
+ 
 ## Approaches
-- Open source: LangChain using HuggingFace free models (Open AI models are cheap also), for local, data-secure solution
+- Open source: (LangChain)[https://python.langchain.com/en/latest/index.html] using HuggingFace free models (Open AI models are cheap also), for local, data-secure solution
 - Google Cloud: End-yo-end VertexAI MLOps, easy deployment, for enterprise internal solution.
 
 <!-- ## Contours
@@ -32,11 +33,45 @@ Goal: build fine-tuning on LLMs on own corpus:
 - Give back: Talks, sketchnotes, Tech explanations
 - Side outcomes: consultancy, open source contribution -->
 
+## Mode: MicroSaas
+- Own (no team), 
+- Pay per use, 
+- Passive sustainable income, 
+- Why: IKIGAI, Specific Knowledge, 
+
+## Checklist: MicroSaas
+- Do you have unfair advantage: 
+	- Network of founders, influences, for further reach 
+	- Audience: folks who want this app and can pay
+	- Being early
+- Start With a Problem or many problems (don’t tell me your ideas)
+- Move from Problems to Solutions, easy, debuggable
+- Evaluate Your Solutions
+- How is Your Solution Different?
+- Talk to Potential Customers
+- Start Marketing Before Coding
+- Build MVP
+- Solves any specific need (pain point) and not anything-and-everything, 
+- Is it for specific people, 1000 true (paying) fans, say $30 or $3 a month
+- Is it a daily need?
+
+## Technology Stack
+- LangChain 
+- HuggingFace open/free LLMs,
+- UI Web?
+- Hosting?
+- Code base: Github Sarvadnya for public, have app based private repo
+- Google App Engine on GCP (new project, billing on) [ref](https://www.youtube.com/watch?v=03KgXhg-voY)
+- Low grade Linux Ubuntu machines are cheap, and may run 24 hrs forever.
+- For quick deployment use Streamlit Share
+
+
 ## Publications
 - [SaaS LLM](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
 - [AskAlmanackBot](https://www.linkedin.com/feed/update/urn:li:ugcPost:7049347127029698560/)
 
 ## Learning Path
+- [LangChain How to and guides](https://www.youtube.com/playlist?list=PL8motc6AQftk1Bs42EW45kwYbyJ4jOdiZ)
 - [Building the Future with LLMs, LangChain, & Pinecone](https://www.youtube.com/watch?v=nMniwlGyX-c)
 - [LangChain for Gen AI and LLMs - James Briggs](https://www.youtube.com/playlist?list=PLIUOU7oqGTLieV9uTIFMm6_4PXg-hlN6F)
 - [Finetuning GPT-3 David Shapiro ~ AI](https://www.youtube.com/playlist?list=PLV3Fr1UUO9bFg3tKw_-6djIhgId1z74JU)
@@ -45,6 +80,6 @@ Goal: build fine-tuning on LLMs on own corpus:
 - [GPT-4 & LangChain Tutorial: How to Chat With A 56-Page PDF Document (w/Pinecone)](https://www.youtube.com/watch?v=ih9PBGVVOO4)
 - [LangChain - Data Independent](https://www.youtube.com/playlist?list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5)
 
-## Follow
+<!-- ## Follow
 - [Practical AI by Ramsri](https://www.youtube.com/@PracticalAIbyRamsri) NLP, LLM, GPT, MicroSaaS
-- [Dhramesh Shah](https://www.youtube.com/watch?v=fayBEXSKyoI) ChatSpot, ChatUX
+- [Dhramesh Shah](https://www.youtube.com/watch?v=fayBEXSKyoI) ChatSpot, ChatUX -->

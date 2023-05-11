@@ -1,0 +1,33 @@
+﻿GCP Gen AI Feedback
+
+
+Transcript summarization
+* Context: “I am not an educated person and do not understand finance.” as a role specification
+* Response: “The efficient-market hypothesis (EMH) is a hypothesis in financial economics that states that asset prices reflect all available information. A direct implication is that it is impossible to "beat the market" consistently on a risk-adjusted basis since market prices should only react to new information.The efficient-market hypothesis (EMH) is a hypothesis in financial economics that states that asset prices reflect all available information. A direct implication is that it is impossible to "beat the market" consistently on a risk-adjusted basis since market prices should only react to new information.” To me this looks complicated finance.
+* Context:  “I am a PhD in finance.” as a role specification
+* Response: “The efficient-market hypothesis (EMH) is a hypothesis in financial economics that states that asset prices reflect all available information. The EMH provides the basic logic for modern risk-based theories of asset prices.”. Although a 2 sentence summary was asked, I got one, plus not much different than the earlier response.
+* Temperature: 1, expecting far more different responses, 
+* Response: found not much change in the answer “”Efficient market hypothesis” is a hypothesis in financial economics which states that asset prices reflect all available information.”.
+* Context: “”  
+* Response: “3.1.2 The efficient-market hypothesis asserts that asset prices reflect all available information and it is impossible to "beat the market" consistently. 3.1.3 Research in financial economics has focused on market anomalies, deviations from specific models of risk. 3.1.4 Many decades of empirical research on return predictability have found mixed evidence.”. Not sure what is happening.
+* Temperature: 0.2
+* Response: “The efficient-market hypothesis (EMH) is a hypothesis in financial economics that states that asset prices reflect all available information. A direct implication is that it is impossible to "beat the market" consistently on a risk-adjusted basis since market prices should only react to new information.”. Which is the same as the first. So ‘context’ is being ignored?
+Title Generation
+* Context: “” default parameters
+* Response: “Scaling Robot Learning by Combining Datasets”
+* Context: “I am not an educated person and do not understand finance.”
+* Response: “Scaling Robot Learning”. Some change happened but not sure why.
+* Temperature = 1: expecting different answers.
+* Response: “10 Robots Learn The Same Skills”. Weird. This is not a title by any means.
+Classification headline
+* Context: default “What is the topic for a given news headline?
+- business
+- entertainment
+- health
+- sports
+- technology”
+* Response: business
+* Context: Added a new example “Superball is more famous for advertisements in the interval : advertisement” added it in the context list also
+* Response: for “CNBC Reports Rising Digital Profit as Print Advertising Falls”it should have been “advertisement”. Not sure why it did not change
+* Temperature = 1: expecting different answers.
+* Response: same “business”.
