@@ -10,10 +10,10 @@ from colorama import Fore
 def ask_inputs():
     edu_phases = {0: "> 18 (School)", 1: "18-21 (College)", 2: "22-30 (Early Job)", 3: "30-50(Mid Career)",
                   4: "50-60(Giving back?)"}
-    edu_phases_str = " choose career phase: age (phase): "
+    edu_phases_str = " choose career phase: age (phase): \n"
     for i, ph in edu_phases.items():
         edu_phases_str += f"[{i}] {ph}\n"
-    edu_phases_str += "\n=> "
+    edu_phases_str += "=> "
     phase_input = int(input(Fore.MAGENTA + edu_phases_str))
     phase = "If my current career phase is shown in the format as 'Age range in years (phase)' then I am in '" + \
             edu_phases[phase_input] + "' of my life."
