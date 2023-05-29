@@ -2,19 +2,22 @@
 
 Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
 
-Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals dont have any ways ($$, time, expertise) to train own LLMs.
-Some do have facility to get fine-tuned on custom corpus, but limited. This repo explores this further. Wish to build that end-to-end MLOps for fine-tuning LLMs.
+Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs.
+Some do have facility to get fine-tuned on custom corpus, but limited. Custome fine tuning of text documents is being provided by many. There are tools/agents/plugins to connect with SQL db or tables etc.
+Altjhjough connetions with Graph db or converting text to Graph-QLs will come soon, but the core question remains, do you have good-well-fromed data or knoweldge in proper structure like Knowledge Graphs.
 
-Goal: build fine-tuning on LLMs on own corpus:
+This repo explores this further. Wish to build that end-to-end MLOps for fine-tuning LLMs on Knowledge Graphs generated on own corpus.
+
+
+<!-- Goal: build fine-tuning on LLMs on own corpus:
 - corpus can be documents: FAQs, manuals medical papers, etc (many tutorials are available to do this via Vector Databases)
 - corpus can be tables, so need SQL/BI conversion from natural language  
 - corpus can be graphs: social networks, need conversion to GraphGPT, Cypher
-
+ -->
 Graphs, actually Knowledge Graphs, would be essential for **Sarvadnya (All-Knowing)** chatbot. LLaamaIndex probably has connectors to all the above mentioned data types.
 So, with LangChain as LLM front-end for NLU and NLG, LLaamaIndex can be the data ingestion or back-end db store.
 
-Planning to leverage the combo for open-source stack.
-
+Planning to leverage the combo for open-source stack: LangChain (LLM with OpenAI or HuggingFace), LLaamaIndex (Data Connectors) on Knowledge Graphs, where generation and querying, both can happen via LLM.
 
 ## Rational
 
@@ -34,7 +37,7 @@ Application: Health-care for Sr Citizen via Voice is the next best thing
 	- Linguistic features: POS/NER tags, Topic Models, etc
 	- Domain Knowledge: Ontologies, dictionaries
 - All thru configurations
-- Able to fire queries to find relations, paths between concepts, subgraphs, similarity, anomaly detection, etc.
+- Able to fire queries to find relations, paths between concepts, sub-graphs, similarity, anomaly detection, etc.
 - LangChain based chatbot as front end or it can be graph visualization tool for RnD kind of queries
 
 ## Approaches
