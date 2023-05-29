@@ -1,10 +1,13 @@
 # Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
 
-Chatbots have always been WoW stuff!! The recent evidence is: ChatGPT.
+Chatbots can be real WoW!! 
+
+The recent evidence is: ChatGPT.
 
 Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs.
-Some do have facility to get fine-tuned on custom corpus, but limited. Custome fine tuning of text documents is being provided by many. There are tools/agents/plugins to connect with SQL db or tables etc.
-Altjhjough connetions with Graph db or converting text to Graph-QLs will come soon, but the core question remains, do you have good-well-fromed data or knoweldge in proper structure like Knowledge Graphs.
+Some do have facility to get fine-tuned on custom corpus, but limited. Custom fine tuning of text documents is being provided by many. 
+There are tools/agents/plugins to connect with SQL db or tables etc.
+Although connections with Graph db or converting text to Graph-QLs will come soon, but the core question remains, do you have good-well-formed data or knowledge in proper structure like Knowledge Graphs (KG).
 
 This repo explores this further. Wish to build that end-to-end MLOps for fine-tuning LLMs on Knowledge Graphs generated on own corpus.
 
@@ -14,8 +17,9 @@ This repo explores this further. Wish to build that end-to-end MLOps for fine-tu
 - corpus can be tables, so need SQL/BI conversion from natural language  
 - corpus can be graphs: social networks, need conversion to GraphGPT, Cypher
  -->
-Graphs, actually Knowledge Graphs, would be essential for **Sarvadnya (All-Knowing)** chatbot. LLaamaIndex probably has connectors to all the above mentioned data types.
-So, with LangChain as LLM front-end for NLU and NLG, LLaamaIndex can be the data ingestion or back-end db store.
+ 
+Graphs, actually Knowledge Graphs, would be essential for **Sarvadnya (All-Knowing)** chatbot. 
+So, with LangChain as LLM front-end for NLU and NLG, LLaamaIndex can be the data ingestion or back-end KG db store.
 
 Planning to leverage the combo for open-source stack: LangChain (LLM with OpenAI or HuggingFace), LLaamaIndex (Data Connectors) on Knowledge Graphs, where generation and querying, both can happen via LLM.
 
@@ -38,63 +42,66 @@ Application: Health-care for Sr Citizen via Voice is the next best thing
 	- Domain Knowledge: Ontologies, dictionaries
 - All thru configurations
 - Able to fire queries to find relations, paths between concepts, sub-graphs, similarity, anomaly detection, etc.
-- LangChain based chatbot as front end or it can be graph visualization tool for RnD kind of queries
+- LangChain based chatbot as front end for NLU (Natural Language Understanding) and NLG (Natural Language Generation)
 
 ## Approaches
-- Open source: (LangChain + LLaamaIndex)[https://python.langchain.com/en/latest/index.html] using HuggingFace free models (Open AI models are cheap also), for local, data-secure solution
-- Google Cloud: End-yo-end VertexAI MLOps, easy deployment, for enterprise internal solution.
+- Open source: [LangChain](https://python.langchain.com/en/latest/index.html) + [LLaamaIndex](https://github.com/jerryjliu/llama_index) + Knowledge Graphs
+- Google Cloud: End-yo-end VertexAI MLOps, easy deployment, for enterprise internal solution, with Neo4j Auro DB for Knowledge Graphs.
 
 
-Why LangChain + LLaamaIndex:
+Why LangChain + LLaamaIndex?:
 - Local (secure), no over-the-net API/web calls
-- Open source, Free
-- Good integration with Voice Commands would be the next big thing
-- Python!!
+- Open source, Free via HuggingFace
+- Python!! end-to-end, with Streamlit as UI
 - Huge support, community, opportunities
 
-KG + LLM: IKIGAI/Sp Know^/Wow!!: 
-- World needs: huge corpus, global, domain
-- Good at: ML, NLP professional experience
-- Love doing: automation, part II
-- Paid for: consult, train, passive service
-
-^Specific Knowledge: rare, un-trainable, only through apprenticeship 
-
-
+<!-- 
 ## Application: Elderly care
 - Elderly can not type at normal chatbot, ie on mobile (WhatsApp) or Web (messenger), they are technologically challenged.
 - Need voice command based system. It need not process complex linguistics of literature quality, but a simple, unambiguous, voice command system.
 - Single, elderly, living alone is the target persona. Needs daily routine check, medication reminder, ordering necessary items, basic first level medical assistance, do some entertainment, help call doctor/relatives, appointments etc.
 - Hindi, vernacular for wider reach, global impact, issue I care and seeing with parents.
-
+-->
 
 `Not looking for Success, but Wonder!!`
 
+## Next (Stretch) Steps
+Bring in Geometric Deep Learning (GDL) on the side of Knowledge Graphs. 
+GDL extends usual Deep Learning to non-manifold (variable size, networks) and tries to apply neural networks like Transformers on it.
+Imagine, a query comes not to fetch the data from knowledge graph (ie Descriptive) but to predict something based on KG (ie Predictive). 
+We will need Agents to build models and do the inference for the query.
+
 ## References
+
+### ToDos/Learn
+- [Node Classification on Knowledge Graphs using PyTorch Geometric](https://www.youtube.com/watch?v=ex2qllcVneY)
+- [Geometric Deep Learning](https://www.youtube.com/playlist?list=PLn2-dEmQeTfSLXW8yXP4q_Ii58wFdxb3C)
+- [PyTorch Geometric](https://github.com/pyg-team/pytorch_geometric)
 
 ### Companies/Groups
 - Machine and Language Learning Lab IISc http://malllabiisc.github.io/
 - Google Knowledge Vault, LinkedIn Knowledge Graph, Microsoft Concept Graph, Wikidata etc.
-- Semantic Web India http://www.semanticwebindia.com/ Enables organizations generate value from Data using AI, Knowledge Discovery
-- Cambridge Semantics https://cambridgesemantics.com/
-- Kenome https://www.kenome.io/ Partha Talukdar. Helping enterprises make sense of dark data using cutting-edge Machine Learning, NLP, and Knowledge Graphs.
+- [Semantic Web India](http://www.semanticwebindia.com/) Enables organizations generate value from Data using AI, Knowledge Discovery
+- [Cambridge Semantics](https://cambridgesemantics.com/)
+- [Kenome](https://www.kenome.io/) Partha Talukdar. Helping enterprises make sense of dark data using cutting-edge Machine Learning, NLP, and Knowledge Graphs.
 - Tom Mitchell’s lab NELL:  a continuous learning system (Never Ending Language Learning) to read the web.
 - Health bots: Babylon, Ada, Sensely.
-
-### Github Repos
-- Graph Neural Networks for Natural Language Processing https://github.com/svjan5/GNNs-for-NLP
-- Neo4j Protobot: https://github.com/amirharati/neo4j_protobot
-
+- [Knowledge graphs](https://www.turing.ac.uk/research/interest-groups/knowledge-graphs)
+- [Geometric Deep Learning)[https://geometricdeeplearning.com/]
 
 <!-- 
 ## Why me?
 - Reasonable popularity due to Sketchnote and talks on ChatGPT or LLMs (Large Language Models)
 - Specific Knowledge: Theoretical background of NLP/LLMs due to trainings, plus, professional experience on customizing LLMs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
 - IKIGAI: I love, I like, World needs, Can get paid
- -->
- 
+	- World needs: huge corpus, global, domain
+	- Good at: ML, NLP professional experience
+	- Love doing: automation, part II
+	- Paid for: consult, train, passive service
 
-<!-- ## Contours
+^Specific Knowledge: rare, un-trainable, only through apprenticeship 
+
+## Contours
 - Theme: Automation MicroSaas
 - Product: Micro SaaS, auto upgrade, Serverless, scale as you go
 - Payment: Pay per use, Passive Income, forever
@@ -104,7 +111,8 @@ KG + LLM: IKIGAI/Sp Know^/Wow!!:
 - Output: Wow chatbot, APIs, Network effects, more connection, more $$
 - Moat/Entry Barrier, IKIGAI, Sp Knowledge
 - Give back: Talks, sketchnotes, Tech explanations
-- Side outcomes: consultancy, open source contribution -->
+- Side outcomes: consultancy, open source contribution 
+
 
 ## Mode: MicroSaas
 - Own (no team), 
@@ -128,15 +136,7 @@ KG + LLM: IKIGAI/Sp Know^/Wow!!:
 - Is it for specific people, 1000 true (paying) fans, say $30 or $3 a month
 - Is it a daily need?
 
-## Technology Stack
-- LangChain 
-- HuggingFace open/free LLMs,
-- UI Web?
-- Hosting?
-- Code base: Github Sarvadnya for public, have app based private repo
-- Google App Engine on GCP (new project, billing on) [ref](https://www.youtube.com/watch?v=03KgXhg-voY)
-- Low grade Linux Ubuntu machines are cheap, and may run 24 hrs forever.
-- For quick deployment use Streamlit Share
+-->
 
 
 ## Publications
@@ -153,6 +153,3 @@ KG + LLM: IKIGAI/Sp Know^/Wow!!:
 - [GPT-4 & LangChain Tutorial: How to Chat With A 56-Page PDF Document (w/Pinecone)](https://www.youtube.com/watch?v=ih9PBGVVOO4)
 - [LangChain - Data Independent](https://www.youtube.com/playlist?list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5)
 
-<!-- ## Follow
-- [Practical AI by Ramsri](https://www.youtube.com/@PracticalAIbyRamsri) NLP, LLM, GPT, MicroSaaS
-- [Dhramesh Shah](https://www.youtube.com/watch?v=fayBEXSKyoI) ChatSpot, ChatUX -->
