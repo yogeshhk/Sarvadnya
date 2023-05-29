@@ -1,4 +1,4 @@
-# # Rasa Knowledge Graph (RasaKG) Notes
+# Knowledge Graph Notes
 
 -Formalizing Hypothesis Virtues in Knowledge Graphs
 	- Find subgraphs which have more potential to find hypothesis, thus avoiding lots of noise and redundancy
@@ -73,4 +73,4 @@ of occurrences is counted for each word
 		
 - CS520: Knowledge Graphs Seminar (Spring 2020) https://www.youtube.com/playlist?list=PLDhh0lALedc7LC_5wpi5gDnPRnu1GSyRG
 
-- CS 520 2021 Knowledge Graphshttps://web.stanford.edu/class/cs520/
+- CS 520 2021 Knowledge Graphs https://web.stanford.edu/class/cs520/
