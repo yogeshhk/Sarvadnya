@@ -70,6 +70,8 @@ Graphs, actually the Knowledge Graphs, would be essential for **Sarvadnya (All-K
 - [Kenome](https://www.kenome.io/) Partha Talukdar. Helping enterprises make sense of dark data using cutting-edge Machine Learning, NLP, and Knowledge Graphs.
 - [Knowledge graphs](https://www.turing.ac.uk/research/interest-groups/knowledge-graphs)
 - [Geometric Deep Learning)[https://geometricdeeplearning.com/]
+- [Learning on Graphs Conference](https://www.youtube.com/@learningongraphs/videos)
+- [Group Equivariant Deep Learning (UvA - 2022)](https://www.youtube.com/playlist?list=PL8FnQMH2k7jzPrxqdYufoiYVHim8PyZWd)
 
 <!-- 
 ## Why me?
