@@ -22,7 +22,7 @@ Graphs, actually the Knowledge Graphs, would be essential for **Sarvadnya (All-K
 
 ## Contours
 - Given text corpus (any domain: legal cases, medical papers, research articles, etc)
-- Build Knowledge Graph with nodes/edges populated using:
+- Build Knowledge Graph with nodes/edges populated using (more info at [KaaS](./KaaS.md):
 	- Linguistic features: POS/NER tags, Topic Models, etc
 	- Domain Knowledge: Ontologies, dictionaries
 - All thru configurations
