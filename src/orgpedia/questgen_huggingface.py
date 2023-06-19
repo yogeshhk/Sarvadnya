@@ -1,5 +1,4 @@
-# https://github.com/jerryjliu/llama_index/blob/main/examples/langchain_demo/LangchainDemo.ipynb
-
+# https://gpt-index.readthedocs.io/en/latest/examples/query_engine/sub_question_query_engine.html
 # Using LlamaIndex as a Callable Tool
 
 from langchain.agents import Tool
@@ -24,32 +23,18 @@ llm_predictor = LLMPredictor(llm=llm)
 service_context = ServiceContext.from_defaults(chunk_size=512, llm_predictor=llm_predictor, embed_model=embed_model)
 
 index = VectorStoreIndex.from_documents(documents=documents, service_context=service_context)
-engine = index.as_query_engine(similarity_top_k=3)
+query_engine = index.as_query_engine(similarity_top_k=3)
 
+# setup base query engine as tool
 query_engine_tools = [
     QueryEngineTool(
-        query_engine=engine,
-        metadata=ToolMetadata(name='Paulindex', description='Provides information about Paul Graham Essay')
+        query_engine=query_engine,
+        metadata=ToolMetadata(name='pg_essay', description='Paul Graham essay on What I Worked On')
     )
 ]
 
-s_engine = SubQuestionQueryEngine.from_defaults(query_engine_tools=query_engine_tools)
-response = s_engine.query('Explain childhood')
+query_engine = SubQuestionQueryEngine.from_defaults(query_engine_tools=query_engine_tools)
+# response = s_engine.query('Explain childhood')
+response = query_engine.query('How was Paul Grahams life different before and after YC?')
+
 print(response)
-
-### As a chat bot
-
-# tools = [
-#     Tool(
-#         name="LlamaIndex",
-#         func=lambda q: str(index.as_query_engine().query(q)),
-#         description="useful for when you want to answer questions about the author. The input to this tool should be a complete english sentence.",
-#         return_direct=True
-#     ),
-# ]
-
-# memory = ConversationBufferMemory(memory_key="chat_history")
-# # llm = ChatOpenAI(temperature=0)
-# agent_executor = initialize_agent(tools, llm, agent="conversational-react-description", memory=memory)
-#
-# agent_executor.run(input="hi, i am bob")
