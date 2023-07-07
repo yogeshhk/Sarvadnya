@@ -1,4 +1,4 @@
-langchain==0.0.188
+langchain>=0.0.225
 openai
 faiss-cpu
 streamlit
