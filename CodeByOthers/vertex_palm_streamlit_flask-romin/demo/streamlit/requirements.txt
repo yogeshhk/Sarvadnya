@@ -1,0 +1,5 @@
+google-cloud-aiplatform==1.25.0
+streamlit
+streamlit-chat
+pandas
+flask

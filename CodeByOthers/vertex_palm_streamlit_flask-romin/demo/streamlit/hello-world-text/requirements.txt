@@ -1,0 +1,6 @@
+google-cloud-aiplatform==1.25.0
+google-cloud-logging
+streamlit
+streamlit-chat
+pandas
+flask
