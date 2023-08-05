@@ -6,6 +6,8 @@ Reference code https://github.com/hwchase17/notion-qa
 
 Built with [LangChain](https://github.com/hwchase17/langchain)
 
+[LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_chatgpt-gpt-almanack-activity-7049347401723125762-nXbp/)
+
 # Environment Setup
 
 In order to set your environment up to run the code here, first install all requirements:

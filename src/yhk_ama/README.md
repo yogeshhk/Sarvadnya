@@ -2,6 +2,8 @@
 
 This repo ([original](https://github.com/hwchase17/langchain-streamlit-template)) serves as a testbed to try out diffent LLMs, different fine-tuning data, etc.
 
+[LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_chatgpt-ai-nlp-activity-7059720029583360001-9uVm/)
+
 ## How to Run
 `streamlit run streamlit_main.py`
 
