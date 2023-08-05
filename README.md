@@ -3,8 +3,9 @@
 Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs.
 Some do have facility to get fine-tuned on custom corpus, but limited. Custom fine tuning of text documents is being provided by many. 
 
-This repo is a collection of various PoCs (Proof-of-Concepts) to interface custom data using LLMs.
-Streach (RnD) goal: [{KG + LLM} chatbot](./README_LLM_KG.md)
+This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs.
+
+Stretch (RnD) goal: [{KG + LLM} chatbot](./README_LLM_KG.md)
 
 ## Why LangChain based Implementations ?:
 - Local (secure), no over-the-net API/web calls
