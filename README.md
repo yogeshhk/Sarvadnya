@@ -1,11 +1,17 @@
-# Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
+# Sarvadnya (सर्वज्ञ), an All-Knowing Micro SaaS!!
 
 Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs.
 Some do have facility to get fine-tuned on custom corpus, but limited. Custom fine tuning of text documents is being provided by many. 
 
 This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs.
 
-Stretch (RnD) goal: [{KG + LLM} chatbot](./README_LLM_KG.md)
+Stretch (RnD) goals: 
+- [{KG + LLM} chatbot](./README_LLM_KG.md)
+- LLM models for Indic (especially Sanskrit) languages
+
+## Pathways
+- Enterprise: Google Cloud: Gen AI, Doc AI, Vertex AI: Skills Boost paths, Professional ML Certification
+- Open Source: Langchain, HuggingFace, Streamlit: Custom fine-tuned models
 
 ## Why LangChain based Implementations ?:
 - Local (secure), no over-the-net API/web calls
@@ -17,6 +23,7 @@ Stretch (RnD) goal: [{KG + LLM} chatbot](./README_LLM_KG.md)
 ## Publications so far
 - [SaaS LLM](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
 - [AskAlmanackBot](https://www.linkedin.com/feed/update/urn:li:ugcPost:7049347127029698560/)
+- [GST FAQs Bot](https://medium.com/google-cloud/building-a-gst-faqs-app-d8d903eb9c6)
 
 ## References
 - [LangChain How to and guides](https://www.youtube.com/playlist?list=PL8motc6AQftk1Bs42EW45kwYbyJ4jOdiZ)
@@ -41,7 +48,12 @@ Stretch (RnD) goal: [{KG + LLM} chatbot](./README_LLM_KG.md)
 
 <!-- 
 ## Why me?
-- Reasonable popularity due to Sketchnote and talks on ChatGPT or LLMs (Large Language Models)
+- Need to be 'creating', time-based-jobs cant scale, its renting, need to leverage intellect
+- MicroSaaS: one-person company, pay-per-use service for passive income forever
+- Build out-of-the-world idea, a wow automation, using NLP LLM Gen AI.
+- Find pressing pain points to address, in daily use, for wider audience
+- Devote time playfully to solve the problem, with peace and joy, no anxiety no fomo, no hopes of revenue but just a journey to develop something very cool
+- Reasonable popularity due to Sketchnote and talks on ChatGPT or LLMs (Large Language Models), will help the spread
 - Specific Knowledge: Theoretical background of NLP/LLMs due to trainings, plus, professional experience on customizing LLMs on custom data, plus common-sense software solution-ing experience for 2 decades, including engineering industries. Rare-Global-Untrainable-Leverage-Brand.
 - IKIGAI: I love, I like, World needs, Can get paid
 	- World needs: huge corpus, global, domain

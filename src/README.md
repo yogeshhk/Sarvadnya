@@ -22,6 +22,9 @@ Assess LLMs for logical interpretation. [LinkedIn post](https://www.linkedin.com
 ## Career Transition
 A Guided LLM based chatbot for Career Transition to Data Science
 
+## generate faq bot
+A custom FAQs Bot Generator
+
 ## generative-ai
 Own py versions of Notebooks from original repo
 
