@@ -99,7 +99,7 @@ class MyFAQsBot:
                 message(st.session_state["past"][i], is_user=True, key=str(i) + "_user")
 
 
-def read_config(file_path="config.json"):
+def read_config(file_path="bot_config.json"):
     with open(file_path) as f:
         data = json.load(f)
     return data

@@ -14,10 +14,13 @@ A custom FAQs Bot Generator, driven by `config.json`
 }
 ```
 
+Typically, both DOCS_INDEX and FAISS_STORE_PKL are stored in `./models` directory and data files are stored in `./data/` directory. Both directories need to be present.
+
+
 You can manually edit it or run following wizard app to set the same parameters, it writes the same `config.json`.
 
 ```shell
-python wizard.py
+python bot_config_wizard.py
 ```
 
 FAQs Bot Generator reads the `config.json` and creates the FAQs Bot. To run the generator, use
