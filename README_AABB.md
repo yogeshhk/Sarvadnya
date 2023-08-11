@@ -1,4 +1,4 @@
-# Awesome AI By Bharat
+# Awesome AI By Bharat (AABB)
 This repository contains a hand-curated resources of Artificial Intelligence technologies built by India.
 
 While 'AI-For-Bharat' is valuable, it doesn't quite encompass the spirit of self-reliance that 'AI-By-Bharat' entails. Who truly owns the AI technology when we use cloud services or open-source frameworks? 🤔 It's a complex matter to define, but imagine a litmus test: if there were sanctions against India, would your AI-powered product or technology still function? 💪
