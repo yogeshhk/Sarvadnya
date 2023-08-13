@@ -8,8 +8,8 @@ import streamlit as st
 from langchain.chains import RetrievalQA
 from langchain.document_loaders import UnstructuredHTMLLoader, TextLoader, PyPDFLoader
 from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.embeddings import HuggingFaceHubEmbeddings
-from langchain.llms import VertexAI
+from langchain.embeddings import HuggingFaceHubEmbeddings, LlamaCppEmbeddings
+from langchain.llms import VertexAI, LlamaCpp
 from langchain.vectorstores import FAISS
 from streamlit_chat import message
 
@@ -21,6 +21,16 @@ class MyFAQsBot:
         self.files_paths = config_json['FILES_PATHS']
         self.docs_index = config_json['DOCS_INDEX']
         self.faiss_store_pkl = config_json['FAISS_STORE_PKL']
+        self.model_name = config_json['MODEL_NAME']
+        self.model_path = "./models/llama-7b.ggmlv3.q4_0.bin"  # hard coded
+
+    def get_model(self):
+        llm = None
+        if self.model_name == "VertexAI":
+            llm = VertexAI()  # need GCP account, project, own config set under ENV variable, refer README
+        elif self.model_name == "Llama2":
+            llm = LlamaCpp(model_path=self.model_path)
+        return llm
 
     def generate_chain(self):
         if os.path.isfile(self.docs_index):
@@ -47,7 +57,12 @@ class MyFAQsBot:
                     data += loader.load()
                 else:
                     st.write("Selected file extension not supported")
-            # print(f"data has {len(data)} documents")
+            print(f"data has {len(data)} documents")
+
+            ## error for following code: ValueError: could not broadcast input array from shape (8,) into shape (0,)
+            # if self.model_name == "Llama2":
+            #     embeddings = LlamaCppEmbeddings(model_path=self.model_path)
+            # else:
             embeddings = HuggingFaceHubEmbeddings()
             store = FAISS.from_documents(data, embeddings)
             faiss.write_index(store.index, self.docs_index)
@@ -56,7 +71,7 @@ class MyFAQsBot:
 
         # print("Now index is there, create chain")
         db_as_retriver = store.as_retriever()
-        llm = VertexAI()
+        llm = self.get_model()
         chain = RetrievalQA.from_chain_type(llm=llm, retriever=db_as_retriver, verbose=False, chain_type="stuff")
         return chain
 

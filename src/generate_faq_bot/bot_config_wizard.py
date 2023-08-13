@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, ttk
 import json
 
 
@@ -20,6 +20,14 @@ class BotConfigWizard:
         bot_name_label.pack(anchor=tk.W, padx=10)
         self.bot_name_entry = tk.Entry(self.root)
         self.bot_name_entry.pack(fill=tk.X, padx=10)
+
+        # Create a dropdown menu with three options
+        self.dropdown_var = tk.StringVar(value='VertexAI')  # Default option is 'VertexAI'
+        self.dropdown_label = tk.Label(self.root, text="Select Model:")
+        self.dropdown_label.pack()
+
+        self.dropdown = ttk.Combobox(self.root, textvariable=self.dropdown_var, values=['VertexAI', 'Llama2', 'Flan'])
+        self.dropdown.pack()
 
         # Files Listbox
         files_label = tk.Label(self.root, text="Select Data Files:")
@@ -59,10 +67,12 @@ class BotConfigWizard:
         bot_name = self.bot_name_entry.get()
         selected_files = self.files_listbox.get(0, tk.END)
         models_folder = self.models_folder_var.get()
+        selected_option = self.dropdown_var.get()
 
         # Create the data dictionary
         data = {
             "APP_NAME": bot_name,
+            "MODEL_NAME": selected_option,
             "DOCS_INDEX": models_folder + "/docs.index",
             "FAISS_STORE_PKL": models_folder + "/faiss_store.pkl",
             "FILES_PATHS": selected_files
@@ -76,6 +86,7 @@ class BotConfigWizard:
 
         # You can perform further processing with bot_name and selected_files here
         print("Bot Name:", bot_name)
+        print("Model Name:", selected_option)
         print("Selected Files:", selected_files)
 
     def cancel_button_callback(self):
