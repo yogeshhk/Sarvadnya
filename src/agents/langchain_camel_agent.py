@@ -1,6 +1,9 @@
 # https://colab.research.google.com/drive/1nEHFgsbl9ZJ97SdIjXZUL8S0TRR3AoFo?usp=sharing
-import streamlit as st
+# Original Paper: https://arxiv.org/pdf/2303.17760.pdf
+# Website: https://www.camel-ai.org/
+# Implementation: https://github.com/camel-ai/camel
 
+import streamlit as st
 from typing import List
 from langchain.chat_models import ChatVertexAI
 from langchain.prompts.chat import (
@@ -16,7 +19,6 @@ from langchain.schema import (
 
 
 # Define a CAMEL agent helper class
-
 class CAMELAgent:
 
     def __init__(
@@ -52,24 +54,23 @@ class CAMELAgent:
 
 
 # Streamlit UI
-st.title("CAMEL AI Chatbot")
+st.title("CAMEL-Langchain-VertexAI Agent")
 st.sidebar.header("Input Settings")
+
+# # Setup roles and task for role-playing
+# assistant_role_name = "Accountant"
+# user_role_name = "Entrepreneur"
+# task = "Preparing and filing tax returns"
+# word_limit = 50  # word limit for task brainstorming
 
 # Input fields
 assistant_role_name = st.sidebar.text_input("Assistant Role Name", "Accountant")
 user_role_name = st.sidebar.text_input("User Role Name", "Entrepreneur")
-task = st.sidebar.text_area("Task", "Entrepreneur needs help of the Accountant in filing the taxes.")
+task = st.sidebar.text_area("Task", "Preparing and filing tax returns.")
 word_limit = st.sidebar.number_input("Word Limit for Task Brainstorming", value=100)
 
-# # Setup roles and task for role-playing
-# assistant_role_name = "Accountant"  # "Python Programmer"
-# user_role_name = "Entrepreneur"  # "Stock Trader"
-# task = "Entrepreneur has a small business for which she needs help of the Accountant in filing the taxes."
-# # "Develop a trading bot for the stock market"
-# word_limit = 100  # word limit for task brainstorming
 
 # Create a task specify agent for brainstorming and get the specified task
-
 task_specifier_sys_msg = SystemMessage(content="You can make a task more specific.")
 task_specifier_prompt = (
     """Here is a task that {assistant_role_name} will help {user_role_name} to complete: {task}.
@@ -82,7 +83,7 @@ task_specifier_msg = task_specifier_template.format_messages(assistant_role_name
                                                              user_role_name=user_role_name,
                                                              task=task, word_limit=word_limit)[0]
 specified_task_msg = task_specify_agent.step(task_specifier_msg)
-# print(f"Specified task: {specified_task_msg.content}")
+print(f"Specified task: {specified_task_msg.content}")
 specified_task = specified_task_msg.content
 
 # Create inception prompts for AI assistant and AI user for role-playing
@@ -172,10 +173,9 @@ assistant_msg = HumanMessage(
 user_msg = HumanMessage(content=f"{assistant_sys_msg.content}")
 user_msg = assistant_agent.step(user_msg)
 
-# Start role-playing session to solve the task!
-# st.header("Prompts")
-# st.text(f"Original task prompt:\n{task}\n")
-# st.text(f"Specified task prompt:\n{specified_task}\n")
+# # Start role-playing session to solve the task!
+# print(f"Original task prompt:\n{task}\n")
+# print(f"Specified task prompt:\n{specified_task}\n")
 
 st.header("Conversation")
 
@@ -195,6 +195,5 @@ while n < chat_turn_limit:
     st.info(user_msg.content)
     st.text(f"AI Assistant ({assistant_role_name}):")
     st.success(assistant_msg.content)
-
     if "<CAMEL_TASK_DONE>" in user_msg.content:
         break
