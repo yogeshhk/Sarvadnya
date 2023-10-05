@@ -77,14 +77,10 @@ class MyFAQsBot:
 
     def run_ui(self):
         if "chain" not in st.session_state:
-            # print("setting chain session state")
             st.session_state["chain"] = self.generate_chain()
 
         chain = st.session_state["chain"]
-        # print(f"Chain should be ready here {type(chain)}")
 
-        # print("Generating UI")
-        # From here down is all the StreamLit UI.
         st.set_page_config(page_title=self.app_name, page_icon=":robot:")
         st.header(self.app_name)
 
