@@ -1,37 +1,51 @@
 # https://github.com/microsoft/autogen/blob/osllm/notebook/open_source_language_model_example.ipynb
 
+# Following ways failed to start local llm server
 # >> modelz-llm -m bigscience/bloomz-560m --device auto [NOT FOR WINDOWS]
 # >> python -m llama_cpp.server --model <model path>.gguf
+
+# Worked with LMStudio. You can download models from UI or if you have them already, keep them in
+# C:\Users\yoges\.cache\lm-studio\models\yogeshhk\Sarvadnya , 'llama-7b.ggmlv3.q4_0.bin' was recognized
+# Check using CHAT if it responds well.
+# Start server, take the base_path URL and set it as below, at both places.
+# Then run this file
 
 # Setup autogen with the correct API
 import autogen
 from autogen import AssistantAgent, UserProxyAgent
+import openai
+openai.api_type = "openai"
+openai.api_key = "..."
+openai.api_base = "http://localhost:1234/v1"
+openai.api_version = "2023-05-15"
 
 autogen.oai.ChatCompletion.start_logging()
 
 local_config_list = [
         {
-            'model': 'llama-7b.ggmlv3.q4_0.gguf.bin',
+            'model': 'llama 7B q4_0 ggml',
             'api_key': 'any string here is fine',
             'api_type': 'openai',
-            'api_base': "http://localhost:8000",
-            'api_version': '2023-03-15-preview'
+            'api_base': "http://localhost:1234/v1",
+            'api_version': '2023-05-15'
         }
 ]
 
 # # Perform Completion
-# question = "Who are you?"
+# question = "Who are you? Tell it in 2 lines only."
 # response = autogen.oai.Completion.create(config_list=local_config_list, prompt=question, temperature=0)
 # ans = autogen.oai.Completion.extract_text(response)[0]
 #
-# print("The small model's answer is:", ans)
+# print("Answer is:", ans)
+
+# #
 
 small = AssistantAgent(name="small model",
                        max_consecutive_auto_reply=2,
                        system_message="You should act as a student!",
                        llm_config={
                            "config_list": local_config_list,
-                           "temperature": 1,
+                           "temperature": 0.5,
                        })
 
 big = AssistantAgent(name="big model",
@@ -39,7 +53,7 @@ big = AssistantAgent(name="big model",
                      system_message="Act as a teacher.",
                      llm_config={
                          "config_list": local_config_list,
-                         "temperature": 1,
+                         "temperature": 0.5,
                      })
 
 big.initiate_chat(small, message="Who are you?")
