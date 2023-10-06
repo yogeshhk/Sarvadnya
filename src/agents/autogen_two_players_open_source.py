@@ -31,18 +31,18 @@ local_config_list = [
         }
 ]
 
-# # Perform Completion
-# question = "Who are you? Tell it in 2 lines only."
-# response = autogen.oai.Completion.create(config_list=local_config_list, prompt=question, temperature=0)
-# ans = autogen.oai.Completion.extract_text(response)[0]
-#
-# print("Answer is:", ans)
+# Perform Completion
+question = "Who are you? Tell it in 2 lines only."
+response = autogen.oai.Completion.create(config_list=local_config_list, prompt=question, temperature=0)
+ans = autogen.oai.Completion.extract_text(response)[0]
 
-# #
+print("Answer is:", ans)
+
+#
 
 small = AssistantAgent(name="small model",
                        max_consecutive_auto_reply=2,
-                       system_message="You should act as a student!",
+                       system_message="You should act as a student! Give response in 2 lines only.",
                        llm_config={
                            "config_list": local_config_list,
                            "temperature": 0.5,
@@ -50,7 +50,7 @@ small = AssistantAgent(name="small model",
 
 big = AssistantAgent(name="big model",
                      max_consecutive_auto_reply=2,
-                     system_message="Act as a teacher.",
+                     system_message="Act as a teacher.Give response in 2 lines only.",
                      llm_config={
                          "config_list": local_config_list,
                          "temperature": 0.5,
