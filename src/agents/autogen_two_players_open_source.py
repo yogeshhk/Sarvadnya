@@ -14,6 +14,7 @@
 import autogen
 from autogen import AssistantAgent, UserProxyAgent
 import openai
+
 openai.api_type = "openai"
 openai.api_key = "..."
 openai.api_base = "http://localhost:1234/v1"
@@ -22,13 +23,13 @@ openai.api_version = "2023-05-15"
 autogen.oai.ChatCompletion.start_logging()
 
 local_config_list = [
-        {
-            'model': 'llama 7B q4_0 ggml',
-            'api_key': 'any string here is fine',
-            'api_type': 'openai',
-            'api_base': "http://localhost:1234/v1",
-            'api_version': '2023-05-15'
-        }
+    {
+        'model': 'Mistral 7B Instruct v01 Q2',  # 'llama 7B q4_0 ggml'
+        'api_key': 'any string here is fine',
+        'api_type': 'openai',
+        'api_base': "http://localhost:1234/v1",
+        'api_version': '2023-05-15'
+    }
 ]
 
 # # Perform Completion
@@ -61,19 +62,19 @@ local_config_list = [
 # Entrepreneur - Accountant
 
 ennreprenuer = AssistantAgent(name="Entrepreneur",
-                       max_consecutive_auto_reply=2,
-                       system_message="Act as a Entrepreneur! You want to get the task done from the Accountant",
-                       llm_config={
-                           "config_list": local_config_list,
-                           "temperature": 0.5,
-                       })
+                              max_consecutive_auto_reply=2,
+                              system_message="Act as a Entrepreneur! You want to get the task done from the Accountant",
+                              llm_config={
+                                  "config_list": local_config_list,
+                                  "temperature": 0.5,
+                              })
 
 accountant = AssistantAgent(name="Accountant",
-                     max_consecutive_auto_reply=2,
-                     system_message="Act as a Accountant. You want to help the Entrepreneur to get the task done",
-                     llm_config={
-                         "config_list": local_config_list,
-                         "temperature": 0.5,
-                     })
+                            max_consecutive_auto_reply=2,
+                            system_message="Act as a Accountant. You want to help the Entrepreneur to get the task done",
+                            llm_config={
+                                "config_list": local_config_list,
+                                "temperature": 0.5,
+                            })
 
 accountant.initiate_chat(ennreprenuer, message="I want to help prepare and file the taxes.")

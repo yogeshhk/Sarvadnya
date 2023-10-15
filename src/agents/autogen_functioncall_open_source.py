@@ -26,7 +26,7 @@ autogen.oai.ChatCompletion.start_logging()
 
 local_config_list = [
     {
-        'model': 'llama 7B q4_0 ggml',
+        'model': 'Mistral 7B Instruct v01 Q2',  # 'llama 7B q4_0 ggml'
         'api_key': 'any string here is fine',
         'api_type': 'openai',
         'api_base': "http://localhost:1234/v1",
@@ -69,7 +69,8 @@ llm_config = {
 }
 chatbot = autogen.AssistantAgent(
     name="chatbot",
-    system_message="For coding tasks, only use the functions you have been provided with. Reply TERMINATE when the task is done.",
+    system_message="For coding tasks, only use the functions you have been provided with. Reply TERMINATE when the " +
+                   "task is done.",
     llm_config=llm_config,
 )
 
@@ -85,6 +86,7 @@ user_proxy = autogen.UserProxyAgent(
 # define functions according to the function desription
 from IPython import get_ipython
 
+
 def exec_python(cell):
     ipython = get_ipython()
     result = ipython.run_cell(cell)
@@ -95,8 +97,10 @@ def exec_python(cell):
         log += f"\n{result.error_in_exec}"
     return log
 
+
 def exec_sh(script):
     return user_proxy.execute_code_blocks([("sh", script)])
+
 
 # register the functions
 user_proxy.register_function(
