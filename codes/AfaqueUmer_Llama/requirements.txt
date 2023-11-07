@@ -150,7 +150,7 @@ Pympler==1.0.1
 PyMuPDF==1.22.5
 pyOpenSSL @ file:///C:/b/abs_08f38zyck4/croot/pyopenssl_1690225407403/work
 pyparsing @ file:///C:/ci_311/pyparsing_1678502182533/work
-pypdf==3.12.0
+pypdf==3.17.0
 PyQt5==5.15.7
 PyQt5-sip @ file:///C:/ci_311/pyqt-split_1676428895938/work/pyqt_sip
 pyre-extensions==0.0.29
