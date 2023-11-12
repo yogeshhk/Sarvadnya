@@ -84,7 +84,7 @@ joblib==1.2.0
 jsonschema==4.19.0
 jsonschema-specifications==2023.7.1
 kiwisolver @ file:///C:/ci_311/kiwisolver_1676431979301/work
-langchain==0.0.325
+langchain==0.0.329
 langchainplus-sdk==0.0.20
 langcodes @ file:///opt/conda/conda-bld/langcodes_1643477751144/work
 llama-cpp-python==0.1.48
