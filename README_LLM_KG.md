@@ -40,3 +40,6 @@ Graphs, actually the Knowledge Graphs, would be essential for **Sarvadnya (All-K
 - GDL extends usual Deep Learning to non-manifold (variable size, networks) and tries to apply neural networks like Transformers on it.
 - Imagine, a query comes not to fetch the data from knowledge graph (ie Descriptive) but to predict something based on KG (ie Predictive). 
 - We will need Agents to build models and do the inference for the query.
+
+## References
+- [Sangrahaka Demo for FSE 2021](https://www.youtube.com/watch?v=nw9GFLVZMMo) Ayurveda annotation tool: easy to use, robust, annotation and querying tool.

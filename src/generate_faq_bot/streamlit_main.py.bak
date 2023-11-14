@@ -13,8 +13,6 @@ from langchain.llms import VertexAI, LlamaCpp
 from langchain.vectorstores import FAISS
 from streamlit_chat import message
 
-from langchain.text_splitter import CharacterTextSplitter
-
 
 class MyFAQsBot:
     def __init__(self, config_json):
@@ -43,34 +41,30 @@ class MyFAQsBot:
             store.index = index
         else:
             # print("populating index as it is not there")
-            documents = []
+            data = []
             for p in self.files_paths:
                 if p.lower().endswith('.csv'):
                     loader = CSVLoader(file_path=p)
-                    documents += loader.load()
+                    data += loader.load()
                 elif p.lower().endswith('.pdf'):
                     loader = PyPDFLoader(file_path=p)
-                    documents += loader.load()
+                    data += loader.load()
                 elif p.lower().endswith('.txt'):
-                    loader = TextLoader(file_path=p, encoding="UTF-8")
-                    documents += loader.load()
+                    loader = TextLoader(file_path=p)
+                    data += loader.load()
                 elif p.lower().endswith('.html'):
                     loader = UnstructuredHTMLLoader(file_path=p)
-                    documents += loader.load()
+                    data += loader.load()
                 else:
                     st.write("Selected file extension not supported")
-
-            # Split document in chunks
-            text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=30, separator="\n")
-            docs = text_splitter.split_documents(documents=documents)
-            print(f"data has {len(docs)} documents")
+            print(f"data has {len(data)} documents")
 
             ## error for following code: ValueError: could not broadcast input array from shape (8,) into shape (0,)
             # if self.model_name == "Llama2":
             #     embeddings = LlamaCppEmbeddings(model_path=self.model_path)
             # else:
             embeddings = HuggingFaceHubEmbeddings()
-            store = FAISS.from_documents(docs, embeddings)
+            store = FAISS.from_documents(data, embeddings)
             faiss.write_index(store.index, self.docs_index)
             with open(self.faiss_store_pkl, "wb") as f:
                 pickle.dump(store, f)

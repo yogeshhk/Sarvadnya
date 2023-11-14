@@ -2,7 +2,7 @@
     "APP_NAME": "Yogi",
     "DOCS_INDEX": "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/models/docs.index",
     "FAISS_STORE_PKL": "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/models/faiss_store.pkl",
-    "MODEL_NAME": "Llama2",
+    "MODEL_NAME": "VertexAI",
     "FILES_PATHS": [
         "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/data/cbic-gst_gov_in_fgaq.html",
         "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/data/nlp_faq_engine_faqs.csv"
