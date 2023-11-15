@@ -6,8 +6,9 @@ Some do have facility to get fine-tuned on custom corpus, but limited. Custom fi
 This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs.
 
 Stretch (RnD) goals: 
-- [{KG + LLM} chatbot](./README_LLM_KG.md)
-- LLM models for Indic (especially Sanskrit) languages. Here is collection of similar efforts going on ((./README_AABB.md)
+- [{KG + LLM} chatbot](./README_LLM_KG.md) Building LLM based Chatbot on Knowledge Graph
+- [Knowledge as a Service (KaaS)](./README_KaaS.md) Building Knowledge Graph from Text and serving it as a Service
+- LLM models for Indic (especially Sanskrit) languages. Here is collection of similar efforts going on [Awesome AI By Bharat (AABB)](./README_AABB.md)
 
 ## Pathways
 - Enterprise: Google Cloud: Gen AI, Doc AI, Vertex AI: Skills Boost paths, Professional ML Certification
