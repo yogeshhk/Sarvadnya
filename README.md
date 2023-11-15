@@ -7,7 +7,7 @@ This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md)
 
 Stretch (RnD) goals: 
 - [{KG + LLM} chatbot](./README_LLM_KG.md)
-- LLM models for Indic (especially Sanskrit) languages. Here is collection of similar efforts going on [AI 4 Bharat](./README_AABB.md)
+- LLM models for Indic (especially Sanskrit) languages. Here is collection of similar efforts going on [Awesome AI By Bharat (AABB)](./README_AABB.md)
 
 ## Pathways
 - Enterprise: Google Cloud: Gen AI, Doc AI, Vertex AI: Skills Boost paths, Professional ML Certification
