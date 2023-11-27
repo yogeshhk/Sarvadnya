@@ -38,6 +38,8 @@ This dataset contains four columns:
 | description | Description of the news article                            |
 
 """
+import torch
+print(torch.cuda.is_available())
 
 from ludwig.datasets import agnews
 

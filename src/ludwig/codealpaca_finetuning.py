@@ -30,6 +30,11 @@ np.random.shuffle(split_values)
 df['split'] = split_values
 df['split'] = df['split'].astype(int)
 
+######################### SMALL DATASET #######################
+df = df.head(n=100)
+
+print(df.head(10))
+
 num_self_sufficient = (df['input'] == '').sum()
 num_need_contex = df.shape[0] - num_self_sufficient
 # We are only using 100 rows of this dataset for this webinar
@@ -53,3 +58,56 @@ average_chars_output = df['num_characters_output'].mean()
 print(f'Average number of tokens in the instruction column: {(average_chars_instruction / 3):.0f}')
 print(f'Average number of tokens in the input column: {(average_chars_input / 3):.0f}')
 print(f'Average number of tokens in the output column: {(average_chars_output / 3):.0f}', end="\n\n")
+
+zero_shot_config = yaml.safe_load(
+  """
+  model_type: llm
+  base_model: meta-llama/Llama-2-7b-hf
+
+  input_features:
+    - name: instruction
+      type: text
+
+  output_features:
+    - name: output
+      type: text
+
+  prompt:
+    template: >-
+      Below is an instruction that describes a task, paired with an input
+      that may provide further context. Write a response that appropriately
+      completes the request.
+
+      ### Instruction: {instruction}
+
+      ### Input: {input}
+
+      ### Response:
+
+  generation:
+    temperature: 0.1 # Temperature is used to control the randomness of predictions.
+    max_new_tokens: 512
+
+  preprocessing:
+    split:
+      type: fixed
+
+  quantization:
+    bits: 4
+
+  defaults:
+    text:
+      preprocessing:
+        max_sequence_length: 256
+  """
+)
+
+# Just run on 10 examples for now
+model = LudwigModel(config=zero_shot_config, logging_level=logging.INFO)
+_ = model.train(dataset=df)
+model_dir = "./models/codealpaca"
+model.save(model_dir)
+
+model = LudwigModel.load(model_dir)
+results = model.predict(dataset=df)
+print(results)

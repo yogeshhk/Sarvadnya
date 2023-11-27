@@ -54,10 +54,10 @@ config_dict = {
         }
     ]
 }
-# model = LudwigModel(config=config_dict)
-# _ = model.train(dataset=df)
+model = LudwigModel(config=config_dict)
+_ = model.train(dataset=df,output_directory="results")
 model_dir = "./models/tomatoes"
-# model.save(model_dir)
+model.save(model_dir)
 
 model = LudwigModel.load(model_dir)
 results = model.predict(dataset=df)

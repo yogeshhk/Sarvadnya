@@ -5,6 +5,8 @@ results/
 .idea/
 *.py[cod]
 *$py.class
+*.hdf5
+*.meta
 
 # C extensions
 *.so
