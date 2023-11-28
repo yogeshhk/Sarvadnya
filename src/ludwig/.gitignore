@@ -6,7 +6,7 @@ results/
 *.py[cod]
 *$py.class
 *.hdf5
-*.meta
+*.meta.json
 
 # C extensions
 *.so
