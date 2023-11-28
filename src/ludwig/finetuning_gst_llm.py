@@ -97,7 +97,7 @@ model.save(model_dir)
 
 test_df = pd.DataFrame([
     {
-        "Question": "Create an array of length 5 which contains all even numbers between 1 and 10."
+        "Question": "What is GST?"
     },
     {
         "Question": "Does aggregate turnover include value of inward supplies received on which RCM is payable?"
