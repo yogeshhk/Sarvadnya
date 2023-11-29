@@ -41,7 +41,5 @@ test_df = pd.DataFrame([
         "Question": "Does aggregate turnover include value of inward supplies received on which RCM is payable?"
     },
 ])
-predictions = model.predict(dataset=test_df)
-
-# Print predictions
-print(predictions)
+predictions_df, output_directory = model.predict(dataset=test_df)
+print(predictions_df["Answer_response"].tolist())

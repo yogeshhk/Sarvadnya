@@ -26,6 +26,7 @@ pip install ludwig
 
 ## References
 - [Official Website](https://ludwig.ai/latest/)
+- [Mistral Finetuning on text 2 text](https://predibase.com/blog/fine-tuning-mistral-7b-on-a-single-gpu-with-ludwig)
 - Ludwig AI: The Easiest Way To Train A Custom LLM [Part 1](https://medium.com/mlearning-ai/ludwig-ai-the-easiest-way-to-train-a-custom-llm-part-1-49c7fc134ebc), [Part II](https://medium.com/mlearning-ai/ludwig-ai-the-easiest-way-to-train-a-custom-llm-part-2-caf2235f0689)
 - [No More Hard Coding: Use Declarative Configuration to Build and Fine-tune Custom Mistral 7B on Your Data](https://levelup.gitconnected.com/no-more-hard-coding-use-declarative-configuration-to-build-and-fine-tune-custom-llms-on-your-data-6418b243fad7)
 - [ML NLP Tutorials](https://www.youtube.com/playlist?list=PL_lyFNnob30u8h9DPXQOyJQ9nGbqwYmZK)
