@@ -90,7 +90,7 @@ qna_tuning_config_dict = {
 }
 
 df = pd.read_csv('./data/cbic-gst_gov_in_fgaq.csv', encoding='cp1252')
-model = LudwigModel(config=qna_tuning_config_dict, logging_level=logging.DEBUG)
+model = LudwigModel(config=qna_tuning_config_dict)
 _ = model.train(dataset=df,output_directory="results")
 model_dir = "./models/gst_qna"
 model.save(model_dir)
