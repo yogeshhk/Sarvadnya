@@ -91,7 +91,7 @@ qna_tuning_config_dict = {
 
 df = pd.read_csv('./data/cbic-gst_gov_in_fgaq.csv', encoding='cp1252')
 model = LudwigModel(config=qna_tuning_config_dict)
-_ = model.train(dataset=df,output_directory="results")
+results = model.train(dataset=df, output_directory="results")
 model_dir = "./models/gst_qna"
 model.save(model_dir)
 
@@ -104,5 +104,5 @@ test_df = pd.DataFrame([
     },
 ])
 model = LudwigModel.load(model_dir)
-results = model.predict(dataset=test_df)
-print(results)
+predictions_df, output_directory = model.predict(dataset=test_df)
+print(predictions_df["Answer_response"].tolist())

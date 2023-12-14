@@ -1,6 +1,8 @@
 import streamlit as st
-from langchain.llms import VertexAI
-from langchain import PromptTemplate, LLMChain
+from langchain.llms import VertexAI # Need to set GCP Credentials first
+# https://ai.gopubby.com/get-started-with-google-vertex-ai-api-and-langchain-integration-360262d05216
+# https://python.langchain.com/docs/integrations/llms/google_vertex_ai_palm
+# from langchain import PromptTemplate, LLMChain
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.document_loaders import UnstructuredHTMLLoader
 from langchain.document_loaders import PyPDFLoader
@@ -9,6 +11,8 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceHubEmbeddings
 from langchain.chains import RetrievalQA
+
+## DO NOT RUN THIS IN ANY IDE but on command line `streamlit run streamlit_main.py`
 
 template = """
         You are a Goods and Services Tax (GST) Expert.  Give accurate answer to the following question.
@@ -45,7 +49,7 @@ def build_QnA_db():
     embeddings = HuggingFaceHubEmbeddings()
     db = FAISS.from_documents(docs, embeddings)
     retriver = db.as_retriever()
-    llm = VertexAI()
+    llm = VertexAI() # model_name="gemini-pro", deafult=
     chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriver, verbose=False, chain_type="stuff")
     return chain
 
