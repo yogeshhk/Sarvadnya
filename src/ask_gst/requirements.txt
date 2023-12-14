@@ -163,7 +163,7 @@ Pygments @ file:///C:/b/abs_fay9dpq4n_/croot/pygments_1684279990574/work
 Pympler==1.0.1
 pyOpenSSL @ file:///C:/b/abs_08f38zyck4/croot/pyopenssl_1690225407403/work
 pyparsing==3.1.0
-pypdf==3.14.0
+pypdf==3.17.0
 PyPDF2==3.0.1
 pyreadline3==3.4.1
 pyrsistent==0.19.3
