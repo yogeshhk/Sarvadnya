@@ -150,7 +150,7 @@ proto-plus==1.22.3
 protobuf==4.23.3
 psutil @ file:///C:/Windows/Temp/abs_b2c2fd7f-9fd5-4756-95ea-8aed74d0039flsd9qufz/croots/recipe/psutil_1656431277748/work
 pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
-pyarrow==12.0.1
+pyarrow==14.0.1
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
 pyautogen==0.1.6
