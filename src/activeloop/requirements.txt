@@ -1,7 +1,7 @@
 deeplake==3.6.19
 openai==0.27.8
 tiktoken==0.4.0
-transformers==4.32.0
+transformers==4.36.0
 torch==2.0.1
 numpy==1.23.5
 trl==0.7.1
