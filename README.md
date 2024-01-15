@@ -123,9 +123,8 @@ This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md)
 
 8. **Stable Recurring Income**: Micro-SaaS businesses are usually location-independent and can be a source of stable recurring income once the product has achieved a loyal user base¹¹.
 
-Remember, while these points provide a compelling case for building a Micro SaaS business around LLM + RAG using LangChain, it's important to conduct thorough market research and feasibility studies before embarking on this venture. Good luck! 😊
 
-Source: Conversation with Bing, 1/14/2024
+Sources: 
 (1) What is Micro SaaS And How to Create One In 2024. https://bufferapps.com/blog/what-is-micro-saas/.
 (2) Complete Guide to Micro-Saas: Build a Profitable Business.. https://blog.payproglobal.com/micro-saas-guide.
 (3) RAG and LLM business process automation: A technical strategy. https://blog.griddynamics.com/retrieval-augmented-generation-llm/.
@@ -146,6 +145,10 @@ Source: Conversation with Bing, 1/14/2024
 - `Not looking for Success, but Wonder!!`
 - तमसो मा ज्योतिर्गमय : From Dark (hidden in text data) to Light (insights)
 
+
+## Folks to Follow
+- Abhinav Kimothi, RAG Expert: [LinkedIn](https://www.linkedin.com/in/abhinav-kimothi/?originalSubdomain=in), [Projects Portfolio](https://www.datascienceportfol.io/abhinavkimothi), [Website](https://linktr.ee/abhinavkimothi),  [Medium](https://medium.com/@abhinavkimothi), [LinkedIn Articles](https://www.linkedin.com/in/abhinav-kimothi/recent-activity/articles/), [LinekdIn Posts](https://www.linkedin.com/in/abhinav-kimothi/recent-activity/all/), [Company](https://www.yarnit.app/)
+- Pradip Nichite, Freelancing Expert: [LinkedIn](https://www.linkedin.com/in/pradipnichite/), [Projects Portfolio](https://www.aidemos.com/), [Blog](https://pradipnichite.hashnode.dev/), [Youtube](https://www.youtube.com/channel/UC3-uyUX8s536lUkrWwYvfDg), [LinekdIn Posts](https://www.linkedin.com/in/pradipnichite/recent-activity/all/), [Company](https://www.futuresmart.ai/)
 
 ## Publications so far
 - [SaaS LLM](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
