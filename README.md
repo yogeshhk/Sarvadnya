@@ -149,6 +149,7 @@ Sources:
 ## Folks to Follow
 - Abhinav Kimothi, RAG Expert: [LinkedIn](https://www.linkedin.com/in/abhinav-kimothi/?originalSubdomain=in), [Projects Portfolio](https://www.datascienceportfol.io/abhinavkimothi), [Website](https://linktr.ee/abhinavkimothi),  [Medium](https://medium.com/@abhinavkimothi), [LinkedIn Articles](https://www.linkedin.com/in/abhinav-kimothi/recent-activity/articles/), [LinekdIn Posts](https://www.linkedin.com/in/abhinav-kimothi/recent-activity/all/), [Company](https://www.yarnit.app/)
 - Pradip Nichite, Freelancing Expert: [LinkedIn](https://www.linkedin.com/in/pradipnichite/), [Projects Portfolio](https://www.aidemos.com/), [Blog](https://pradipnichite.hashnode.dev/), [Youtube](https://www.youtube.com/channel/UC3-uyUX8s536lUkrWwYvfDg), [LinekdIn Posts](https://www.linkedin.com/in/pradipnichite/recent-activity/all/), [Company](https://www.futuresmart.ai/)
+- Sahar Mor: [LinkedIn](https://www.linkedin.com/in/sahar-mor/), [Blogs](https://www.aitidbits.ai/)
 
 ## Publications so far
 - [SaaS LLM](https://medium.com/google-developer-experts/saasgpt-84ba80265d0f)
