@@ -192,7 +192,7 @@ spacy-loggers @ file:///C:/b/abs_d6x_m5j2nj/croot/spacy-loggers_1684139141178/wo
 SQLAlchemy==2.0.16
 srsly @ file:///C:/ci_311/srsly_1678502316468/work
 starlette==0.27.0
-streamlit==1.25.0
+streamlit==1.30.0
 streamlit-ace==0.1.1
 streamlit-chat==0.0.2.2
 sympy==1.12
