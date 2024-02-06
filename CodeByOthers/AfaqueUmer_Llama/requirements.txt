@@ -29,7 +29,7 @@ colorama==0.4.6
 coloredlogs==15.0.1
 confection @ file:///C:/b/abs_41ypt8t7st/croot/confection_1684136620764/work
 contourpy @ file:///C:/ci_311/contourpy_1676431756017/work
-cryptography==41.0.6
+cryptography==42.0.0
 cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
 cymem @ file:///C:/ci_311/cymem_1676433199152/work
 dataclasses-json==0.5.7
