@@ -43,7 +43,7 @@ exceptiongroup==1.2.0
 executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
 faiss-cpu==1.7.4
 falcon==3.1.1
-fastapi==0.103.2
+fastapi==0.109.1
 fastjsonschema==2.17.1
 filelock==3.12.2
 filetype==1.2.0
