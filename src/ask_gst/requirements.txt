@@ -200,7 +200,7 @@ soupsieve==2.4.1
 SQLAlchemy==2.0.23
 sse-starlette==1.6.5
 stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
-starlette==0.27.0
+starlette==0.36.2
 starlette-context==0.3.6
 streamlit==1.30.0
 streamlit-chat==0.1.1
