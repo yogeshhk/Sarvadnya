@@ -45,7 +45,7 @@ en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_
 entrypoints==0.4
 et-xmlfile==1.1.0
 faiss-cpu==1.7.3
-fastapi==0.95.1
+fastapi==0.109.1
 filelock==3.12.2
 flatbuffers==23.5.26
 fonttools==4.25.0
