@@ -6,10 +6,14 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.llms import CTransformers
 from langchain.chains import RetrievalQA
+from langchain.llms import VertexAI # Need to set GCP Credentials first
 import chainlit as cl
 import json
 from pprint import pprint, pformat
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+import shutil
 
+DATA_PATH = 'data/'
 DB_FAISS_PATH = 'vectorstore/db_faiss'
 
 custom_prompt_template = """Use the following pieces of information to answer the user's question.
@@ -21,6 +25,23 @@ Question: {question}
 Only return the helpful answer below and nothing else.
 Helpful answer:
 """
+
+
+def create_vector_db():
+    loader = DirectoryLoader(DATA_PATH,
+                             glob='*.pdf',
+                             loader_cls=PyPDFLoader)
+
+    documents = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500,
+                                                   chunk_overlap=50)
+    texts = text_splitter.split_documents(documents)
+
+    embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2',
+                                       model_kwargs={'device': 'cpu'})
+
+    db = FAISS.from_documents(texts, embeddings)
+    db.save_local(DB_FAISS_PATH)
 
 
 def set_custom_prompt():
@@ -56,11 +77,13 @@ def load_llm():
 
 
 # QA Model Function
-def qa_bot():
+def qa_bot(model):
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
                                        model_kwargs={'device': 'cpu'})
     db = FAISS.load_local(DB_FAISS_PATH, embeddings)
-    llm = load_llm()
+    if model == "local":
+        llm = load_llm()
+    llm = VertexAI() # model_name="gemini-pro", deafult=
     qa_prompt = set_custom_prompt()
     qa = retrieval_qa_chain(llm, qa_prompt, db)
 
@@ -77,11 +100,34 @@ def final_result(query):
 # chainlit code
 @cl.on_chat_start
 async def start():
-    chain = qa_bot()
-    msg = cl.Message(content="Starting the bot...")
-    await msg.send()
-    msg.content = "Hi, Welcome to Ask Bharat Bot. What is your query?"
-    await msg.update()
+
+    files = None
+
+    # Wait for the user to upload a file
+    while files == None:
+        files = await cl.AskFileMessage(
+            content="Please upload a text file to begin!", accept=["application/pdf"]
+        ).send()
+
+    text_file = files[0]
+    print(text_file.path)
+    shutil.copy2(text_file.path, "./"+DATA_PATH)
+    create_vector_db()
+
+    res = await cl.AskActionMessage(
+        content="Pick an action!",
+        actions=[
+            cl.Action(name="VertexAI", value="vertexai", label="VertexAI"),
+            cl.Action(name="Local Model", value="local", label="Local Model"),
+        ],
+    ).send()
+
+    if res:
+        chain = qa_bot(res.get("value"))
+        msg = cl.Message(content="Starting the bot...")
+        await msg.send()
+        msg.content = "Hi, Welcome to Ask Bharat Bot. What is your query?"
+        await msg.update()
 
     cl.user_session.set("chain", chain)
 
