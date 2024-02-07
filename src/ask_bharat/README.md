@@ -6,7 +6,7 @@
 
 Before you can start using the ASK BHARAT Bot, make sure you have the following prerequisites installed on your system:
 
-- Python 3.6 or higher
+- Python 3.11 or higher
 - Required Python packages (you can install them using pip):
     - langchain
     - chainlit
@@ -65,6 +65,25 @@ The Ask Bharat Bot can be used for answering medical-related queries. To use the
 4. If sources are found, they will be provided alongside the answer.
 
 5. The bot can be customized to return specific information based on the query and context provided.
+
+## Containerizing the application
+
+1. Download the model that you want to use and save that in models folder
+
+2. Change the model path in the code (Line 50)
+
+3. change directory to the directory where the Dockerfile is present and Run the following command to build the docker image
+
+``` docker build -t bharat . ```
+
+4. Run the following command to run the docker image
+
+``` docker run -p 8000:8080 bharat ```
+
+5. Open the browser and go to http://localhost:8000 to access the bot.
+
+6. Type your query in the text field and press Enter to get a response from the bot.
+
 
 ## Contributing
 
