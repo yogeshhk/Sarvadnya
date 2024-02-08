@@ -74,16 +74,43 @@ The Ask Bharat Bot can be used for answering medical-related queries. To use the
 
 3. change directory to the directory where the Dockerfile is present and Run the following command to build the docker image
 
-``` docker build -t bharat . ```
+    ``` docker build -t bharat . ```
 
 4. Run the following command to run the docker image
 
-``` docker run -p 8000:8080 bharat ```
+    ``` docker run -p 8000:8080 bharat ```
 
 5. Open the browser and go to http://localhost:8000 to access the bot.
 
 6. Type your query in the text field and press Enter to get a response from the bot.
 
+## Deploy to Cloud Run
+
+1. Create a Google Cloud project and enable the Cloud Run API.
+
+2. Create a artifact repository in Google Cloud Artifact Registry to store the Docker image using the following command:
+
+    ```gcloud artifacts repositories create <repository_name> --repository-format=docker --location=<region> --description="Docker repository"```
+
+3. To Setup authnetication to Docker repository, use the following command:
+
+    ``` gcloud auth configure-docker <region>-docker.pkg.dev ```
+
+4. Tag the docker image
+
+    ``` docker tag <image_name> <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
+
+5. Push the docker image
+
+    ``` docker push <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
+
+6. Deploy the image to Cloud Run
+
+    ``` gcloud run deploy <image_name> --image <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
+
+7. Select the appropriate region by putting the region number and then press Enter to continue.
+
+8. Allow unauthenticated invocations by pressing 'y'
 
 ## Contributing
 
