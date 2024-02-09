@@ -54,11 +54,11 @@ To get started with the Ask Bharat Bot, you need to:
 
 ## Usage
 
-The Ask Bharat Bot can be used for answering medical-related queries. To use the bot, you can follow these steps:
+The Ask Bharat Bot can be used for answering Ancient India related queries. To use the bot, you can follow these steps:
 
 1. Start the bot by running your application or using the provided Python script.
 
-2. Send a medical-related query to the bot.
+2. Send a  Ancient India related query to the bot.
 
 3. The bot will provide a response based on the information available in its database.
 
