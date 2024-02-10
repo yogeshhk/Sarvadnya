@@ -88,7 +88,7 @@ langchain==0.0.329
 langchainplus-sdk==0.0.20
 langcodes @ file:///opt/conda/conda-bld/langcodes_1643477751144/work
 llama-cpp-python==0.1.48
-llama-index==0.6.25.post1
+llama-index==0.9.36
 lz4==4.3.2
 markdown-it-py==3.0.0
 MarkupSafe==2.1.2
