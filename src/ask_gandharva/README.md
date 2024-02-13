@@ -1,3 +1,5 @@
+# Ask Gandharva (Indian Music Bot by mrajsingh)
+
 Gandharvas are the member of a class of celestial beings in Indian religions. They are musicians, singers and dancers.
 This is PoC for a Bot that can answer qurries related to Indian classical music,especially related to Ragas.
 The future idea is to create an handy AI assistance that can help people know and learn about Indian Music and Dance or even

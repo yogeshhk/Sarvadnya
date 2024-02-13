@@ -5,7 +5,6 @@
 - Crew AI Agents
 - AutoGen Agents
 
-
 ## Ask Almanack by Naval Ravikant
 Ask questions to Almanack in natural language. [LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_chatgpt-gpt-almanack-activity-7049347401723125762-nXbp/)
 
@@ -17,6 +16,9 @@ A Guided LLM based chatbot for Career Transition to Data Science
 
 ## Ask FAQs (old: generate faq bot)
 A custom FAQs Bot Generator, Bot making Bot
+
+## Ask Gandharva 
+Indian Music Bot by mrajsingh
 
 ## Ask GST
 Building a GST FAQs App with Streamlit, Langchain, HuggingFace and VertexAI Palm APIs. [LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_gst-bot-huggingface-activity-7093395645473972224-O3Y8/)
@@ -41,8 +43,6 @@ A testbed to try out diffent LLMs, different fine-tuning data, etc. [LinkedIn Po
 
 ## Meta bAbi Tasks
 Assess LLMs for logical interpretation. [LinkedIn post](https://www.linkedin.com/posts/yogeshkulkarni_does-chatgpt-really-understand-the-language-activity-7056532694217687040-KwbY/)
-
-
 
 ## Google Generative-ai
 Own py versions of Notebooks from original repo
