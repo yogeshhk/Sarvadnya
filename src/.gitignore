@@ -4,7 +4,7 @@ models/
 .idea/
 *.py[cod]
 *$py.class
-
+document-ai-*.json
 # C extensions
 *.so
 
