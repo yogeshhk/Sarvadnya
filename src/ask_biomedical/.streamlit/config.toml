@@ -1,0 +1,10 @@
+[theme] # You have to add this line
+
+primaryColor = '#AEB6BF' # Bright Orange
+
+backgroundColor = '#F7F9F9' # Dark Blue
+
+secondaryBackgroundColor = '#CACFD2' # Lighter Blue
+
+
+# https://htmlcolorcodes.com/
