@@ -97,7 +97,7 @@ jupyter_server_terminals==0.4.4
 jupyterlab-pygments==0.2.2
 jupyterlab-widgets==3.0.7
 kiwisolver==1.4.4
-langchain==0.0.350
+langchain==0.1.0
 langchain-community==0.0.3
 langchain-core==0.1.0
 langchainplus-sdk==0.0.17
