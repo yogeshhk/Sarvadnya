@@ -1,10 +1,5 @@
 # PoCs (Proof-Of-Concepts)
 
-## Ask Agents
-- [Transformers Agent](https://colab.research.google.com/drive/1HGpp1OI-o_ppHi2bHZsvV6QX9k5gsTIK?usp=sharing) - Various tools for Langchain Agents. Is this Hugging Face's Transformers LangChain Competitor? Sam Witteveen
-- Crew AI Agents
-- AutoGen Agents
-
 ## Ask Almanack by Naval Ravikant
 Ask questions to Almanack in natural language. [LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_chatgpt-gpt-almanack-activity-7049347401723125762-nXbp/)
 
