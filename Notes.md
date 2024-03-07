@@ -45,7 +45,7 @@ Inject specificity and control into prompts to guide the LLM's generation.
 Provide additional context or knowledge through prompts for improved accuracy.
 I want to thank all my fellow Contributors from whom I learnt this year.
 
-## MicroSaaS
+<!-- ## MicroSaaS
 
 - Learn some end-to-end hosting platform (LangServe? Langchian with Azure AI?)
 - Convert above demos to have user input (disclaimers, limited uploads, $$)
@@ -93,7 +93,7 @@ I want to thank all my fellow Contributors from whom I learnt this year.
 - Build MVP
 - Solves any specific need (pain point) and not anything-and-everything, 
 - Is it for specific people, 1000 true (paying) fans, say $30 or $3 a month
-- Is it a daily need?
+- Is it a daily need? 
 
 ## Why LangChain? Unofficial Developer Advocate
 - Local (secure), no over-the-net API/web calls

@@ -1,6 +1,6 @@
 # Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
 
-Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. Some notes [here](./Notes.md) 
+Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. If you are interested in working with Indic-languages models some notes [here](./README_AABB.md).
 
 # What?
 
@@ -13,8 +13,8 @@ Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are mo
 - Fine-tuning LLMs with own data using LoRA etc
 
 ## RAG
-- WHY?: World needs, ready to pay, I am good at, and I like it making wow chatbots
-- Domain:
+- When?: {less, streaming, private} data and less {compute, money, expertise}
+- What?:
 	- on knowledge graphs, more grounding
 	- tabular financial data, representation and similarity
 	- midcurveNN Geometric serialization and retrieval
@@ -41,7 +41,6 @@ Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are mo
 ## Product Specs: 
 - [{KG + LLM} chatbot](https://medium.com/technology-hits/specs-for-chatbot-on-knowledge-graph-using-large-language-models-dedcff0ab553) Building LLM based Chatbot on Knowledge Graph
 - [Knowledge as a Service (KaaS)](https://medium.com/technology-hits/specs-for-knowledge-as-a-service-kaas-project-9e2d9a7e0775) Building Knowledge Graph from Text and serving it as a Service
-- LLM models for Indic (especially Sanskrit) languages. Here is collection of similar efforts going on [Awesome AI By Bharat (AABB)](./README_AABB.md)
 
 ## Bottom-line
 - `Not looking for Success, but Wonder!!`
