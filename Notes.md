@@ -45,7 +45,7 @@ Inject specificity and control into prompts to guide the LLM's generation.
 Provide additional context or knowledge through prompts for improved accuracy.
 I want to thank all my fellow Contributors from whom I learnt this year.
 
-<!-- ## MicroSaaS
+## MicroSaaS
 
 - Learn some end-to-end hosting platform (LangServe? Langchian with Azure AI?)
 - Convert above demos to have user input (disclaimers, limited uploads, $$)
@@ -138,4 +138,3 @@ Sources:
 (13) How To Build a Profitable Micro-SaaS Business in 2024 - BufferApps. https://bufferapps.com/blog/how-to-build-a-micro-saas/.
 (14) Top 10 Micro SaaS Ideas To Build a Profitable Business in 2024. https://controlhippo.com/blog/micro-saas/.
 
--->
