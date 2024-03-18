@@ -1,0 +1,9 @@
+{
+    "APP_NAME": "Ask Kautilya",
+    "DOCS_INDEX": "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/models/docs.index",
+    "FAISS_STORE_PKL": "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/models/faiss_store.pkl",
+    "MODEL_NAME": "VertexAI",
+    "FILES_PATHS": [
+        "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/data/Arthashastra_of_Chanakya_English_small.txt"
+    ]
+}

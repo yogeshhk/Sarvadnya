@@ -24,6 +24,15 @@ pip install bitsandbytes==0.40.2 --prefer-binary --extra-index-url=https://jllll
 pip install ludwig
 ```
 
+## Vertex AI
+To run on Google Cloud, to utize the credits that I have, steps are:
+- Go to Vertex AI, Find `Colab Enterprise` there.
+- In `Runtime Template` find existing GPU based template or create one, with `n1-std-8` with either T4 or VT100 GPUs, say 4.
+- Based on the template, create `runtime`, give name.
+- Create or import notebook, change runtime to the recently created one.
+- After experiment is over, download the notebook along with outputs.
+- Shutdown the notebook, delete the runtime, so that billing does not continue.
+
 ## References
 - [Official Website](https://ludwig.ai/latest/)
 - [Mistral Finetuning on text 2 text](https://predibase.com/blog/fine-tuning-mistral-7b-on-a-single-gpu-with-ludwig)

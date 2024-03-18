@@ -1,0 +1,16 @@
+पृथिव्याः लेखनपद्धतिसमूहः वर्गीकृत्य सूचीरूपेण प्रस्तूयते । इदं वर्गीकरणं लिपीनां विशेषगुणान् परिलक्ष्य निर्मितमस्ति । यस्मात् लिपिप्रभेदाः सुस्पष्टरूपेण ज्ञायन्ते ।
+There are also symbol systems used to represent things other than language, or to represent constructed languages. Some of these are
+Linear B and Asemic writing also incorporate ideograms.
+In a syllabary, graphemes represent syllables or moras. 
+An abjad is a segmental script containing symbols for consonants only, or where vowels are optionally written with diacritics or only written word-initially.
+A true alphabet contains separate letters for both consonants and vowels.
+Linear alphabets are composed of lines on a surface, such as ink on paper.
+A featural script has elements that indicate the components of articulation, such as bilabial consonants, fricatives, or back vowels. Scripts differ in how many features they indicate.
+Manual alphabets are frequently found as parts of sign languages. They are not used for writing per se, but for spelling out words while signing.
+These are other alphabets composed of something other than lines on a surface.
+इन्हें वर्णाक्षरी भी कहते हैं। ये 'खण्डात्मक' लिपियाँ है जिनमें स्वर चिह्नों को दर्शाने के लिए व्यंजन पर कोई डायाक्रिटिकल चिह्न लगाया जाता है या कोई अन्य परिवर्तन/परिवर्धन कर दिया जाता है। भारत तथा दक्षिण-पूर्व एशिया की प्रायः सभी लिपियाँ इसी श्रेणी में आती हैं। ये सभी ऐतिहासिक रूप से ब्राह्मी परिवार की हैं।
+]
+Asemic writing is generally meaningless, though it sometimes contains ideograms or pictograms.
+This section lists alphabets used to transcribe phonetic or phonemic sound; not to be confused with spelling alphabets like the ICAO spelling alphabet.
+Alphabets may exist in forms other than visible symbols on a surface. Some of these are:
+For example:

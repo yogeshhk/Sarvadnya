@@ -1,0 +1,98 @@
+बराहा ची रूपांतरण पद्धत वापरून मराठी अथवा देवनागरी शब्द लिहिणे स्वत:चे नाव इंग्रजीत लिहावे एवढे सोपे आहे. "मेरा भारत महान" हे merA bhArat mahAn असे लिहीता येते.यात देवनागरी लिपीतील मराठी, हिंदी, संस्कृत, कोकणी, काश्मिरी, सिंधी इत्यादी भाषा सुद्धा वापरता येतात. भाषांतराचे नियम खाली सोदाहरण दाखवले आहेत.
+अ= a, आ = A,aa, इ = i, ई = I,ee, उ = u, ऊ = U,oo, ऋ = Ru, ॠ = RU, ऌ = ~Lu, ॡ = ~LU, ऍ = ~e, ऎ = E, ए = e, ऐ = ai, ऑ = ~o, ऒ = O, ओ = o, औ = au,ou
+ 
+ँ = ~M
+ं = M
+ः = H
+क = k, ख = K,kh, ग = g, घ = G,gh, ङ = ~g
+च = c,ch, छ = C,Ch, ज = j, झ = J,jh, ञ = ~j
+ट = T, ठ = Th, ड = D, ढ = Dh, ण = N
+त = t, थ = th,द = d, ध = dh, न = n, ऩ = nx
+प = p, फ = P,ph, ब = b, भ = B,bh, म = m
+य = y, र = r,ऱ = rx, ल = l, व = v,w, श = S,sh,
+ष = Sh, स = s, ह = h,~h, ळ = L, ऴ = Lx, क्ष = kSh, ज्ञ = j~j
+ऽ= & 
+ॐ= oum
+़ = x 
+ऩ = न + x
+Zero Width Joiner = ^
+न्‍न = न + ^ 
+Zero Width Non Joiner =^^
+न्‌न = न + ^^
+हिंदी, फ़ारसी, उर्दू भाषांमध्ये अक्षरांखाली बर्‍याचदा टिंबाची खूण असते. त्याकरिता संबंधित व्यंजनानंतर x अक्षर खालील उदाहराणांत दाखवल्याप्रमाणे टंकावे. फ़ारसी, उर्दू मधून घेतल्या जाणार्‍या शब्दांमध्ये नुक्ता-टिंबांचा उपयोग होतो.
+
+क़ = kx ----> हक़ीक़त = hakxIkxat
+ख़ = Kx/khx ----> ख़ुश = Kxush/khxush 
+ग़ = gx ---->पैग़ाम = paigxAm
+ज़ = z,jx ---->बज़ार = bazAr
+ड़ = Dx ---->खिलाड़ी= KilADxI
+ढ़ = Dhx ---->सीढ़ी = sIDhxI
+फ़ = f,Px ---> काफ़ी = kAfI
+य़ = Y,yx
+ऱ = rx
+ऴ = Lx
+ही इंग्रजी चिन्हे देवनागरीत जशीच्या तशीच येतात: { } - + * / = | ; : ., " ? ! % \ ~ _
+` ' characters are converted to single smart quotes characters. We can get double smart quotes by using them twice.
+ 
+'~' चिन्ह वापरुन इतर अक्षरे खालिल प्रमाणे बनतात.
+ 
+~~ = ~
+~@ = @
+~# = #
+~$ = $
+~& = &
+~^ = ^
+~g = ङ~j = ञ
+j~j= ज्ञ
+~h = ह 
+~e = ऍ~o = ऑ
+~M =ँ
+You can not write 'Apple' in proper Marathi . You have to write 'ऍपल' as in Hindi. Therefore this Unicode is not completely correct for Marathi.
+ka kA ki kI ku kU kRu kRU klRu klRU k~e ke kE kai k~o ko kO kau kaM kaH
+क का कि की  कु कू  कृ  कॄ  क्लृ  क्लॄ  कॅ  के के कै  कॉ  को को कौ  कं  कः 
+bhAShAsu mukhyA madhurA divyA gIrvANabhAratI.
+भाषासु मुख्या मधुरा दिव्या गीर्वाणभारती.
+व्यंजनानंतर स्वरचिन्ह टंकले नाही तर ते व्यंजन पुढच्या व्यंजनाला जोडले जाते. ‍क्‌ सारख्या ‌हलन्त अक्षरासाठी k नंतर ^^ टंकित करा. शब्दातील शेवटचे अक्षर अकारान्त असेल तर व्यंजनचिन्हानंतर a टंकायची गरज नाही. रूपांतरण पद्धती मराठी आणि हिंदी भाषांकरिता सारखीच आहे. शब्दातील शेवटच्या व्यंजन-अक्षराकरिता हिंदी व मराठी रूपांतरण पद्धतीमध्ये एक 'अ' अक्षर आपोआप गृहीत धरले जाते. पण,संस्कृत transilteraion,मध्ये शब्दातील शेवटच्या व्यंजन-क्षराकरिता 'अ' प्रत्येक वेळी टंकित करणे आवश्यक आहे. नाहीतर, संस्कृतमध्ये शब्दातील शेवटचे व्यंजन 'हलंत' टंकिले जाईल.मराठी / हिंदी आणि संस्कृतरूपांतरण पद्धतीमध्ये फक्त एवढाच एक फरक आहे. 
+k,c,T,t,p --> क्‌, च्‌ ,ट्‌, प्‌k,c,T,t,p --> ka,ca,Ta,ta,pa --> क,च,ट,प
+उदाहरण :
+nyAy - न्याय 
+ 
+'ह' व्यंजन दोन पद्धतीने लिहिता येते; 'h', '~h'. जर तुम्हाला `ह' ह्या व्यंजनाआधी 'k', 'g', 't', 'd', इत्यादी व्यंजने वापरावयाची झाल्यास 'h'ऐवजी '~h' वापरावे.
+ 
+उदाहरण: 
+bakkiMghAm = बक्किंघामbakkiMg~hAm = बक्किंग्हाम
+When 'rx' consonant comes in a consonant conjunct, it forms Marathi half-ra . 
+ 
+1)ry =र्य
+karaNAryA = करणार्या ; garv =गर्व
+2)yr=य्र
+karaNAyrA = करणाय्रा ;praN = प्राण
+3)rxy = ऱ्य
+karaNArxyA = करणार्‍या 
+4)r^y = र्‍य
+karaNAr^yA= करणार्‍या 
+5)r^^y = र्‌य
+karaNAr^^yA = करणार्‌या
+
+स्वररहित व्यंजने जिथे एका नंतर एक येतात तेव्हा शक्य तेव्हा जोडाक्षर आपोआप बनते. नाही तर ती एका नंतर एक येतात. उदाहरणार्थ:zwj= ज़्व्ज ; dtdt = ड्ट्ड्ट . ट्‌, ठ्‌, ड्‌, ढ्‌ या व्यंजनांना अक्षर चिकटून येत नाही. तसेच ङ्‌ ला य जोडताना अक्षरजोड होत नाही.
+^ चा उपयोग खालीलप्रमाणे करता येतो.^ = ZWJ जसे: ज़्व्ज^^ = ZWNJ जसे: ज़्‌व्‌न्‌ज्‌ 
+
+rakShaNa = रक्षण
+rak^ShaNa - रक्‍षण
+shakti - शक्ती
+shak^tI - शक्‍ती
+rAj^^kamal - राज्‌कमल
+rAjkamal^^ - राज्कमल्‌
+rAjakamal- राजकमल
+ai=ऐa^i=अ‍इ a^^i=अ‌इ
+ouShadh = औषधo^uShadh = ओ‍उषध
+
+iMDiyainfo = इंडियैन्फ़ोiMDiyA^info = इंडिया‍इन्फ़ो
+basic^^info = बेसिक्‌इन्फ़ो
+येथून खालील लेख अपूर्ण आहे. हा विभाग लेखन अचूक नाही बिनचूक माहितीसाठीची help उपयोगिता वापरून पूर्ण करावा.In Baraha, by default, the Language, Font, Text Size, Text Color, Alignment, Bold, Italic, Underline and other formatting attributes of the output text are determined by the default values, that are specified in the Default Settings dialog box. The default values affect the entire output text. It is possible to selectively format the output text by using the Tags inside the angle brackets, which is called a Switch. A switch is nothing but a group of one or more tags. If more than one tag is specified in a switch, they have to be separated by either ' | ' or ' / ' character. 
+Every formatting attribute has an associated tag. Attribute values specified using the tags override the default values. A tag affects the value of the corresponding attribute, for all the text that follows it, until it is overridden by the same tag with a different value, or turned OFF using the corresponding closing tag. When a tag is turned OFF, the default value will be used for that attribute from that point onwards. 
+For example, size=32 tag specifies the text size of 32 points. This size will be used for all the text that follows the switch. Later, if we use size=12 tag, the size of the following text becomes 12 points. When we turn OFF the size value using the closing tag -size, the default text size will be used from that point onwards. Tags are also used for inserting lines, graphics, hyperlinks.
+A tag is composed of one or more Parameters. A parameter can be just a Name or Name=Value pair. If more than one parameter has to be specified, a space or comma is used to separate them. If the Value itself has a space or comma character, double quotes should be used to enclose the value.
+पहा: रूपांतरण पद्धत-- उदाहरणेबघा :रूपांतरण पद्धत उदाहरणे
+मराठी कसे टाइप करावे 
+वर्ग:मराठी टंकलेखन प्रणाली

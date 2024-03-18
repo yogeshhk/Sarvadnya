@@ -1,0 +1,6 @@
+This is a container category. Due to its scope, it should contain only subcategories.
+This is a hidden category. It is not shown on its member pages, unless the corresponding user preference is set.
+This is a tracking category. It builds and maintains a list of pages primarily for the sake of the list itself. Pages are added to tracking categories through templates.Use {{template category}} to add pages here. 
+
+This is a top-level category containing all categories of templates. These categories are arranged hierarchically under Category:Wikipedia templates.
+8 इत्येषु वर्गेऽस्मिन् अधो लिखिताः 8 उपवर्गाः सन्ति
