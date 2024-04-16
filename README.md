@@ -1,6 +1,11 @@
 # Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
 
-Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. If you are interested in working with Indic-languages models some notes [here](./README_AABB.md).
+Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. 
+
+A few other toics are (or can be) part of this repo is to build
+- Indic-languages models, some notes [here](./README_AABB.md)
+- 3D World Simulations, Agents, some notes [here](./README_3DVerse.md)
+- knowledge Graphs Generation, some notes [here](./README_GenKG.md) 
 
 # What?
 
@@ -38,9 +43,6 @@ Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are mo
 - Enterprise: Google Doc AI, Vertex AI, Microsoft Azure Language AI Services
 - Open Source: Langchain (Serve/Smith/Graph), HuggingFace, Streamlit for UI
 
-## Product Specs: 
-- [{KG + LLM} chatbot](https://medium.com/technology-hits/specs-for-chatbot-on-knowledge-graph-using-large-language-models-dedcff0ab553) Building LLM based Chatbot on Knowledge Graph
-- [Knowledge as a Service (KaaS)](https://medium.com/technology-hits/specs-for-knowledge-as-a-service-kaas-project-9e2d9a7e0775) Building Knowledge Graph from Text and serving it as a Service
 
 ## Bottom-line
 - `Not looking for Success, but Wonder!!`
@@ -66,17 +68,6 @@ Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are mo
 - [Learn about AI Language Models and Reinforcement Learning Kamalraj M M](https://www.youtube.com/playlist?list=PLbzjzOKeYPCpp3NCeQioevM0YpZa5VqcS)
 - [GPT-4 & LangChain Tutorial: How to Chat With A 56-Page PDF Document (w/Pinecone)](https://www.youtube.com/watch?v=ih9PBGVVOO4)
 - [LangChain - Data Independent](https://www.youtube.com/playlist?list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5)
-- [Node Classification on Knowledge Graphs using PyTorch Geometric](https://www.youtube.com/watch?v=ex2qllcVneY)
-- [Geometric Deep Learning](https://www.youtube.com/playlist?list=PLn2-dEmQeTfSLXW8yXP4q_Ii58wFdxb3C)
-- [PyTorch Geometric](https://github.com/pyg-team/pytorch_geometric)
-- [Machine and Language Learning Lab IISc](http://malllabiisc.github.io/)
-- [Semantic Web India](http://www.semanticwebindia.com/) Enables organizations generate value from Data using AI, Knowledge Discovery
-- [Cambridge Semantics](https://cambridgesemantics.com/)
-- [Kenome](https://www.kenome.io/) Partha Talukdar. Helping enterprises make sense of dark data using cutting-edge Machine Learning, NLP, and Knowledge Graphs.
-- [Knowledge graphs](https://www.turing.ac.uk/research/interest-groups/knowledge-graphs)
-- [Geometric Deep Learning)[https://geometricdeeplearning.com/]
-- [Learning on Graphs Conference](https://www.youtube.com/@learningongraphs/videos)
-- [Group Equivariant Deep Learning (UvA - 2022)](https://www.youtube.com/playlist?list=PL8FnQMH2k7jzPrxqdYufoiYVHim8PyZWd)
 - [Retrieval-Augmented Generation for Large Language Models: A Survey](https://arxiv.org/abs/2312.10997v1)
 
 
