@@ -17,6 +17,51 @@ LLM-Agents aims to simplify the process of building and deploying LLM-based agen
 - **Deployment Options**: Deploy agents locally, on cloud platforms, or as microservices, with support for scaling and load balancing.
 - **Security and Privacy**: Built-in safeguards and controls for ensuring the responsible and ethical use of LLM-based agents.
 
+## Configuration
+
+Say for [this](https://cobusgreyling.medium.com/two-llm-based-autonomous-agents-debate-each-other-e13e0a54429b) agentic systems
+
+```
+{
+	"agents":
+		[
+			{
+				"name : "AI accelerationist",
+				"role": "A passionate visionary who sees the ... ultimately improve society."
+			},
+			{
+				"name : "AI alarmist",
+				"role": "A cautious observer of technological advancements. ... security"
+			},
+		],
+		
+	"tools":
+		[
+			{
+				"name : "Arxiv",
+				"url": "...",
+				"key": "..."
+			},
+			{
+				"name : "Duck-Duck-Go Search",
+				"url": "...",
+				"key": "..."
+			},
+		],		
+	"goal": "The topic for the discussion is 'The current impact of automation and artificial intelligence on employment'.",
+	"system_prompt": """
+			Your name is {name}.
+			Your description is as follows: {description}
+			Your goal is to persuade your conversation partner of your point of view.
+			DO look up information with your tool to refute your partner’s claims.
+			DO cite your sources.
+			DO NOT fabricate fake citations.
+			DO NOT cite any source that you did not look up.
+			Do not add anything else.
+			Stop speaking the moment you finish speaking from your perspective.	
+	""",
+	
+```
 ## Installation
 
 To install LLM-Agents, you'll need Python 3.7 or later and pip. Clone the repository and install the required dependencies:

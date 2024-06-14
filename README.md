@@ -2,10 +2,11 @@
 
 Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. 
 
-A few other toics are (or can be) part of this repo is to build
+A few other topics are (or can be) part of this repo is to build
 - Indic-languages models, some notes [here](./README_AABB.md)
 - 3D World Simulations, Agents, some notes [here](./README_3DVerse.md)
 - Knowledge Graphs Generation, some notes [here](./README_GenKG.md) 
+- Agents, some notes [here](./README_Agents.md) 
 
 # What?
 
