@@ -18,7 +18,7 @@ bleach==6.0.0
 blinker==1.6.2
 brotlipy==0.7.0
 cachetools==5.3.1
-certifi==2023.11.17
+certifi==2024.7.4
 cffi @ file:///C:/b/abs_49n3v2hyhr/croot/cffi_1670423218144/work
 chardet==5.2.0
 charset-normalizer==3.1.0
