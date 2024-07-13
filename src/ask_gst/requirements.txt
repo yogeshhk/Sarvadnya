@@ -18,7 +18,7 @@ bleach==6.0.0
 blinker==1.6.2
 brotlipy==0.7.0
 cachetools==5.3.1
-certifi==2023.11.17
+certifi==2024.7.4
 cffi @ file:///C:/b/abs_49n3v2hyhr/croot/cffi_1670423218144/work
 chardet==5.2.0
 charset-normalizer==3.1.0
@@ -98,7 +98,7 @@ jupyterlab-pygments==0.2.2
 jupyterlab-widgets==3.0.7
 kiwisolver==1.4.4
 langchain==0.1.11
-langchain-community==0.0.3
+langchain-community==0.2.5
 langchain-core==0.1.35
 langchainplus-sdk==0.0.17
 langsmith==0.0.70
@@ -186,7 +186,7 @@ rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
 rich==13.5.2
 rsa==4.9
-scikit-learn==1.3.0
+scikit-learn==1.5.0
 scipy==1.11.1
 seaborn==0.12.2
 Send2Trash==1.8.2
@@ -229,7 +229,7 @@ tzlocal==4.3.1
 unstructured==0.9.0
 uri-template==1.3.0
 uritemplate==4.1.1
-urllib3==2.1.0
+urllib3==2.2.2
 uvicorn==0.23.2
 validators==0.20.0
 vertexai==0.0.1
