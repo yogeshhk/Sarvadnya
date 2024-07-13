@@ -73,9 +73,9 @@ pip install -r requirements.txt #tbd
 ```
 
 ## Applications
-- ** Brainstorming** to generate various ideas, apply given constraints
+- ** Brainstorming** to generate various ideas, apply given constraints. [Example: "Brainstorming with multiple AI AGENTS, Sai Panyam, Innovation Algebra Guest"](https://www.youtube.com/watch?v=82UDm2yVe3Q) Talk
 - ** Negotiations, Debating** to come at optimized solution
-- ** Advisory** such as Investment Advisors, which looks at your earnings, risk profile, goals and using multiple specialized expert-agents, comes up with investment plan.
+- ** Advisory** such as Investment Advisors, which looks at your earnings, risk profile, goals and using multiple specialized expert-agents, comes up with investment plan. [Example](https://github.com/wtlow003/investment-advisor-gpt)
 
 
 ## Contributing
@@ -97,6 +97,7 @@ Agents builds upon the work of several influential projects and research papers 
 - [InstructGPT: Training Language Models to Follow Instructions with Human Feedback](https://arxiv.org/abs/2203.02155)
 - [Constitutional AI: Harmonic Reinforcement Learning for Artificial General Intelligence](https://arxiv.org/abs/2212.08073)
 - [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)
+- [https://deepgram.com/learn/llm-agents-when-language-models-do-stuff-for-you](https://deepgram.com/learn/llm-agents-when-language-models-do-stuff-for-you) Good overview
 
 ## Disclaimer
 
