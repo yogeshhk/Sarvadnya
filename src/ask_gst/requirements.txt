@@ -244,5 +244,5 @@ win-inet-pton @ file:///C:/ci_310/win_inet_pton_1642658466512/work
 wrapt==1.16.0
 xxhash==3.2.0
 yarl==1.9.2
-zipp==3.16.2
+zipp==3.19.1
 zstandard==0.21.0
