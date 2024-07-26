@@ -146,7 +146,7 @@ if __name__ == "__main__":
     store_filename = "models/dbpedia-ontology.vectors"
     labels, tbox, embeddings = populate_dbpedia_embeddings(store_filename)
     cluster_centers, cluster_labels = cluster_embeddings(embeddings)
-    
+
     if os.path.isfile(store_filename):
         gensim_model = load_gensim_model_from_file(store_filename)
 
