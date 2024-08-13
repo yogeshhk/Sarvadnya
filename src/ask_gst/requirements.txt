@@ -202,7 +202,7 @@ sse-starlette==1.6.5
 stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
 starlette==0.36.2
 starlette-context==0.3.6
-streamlit==1.30.0
+streamlit==1.37.0
 streamlit-chat==0.1.1
 sympy==1.12
 tabulate==0.9.0
