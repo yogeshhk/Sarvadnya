@@ -6,7 +6,9 @@ A few other topics are (or can be) part of this repo is to build
 - Indic-languages models, some notes [here](./README_AABB.md)
 - 3D World Simulations, Agents, some notes [here](./README_3DVerse.md)
 - Knowledge Graphs Generation, some notes [here](./README_GenKG.md) 
-- Agents, some notes [here](./README_Agents.md) 
+- Agents, some notes [here](./README_Agents.md)
+- Drones, UAV Image Processing, Shynakshi [here](./README_Shyenakshi.md)
+- Floor Plan Segmentation [here](./README_FloorPlan.md)
 
 # What?
 
