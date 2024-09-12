@@ -12,8 +12,14 @@
 
 This project aims to develop a product for floor plan segmentation using AI, machine learning, and computer vision techniques. The goal is to create a micro SaaS solution that caters to the real estate, architecture, and interior design industries.
 
-## AI-ML-CV Approaches
+Goal: Convert floor-plan image into data model
 
+## AI-ML-CV Approaches
+- Image-- Edge Detection-> Vector (SVG) -- Feature Recognition -> Brep => RAG/Fine-Tuning
+	- [OpenCV](https://github.com/opencv/opencv)
+	- PyTorch, EdgeGAN
+	- TinyML deployment
+	
 - Convolutional Neural Networks (CNNs)
   - U-Net architecture
   - Mask R-CNN architecture
