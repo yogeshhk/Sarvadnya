@@ -1,11 +1,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 models/
-data/
 .idea/
 *.py[cod]
 *$py.class
-document-ai-*.json
+
 # C extensions
 *.so
 

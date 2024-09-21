@@ -18,6 +18,9 @@ Indian Music Bot by mrajsingh
 ## Ask GST
 Building a GST FAQs App with Streamlit, Langchain, HuggingFace and VertexAI Palm APIs. [LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_gst-bot-huggingface-activity-7093395645473972224-O3Y8/)
 
+## Ask Kautilya
+Arthashastra by Chanakya
+
 ## Ask Manim
 Generate Maths Animation videos using python library Manim by giving prompts
 
@@ -35,6 +38,10 @@ QnA bot on Wikipedia using LangChain and Palm, a simple RAG system
 
 ## Ask YHK AMA (Ask-me-Anything)
 A testbed to try out diffent LLMs, different fine-tuning data, etc. [LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_chatgpt-ai-nlp-activity-7059720029583360001-9uVm/)
+
+## Ask Yogasutra
+Yogasutra by Patanjali
+
 
 ## Meta bAbi Tasks
 Assess LLMs for logical interpretation. [LinkedIn post](https://www.linkedin.com/posts/yogeshkulkarni_does-chatgpt-really-understand-the-language-activity-7056532694217687040-KwbY/)
