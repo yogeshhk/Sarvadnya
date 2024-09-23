@@ -1,6 +1,8 @@
 import networkx as nx
 from rdflib import Graph as RDFGraph, Literal, URIRef, Namespace
 import json
+import streamlit as st
+
 
 class GraphImporter:
     def __init__(self, file_path):
