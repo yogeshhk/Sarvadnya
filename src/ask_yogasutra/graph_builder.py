@@ -1,10 +1,11 @@
+import json
+
+import graphviz
+import matplotlib.pyplot as plt
 import networkx as nx
 from pyvis.network import Network
 from rdflib import Graph as RDFGraph, Literal, URIRef, Namespace
 from rdflib.plugins.sparql import prepareQuery
-import json
-import os
-import graphviz
 
 
 class GraphBuilder:
@@ -70,25 +71,20 @@ class GraphBuilder:
         net.show('nx-before.html', False)  # Display Graph
         return net
 
-    def visualize_networkx_with_graphviz(self):
-        """
-        Visualizes a NetworkX graph using Graphviz.
+    def visualize_with_matplotlib(self):
+        # Draw the NetworkX graph using matplotlib
+        plt.figure(figsize=(8, 6))
+        nx.draw_networkx(self.graph, with_labels=True, font_size=10)
+        plt.show()
 
-        Args:
-            graph (nx.Graph): The NetworkX graph to visualize.
-            output_file (str, optional): The filename for the output image. Defaults to 'graph.png'.
-
-        Returns:
-            None
-        """
-
+    def save_pic_with_graphviz(self):
         dot = graphviz.Graph(format='png')
         for node in self.graph.nodes():
             dot.node(str(node))
         for edge in self.graph.edges(data=True):
             source, target, data = edge
             dot.edge(str(source), str(target), label=str(data.get('label', '')))
-        dot.render('graph.png')
+        dot.render('graph')
 
     def export_to_networkx(self):
         return self.graph.copy()
@@ -246,7 +242,8 @@ def test_visualize_data():
 
         # Verify the imported data
         # graph_builder.visualize_by_pyvis()
-        graph_builder.visualize_networkx_with_graphviz()
+        # graph_builder.visualize_with_matplotlib()
+        graph_builder.save_pic_with_graphviz()
     finally:
         # Clean up the temporary file
         # os.unlink(file_path)

@@ -15,7 +15,7 @@ def main_ui():
 
     # Initialize session state
     if 'graph_obj' not in st.session_state:
-        st.session_state.graph_obj = GraphBuilder()
+        st.session_state.graph_builder = GraphBuilder()
     if 'selected_element' not in st.session_state:
         st.session_state.selected_element = None
     # Create a two-column layout
@@ -27,11 +27,11 @@ def main_ui():
         if st.session_state.selected_element:
             element_type, element_id = st.session_state.selected_element
             if element_type == 'node':
-                properties = st.session_state.graph_obj.get_node_properties(element_id)
+                properties = st.session_state.graph_builder.get_node_properties(element_id)
                 st.subheader(f"Node: {element_id}")
             else:
                 source, target = element_id
-                properties = st.session_state.graph_obj.get_edge_properties(source, target)
+                properties = st.session_state.graph_builder.get_edge_properties(source, target)
                 st.subheader(f"Edge: {source} -> {target}")
 
             for key, value in properties.items():
@@ -54,8 +54,8 @@ def main_ui():
 
             if result:
                 nx_graph, rdf_graph = result
-                st.session_state.graph_obj.graph = nx_graph
-                st.session_state.graph_obj.rdf_graph = rdf_graph
+                st.session_state.graph_builder.graph = nx_graph
+                st.session_state.graph_builder.rdf_graph = rdf_graph
                 st.success("Graph imported successfully!")
                 st.write(f"Imported {len(nx_graph.nodes)} nodes and {len(nx_graph.edges)} edges")
             else:
@@ -63,7 +63,7 @@ def main_ui():
 
         # Graph Visualization
         st.header("Graph Visualization")
-        net = st.session_state.graph_obj.visualize()
+        net = st.session_state.graph_builder.visualize()
         with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
             net.save_graph(tmpfile.name)
             with open(tmpfile.name, 'r', encoding='utf-8') as f:
@@ -73,13 +73,13 @@ def main_ui():
         st.header("SPARQL Query")
         query = st.text_area("Enter SPARQL Query")
         if st.button("Execute Query"):
-            results = st.session_state.graph_obj.sparql_query(query)
+            results = st.session_state.graph_builder.sparql_query(query)
             st.write(results.serialize(format="json"))
 
         # Export functionality
         st.header("Export Graph")
         if st.button("Export Graph"):
-            nx_graph = st.session_state.graph_obj.export_to_networkx()
+            nx_graph = st.session_state.graph_builder.export_to_networkx()
             st.download_button(
                 label="Download NetworkX Graph",
                 data=json.dumps(nx.node_link_data(nx_graph)),

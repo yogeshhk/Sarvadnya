@@ -4,6 +4,7 @@ import streamlit.components.v1 as components
 import json
 import tempfile
 from graph_builder import GraphBuilder
+import requests  # Add this import
 
 
 def main_ui():
@@ -11,7 +12,7 @@ def main_ui():
 
     # Initialize session state
     if 'graph_obj' not in st.session_state:
-        st.session_state.graph_obj = GraphBuilder()
+        st.session_state.graph_builder = GraphBuilder()
     if 'selected_element' not in st.session_state:
         st.session_state.selected_element = None
     if 'uploaded_file' not in st.session_state:
@@ -26,11 +27,11 @@ def main_ui():
         if st.session_state.selected_element:
             element_type, element_id = st.session_state.selected_element
             if element_type == 'node':
-                properties = st.session_state.graph_obj.get_node_properties(element_id)
+                properties = st.session_state.graph_builder.get_node_properties(element_id)
                 st.subheader(f"Node: {element_id}")
             else:
                 source, target = element_id
-                properties = st.session_state.graph_obj.get_edge_properties(source, target)
+                properties = st.session_state.graph_builder.get_edge_properties(source, target)
                 st.subheader(f"Edge: {source} -> {target}")
 
             for key, value in properties.items():
@@ -43,43 +44,25 @@ def main_ui():
         # Import functionality
         st.header("Import Graph Data")
 
-        if st.session_state.uploaded_file is None:
-            print(f"st.session_state.uploaded_file is None 1")
-            uploaded_file = st.file_uploader("Choose a graph JSON file", type="json")
-            # If a new file is uploaded, save it to session state
-            if uploaded_file is not None:
-                print(f"Selected file {uploaded_file}")
-                st.session_state.uploaded_file = uploaded_file
-            else:
-                print(f"uploaded_file is none so st.session_state.uploaded_file is None 2")
+        uploaded_file = st.file_uploader("Choose a graph JSON file", type="json", key="file_uploader")
+        # CHANGED: Update session state only if a new file is uploaded
+        if uploaded_file is not None and st.session_state.uploaded_file != uploaded_file:
+            st.session_state.uploaded_file = uploaded_file
+            # st.experimental_rerun()
+
         if st.session_state.uploaded_file is not None:
             try:
-                print(f"Querying {uploaded_file} from session state")
-                uploaded_file = st.session_state.uploaded_file
-                # # Read the file content directly
-                # file_content = uploaded_file.read()
-                # # Parse the JSON data
-                # json_data = json.loads(file_content)
-
-                # Import the data using the IntegratedGraphManager
-                # nodes, edges = st.session_state.graph_obj.import_data(json_data)
-                print(f"Importing from {uploaded_file}")
-                graph_data = json.load(uploaded_file)
-                nodes, edges = st.session_state.graph_obj.import_data(graph_data)
+                graph_data = json.load(st.session_state.uploaded_file)
+                nodes, edges = st.session_state.graph_builder.import_data(graph_data)
                 st.success("Graph imported successfully!")
                 st.write(f"Imported {nodes} nodes and {edges} edges")
-            except json.JSONDecodeError:
-                st.error("Invalid JSON file. Please upload a valid JSON file.")
-            except Exception as e:
-                st.error(f"Failed to import graph: {str(e)}")
-            else:
-                st.write("Upload a graph JSON file to view or modify the graph.")
 
-                # Optionally include other functionalities, like graph export, visualization, etc.
+                # Display file name
                 st.write("Uploaded file:", st.session_state.uploaded_file.name)
+
                 # Graph Visualization
                 st.header("Graph Visualization")
-                net = st.session_state.graph_obj.visualize_by_pyvis()
+                net = st.session_state.graph_builder.visualize_by_pyvis()
                 with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
                     net.save_graph(tmpfile.name)
                     with open(tmpfile.name, 'r', encoding='utf-8') as f:
@@ -89,19 +72,32 @@ def main_ui():
                 st.header("SPARQL Query")
                 query = st.text_area("Enter SPARQL Query")
                 if st.button("Execute Query"):
-                    results = st.session_state.graph_obj.sparql_query(query)
+                    results = st.session_state.graph_builder.sparql_query(query)
                     st.write(results.serialize(format="json"))
 
                 # Export functionality
                 st.header("Export Graph")
                 if st.button("Export Graph"):
-                    nx_graph = st.session_state.graph_obj.export_to_networkx()
+                    nx_graph = st.session_state.graph_builder.export_to_networkx()
                     st.download_button(
                         label="Download NetworkX Graph",
                         data=json.dumps(nx.node_link_data(nx_graph)),
                         file_name="graph_data.json",
                         mime="application/json"
                     )
+            except json.JSONDecodeError:
+                st.error("Invalid JSON file. Please upload a valid JSON file.")
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 403:
+                    st.error("Error 403: Access Forbidden. You don't have permission to access this file.")
+                else:
+                    st.error(f"HTTP Error: {str(e)}")
+            except Exception as e:
+                st.error(f"Failed to import graph: {str(e)}")
+            else:
+                st.write("Upload a graph JSON file to view or modify the graph.")
+        else:
+            st.write("Upload a graph JSON file to view or modify the graph.")
 
     # JavaScript callback for node/edge selection
     st.markdown("""

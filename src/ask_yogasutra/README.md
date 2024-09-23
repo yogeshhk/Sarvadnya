@@ -124,3 +124,12 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
+## Debugging
+On error "AxiosError: Request failed with status code 403"
+[Fix](https://discuss.streamlit.io/t/axioserror-request-failed-with-status-code-403/38112/12):
+ Create a new folder called .streamlit and create a “config.toml” file inside it. Then add this to the file:
+
+[server]
+enableXsrfProtection = false
+enableCORS = false
+
