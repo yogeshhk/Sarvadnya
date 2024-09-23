@@ -10,6 +10,30 @@ import requests  # Add this import
 st.set_page_config(page_title="Graph App Title", layout="wide")
 
 
+def left_sidebar_ui():
+    # Import functionality
+    # st.header("Import")
+    st.markdown("### Import")
+
+    uploaded_file = st.file_uploader("Choose a graph JSON file", type="json", key="file_uploader")
+    # CHANGED: Update session state only if a new file is uploaded
+    if uploaded_file is not None and st.session_state.uploaded_file != uploaded_file:
+        st.session_state.uploaded_file = uploaded_file
+        # st.experimental_rerun()
+
+    # Export functionality
+    # st.header("Export Graph")
+    st.markdown("### Export Graph")
+    if st.button("Export Graph"):
+        nx_graph = st.session_state.graph_builder.export_to_networkx()
+        st.download_button(
+            label="Download NetworkX Graph",
+            data=json.dumps(nx.node_link_data(nx_graph)),
+            file_name="graph_data.json",
+            mime="application/json"
+        )
+
+
 def graph_visualization():
     # net = st.session_state.graph_builder.visualize_by_pyvis()
     dot = st.session_state.graph_builder.save_pic_with_graphviz()
@@ -56,32 +80,23 @@ def middle_ui():
                 st.error(f"HTTP Error: {str(e)}")
         except Exception as e:
             st.error(f"Failed to import graph: {str(e)}")
-        else:
-            st.write("Upload a graph JSON file to view or modify the graph.")
-    else:
-        st.write("Upload a graph JSON file to view or modify the graph.")
+        # else:
+        #     st.write("Upload a graph JSON file to view or modify the graph.")
+    # else:
+    #     st.write("Upload a graph JSON file on left.")
 
 
 def right_sidebar_ui():
-    # # SPARQL Query Interface
+    # SPARQL Query Interface
     # st.header("SPARQL Query")
-    # query = st.text_area("Enter SPARQL Query")
-    # if st.button("Execute Query"):
-    #     results = st.session_state.graph_builder.sparql_query(query)
-    #     st.write(results.serialize(format="json"))
-
-    # Export functionality
-    # st.header("Export Graph")
-    if st.button("Export Graph"):
-        nx_graph = st.session_state.graph_builder.export_to_networkx()
-        st.download_button(
-            label="Download NetworkX Graph",
-            data=json.dumps(nx.node_link_data(nx_graph)),
-            file_name="graph_data.json",
-            mime="application/json"
-        )
+    st.markdown("### SPARQL Query")
+    query = st.text_area("Enter SPARQL Query")
+    if st.button("Execute Query"):
+        results = st.session_state.graph_builder.sparql_query(query)
+        st.write(results.serialize(format="json"))
 
     # st.header("Information Panel")
+    st.markdown("### Information Panel")
     if st.session_state.selected_element:
         element_type, element_id = st.session_state.selected_element
         if element_type == 'node':
@@ -94,19 +109,8 @@ def right_sidebar_ui():
 
         for key, value in properties.items():
             st.text(f"{key}: {value}")
-    else:
-        st.write("Click on a node or edge to view its properties.")
-
-
-def left_sidebar_ui():
-    # Import functionality
-    # st.header("Import")
-
-    uploaded_file = st.file_uploader("Choose a graph JSON file", type="json", key="file_uploader")
-    # CHANGED: Update session state only if a new file is uploaded
-    if uploaded_file is not None and st.session_state.uploaded_file != uploaded_file:
-        st.session_state.uploaded_file = uploaded_file
-        # st.experimental_rerun()
+    # else:
+    #     st.write("Click on a node or edge to view its properties.")
 
 
 def main_ui():
