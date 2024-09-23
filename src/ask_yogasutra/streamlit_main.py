@@ -62,10 +62,22 @@ def main_ui():
 
                 # Graph Visualization
                 st.header("Graph Visualization")
-                net = st.session_state.graph_builder.visualize_by_pyvis()
+                # net = st.session_state.graph_builder.visualize_by_pyvis()
+                dot = st.session_state.graph_builder.save_pic_with_graphviz()
                 with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
-                    net.save_graph(tmpfile.name)
+                    # net.save_graph(tmpfile.name)
+                    svg_content = dot.pipe(format='svg').decode('utf-8')  # Generate SVG content
                     with open(tmpfile.name, 'r', encoding='utf-8') as f:
+                        # Wrap the SVG content in a <div> with CSS for scaling
+                        html_content = f"""
+                        <div style="width:100%; height:600px; overflow:auto; border:1px solid black;">
+                            <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;">
+                                {svg_content}
+                            </div>
+                        </div>
+                        """
+                        # Save the HTML content to the temp file
+                        tmpfile.write(html_content.encode('utf-8'))
                         components.html(f.read(), height=600)
 
                 # SPARQL Query Interface

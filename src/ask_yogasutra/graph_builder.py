@@ -84,7 +84,8 @@ class GraphBuilder:
         for edge in self.graph.edges(data=True):
             source, target, data = edge
             dot.edge(str(source), str(target), label=str(data.get('label', '')))
-        dot.render('graph')
+        # dot.render('graph')
+        return dot
 
     def export_to_networkx(self):
         return self.graph.copy()
