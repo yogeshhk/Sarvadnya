@@ -1,0 +1,8 @@
+streamlit
+networkx
+rdflib
+graphviz
+matplotlib
+pyvis
+streamlit-agraph
+pyarrow

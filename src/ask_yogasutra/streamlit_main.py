@@ -4,10 +4,47 @@ import streamlit.components.v1 as components
 import json
 import tempfile
 from graph_builder import GraphBuilder
-import requests  # Add this import
+import requests
+from streamlit_agraph import agraph, Node, Edge, Config
+from rdflib import URIRef, Literal
+from pyvis.network import Network
+import graphviz
 
 # Set the page configuration
-st.set_page_config(page_title="Graph App Title", layout="wide")
+st.set_page_config(page_title="Graph Application", layout="wide")
+
+
+# Convert NetworkX graph to agraph nodes and edges
+def convert_networkx_to_agraph(nx_graph):
+    nodes = [Node(id=node, label=node) for node in nx_graph.nodes()]
+    edges = [Edge(source=edge[0], target=edge[1]) for edge in nx_graph.edges()]
+    return nodes, edges
+
+
+# Convert RDF graph to agraph nodes and edges
+def convert_rdf_to_agraph(rdf_graph, namespace):
+    nodes = []
+    edges = []
+
+    for s, p, o in rdf_graph:
+        # Add nodes
+        if isinstance(s, URIRef):
+            node_id = str(s).replace(str(namespace), '')
+            if not any(node.id == node_id for node in nodes):
+                nodes.append(Node(id=node_id, label=node_id))
+
+        # Add edges
+        if p == namespace['connected_to']:
+            source = str(s).replace(str(namespace), '')
+            if isinstance(o, URIRef):
+                target = str(o).replace(str(namespace), '')
+            elif isinstance(o, Literal):
+                target = str(o)
+            else:
+                continue  # Skip if o is neither URIRef nor Literal
+            edges.append(Edge(source=source, target=target))
+
+    return nodes, edges
 
 
 def left_sidebar_ui():
@@ -34,25 +71,53 @@ def left_sidebar_ui():
         )
 
 
-def graph_visualization():
-    # net = st.session_state.graph_builder.visualize_by_pyvis()
+def graph_visualization_by_graphviz():
+    # # net = st.session_state.graph_builder.visualize_by_pyvis()
+    # dot = st.session_state.graph_builder.save_pic_with_graphviz()
+    # with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
+    #     # net.save_graph(tmpfile.name)
+    #     svg_content = dot.pipe(format='svg').decode('utf-8')  # Generate SVG content
+    #     with open(tmpfile.name, 'r', encoding='utf-8') as f:
+    #         # Wrap the SVG content in a <div> with CSS for scaling
+    #         html_content = f"""
+    #         <div style="width:100%; height:600px; overflow:auto; border:1px solid black;">
+    #             <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;">
+    #                 {svg_content}
+    #             </div>
+    #         </div>
+    #         """
+    #         # Save the HTML content to the temp file
+    #         tmpfile.write(html_content.encode('utf-8'))
+    #         components.html(f.read(), height=600)
     dot = st.session_state.graph_builder.save_pic_with_graphviz()
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
-        # net.save_graph(tmpfile.name)
-        svg_content = dot.pipe(format='svg').decode('utf-8')  # Generate SVG content
-        with open(tmpfile.name, 'r', encoding='utf-8') as f:
-            # Wrap the SVG content in a <div> with CSS for scaling
-            html_content = f"""
-            <div style="width:100%; height:600px; overflow:auto; border:1px solid black;">
-                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;">
-                    {svg_content}
-                </div>
-            </div>
-            """
-            # Save the HTML content to the temp file
-            tmpfile.write(html_content.encode('utf-8'))
-            components.html(f.read(), height=600)
+    svg_content = dot.pipe(format='svg').decode('utf-8')
+    st.graphviz_chart(dot)
 
+
+def graph_visualization_by_agraph():
+    if 'graph_builder' in st.session_state and st.session_state.graph_builder:
+        rdf_graph = st.session_state.graph_builder.get_rdf_graph()
+        namespace = st.session_state.graph_builder.get_namespace()
+        nodes, edges = convert_rdf_to_agraph(rdf_graph, namespace)
+
+        config = Config(width=800, height=600, directed=True, physics=True, hierarchical=False)
+
+        return_value = agraph(nodes=nodes, edges=edges, config=config)
+
+        if return_value:
+            st.session_state.selected_element = return_value
+
+
+def graph_visualization_by_pyvis():
+    if 'graph_builder' in st.session_state and st.session_state.graph_builder:
+        nx_graph = st.session_state.graph_builder.export_to_networkx()
+        net = Network(notebook=True, width="100%", height="600px")
+        net.from_nx(nx_graph)
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
+            net.save_graph(tmpfile.name)
+            with open(tmpfile.name, 'r', encoding='utf-8') as f:
+                components.html(f.read(), height=600)
 
 def middle_ui():
     st.title("Graph Application")
@@ -61,15 +126,18 @@ def middle_ui():
         try:
             graph_data = json.load(st.session_state.uploaded_file)
             nodes, edges = st.session_state.graph_builder.import_data(graph_data)
-            # st.success("Graph imported successfully!")
-            # st.write(f"Imported {nodes} nodes and {edges} edges")
-            # 
-            # # Display file name
-            # st.write("Uploaded file:", st.session_state.uploaded_file.name)
-            # 
-            # # Graph Visualization
-            # st.header("Graph Visualization")
-            graph_visualization()
+
+            visualization_method = st.selectbox(
+                "Select visualization method",
+                ["Graphviz", "Agraph", "Pyvis"]
+            )
+
+            if visualization_method == "Graphviz":
+                graph_visualization_by_graphviz()
+            elif visualization_method == "Agraph":
+                graph_visualization_by_agraph()
+            else:  # Pyvis
+                graph_visualization_by_pyvis()
 
         except json.JSONDecodeError:
             st.error("Invalid JSON file. Please upload a valid JSON file.")
@@ -87,30 +155,40 @@ def middle_ui():
 
 
 def right_sidebar_ui():
-    # SPARQL Query Interface
-    # st.header("SPARQL Query")
     st.markdown("### SPARQL Query")
     query = st.text_area("Enter SPARQL Query")
     if st.button("Execute Query"):
         results = st.session_state.graph_builder.sparql_query(query)
         st.write(results.serialize(format="json"))
 
-    # st.header("Information Panel")
     st.markdown("### Information Panel")
-    if st.session_state.selected_element:
-        element_type, element_id = st.session_state.selected_element
-        if element_type == 'node':
+    if 'selected_element' in st.session_state and st.session_state.selected_element:
+        element_id = st.session_state.selected_element
+        rdf_graph = st.session_state.graph_builder.get_rdf_graph()
+        namespace = st.session_state.graph_builder.get_namespace()
+
+        full_uri = namespace[element_id]
+
+        if (full_uri, None, None) in rdf_graph:
             properties = st.session_state.graph_builder.get_node_properties(element_id)
             st.subheader(f"Node: {element_id}")
+        elif any((full_uri, namespace['connected_to'], None) in rdf_graph):
+            outgoing_edges = list(rdf_graph.objects(full_uri, namespace['connected_to']))
+            if outgoing_edges:
+                target = str(outgoing_edges[0]).replace(str(namespace), '')
+                properties = st.session_state.graph_builder.get_edge_properties(element_id, target)
+                st.subheader(f"Edge: {element_id} -> {target}")
+            else:
+                st.write("No outgoing edges found for the selected element.")
+                return
         else:
-            source, target = element_id
-            properties = st.session_state.graph_builder.get_edge_properties(source, target)
-            st.subheader(f"Edge: {source} -> {target}")
+            st.write("No information found for the selected element.")
+            return
 
         for key, value in properties.items():
             st.text(f"{key}: {value}")
-    # else:
-    #     st.write("Click on a node or edge to view its properties.")
+    else:
+        st.write("Click on a node or edge to view its properties.")
 
 
 def main_ui():
@@ -123,7 +201,7 @@ def main_ui():
         st.session_state.uploaded_file = None
 
     # Create three columns to simulate left sidebar, main content, and right sidebar
-    left_sidebar, main_content, right_sidebar = st.columns([2, 3, 2])
+    left_sidebar, main_content, right_sidebar = st.columns([2, 4, 2])
 
     with left_sidebar:
         left_sidebar_ui()

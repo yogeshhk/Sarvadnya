@@ -1,0 +1,13 @@
+{
+  "elements": {
+    "nodes": [
+      {"data": {"id": "1", "label": "Node 1"}},
+      {"data": {"id": "2", "label": "Node 2"}},
+      {"data": {"id": "3", "label": "Node 3"}}
+    ],
+    "edges": [
+      {"data": {"source": "1", "target": "2", "label": "Edge 1-2"}},
+      {"data": {"source": "2", "target": "3", "label": "Edge 2-3"}}
+    ]
+  }
+}

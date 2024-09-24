@@ -13,6 +13,7 @@ class GraphBuilder:
         self.graph = nx.Graph()  # MultiGraph()
         self.rdf_graph = RDFGraph()
         self.ns = Namespace("http://example.org/")
+        self.rdf_graph.bind("ex", self.ns)
 
     # Check if edge exists
     def check_edge_exists(self, source_node_id, target_node_id):
@@ -41,6 +42,7 @@ class GraphBuilder:
             return
 
         self.graph.add_edge(source, target)
+        self.rdf_graph.add((self.ns[source], self.ns['connected_to'], self.ns[target]))
         if properties:
             for key, value in properties.items():
                 self.graph[source][target][key] = value
@@ -48,9 +50,20 @@ class GraphBuilder:
 
     def get_node_properties(self, node_id):
         return self.graph.nodes[node_id]
+        # properties = {}
+        # for _, pred, obj in self.rdf_graph.triples((self.ns[node_id], None, None)):
+        #     key = pred.split(self.ns)[-1]
+        #     properties[key] = obj.toPython()
+        # return properties
 
     def get_edge_properties(self, source, target):
         return self.graph[source][target]
+        # properties = {}
+        # for pred, obj in self.rdf_graph.predicate_objects(self.ns[source]):
+        #     if obj == self.ns[target]:
+        #         key = pred.split(self.ns)[-1]
+        #         properties[key] = "True"
+        # return properties
 
     def update_node_properties(self, node_id, properties):
         self.graph.nodes[node_id].update(properties)
@@ -78,7 +91,7 @@ class GraphBuilder:
         plt.show()
 
     def save_pic_with_graphviz(self):
-        dot = graphviz.Graph(format='png')
+        dot = graphviz.Digraph(format='png')
         for node in self.graph.nodes():
             dot.node(str(node))
         for edge in self.graph.edges(data=True):
@@ -89,6 +102,12 @@ class GraphBuilder:
 
     def export_to_networkx(self):
         return self.graph.copy()
+
+    def get_rdf_graph(self):
+        return self.rdf_graph
+
+    def get_namespace(self):
+        return self.ns
 
     def import_from_networkx(self, nx_graph):
         self.graph = nx_graph.copy()
@@ -116,6 +135,8 @@ class GraphBuilder:
 
         self.graph = nx.Graph()
         self.rdf_graph = RDFGraph()
+        self.ns = Namespace("http://example.org/")
+        self.rdf_graph.bind("ex", self.ns)
 
         # Process nodes
         for node in data['elements']['nodes']:
