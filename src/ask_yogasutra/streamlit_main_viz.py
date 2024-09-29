@@ -55,7 +55,7 @@ def left_sidebar_ui():
     uploaded_file = st.file_uploader("Choose a graph JSON file", type="json", key="file_uploader")
     # CHANGED: Update session state only if a new file is uploaded
     if uploaded_file is not None and st.session_state.uploaded_file != uploaded_file:
-        st.session_state.uploaded_file = uploaded_file
+        st.session_state.uploaded_file = uploaded_file  # it is not file name but full file_uploader obj
         # st.experimental_rerun()
 
     # Export functionality
@@ -97,8 +97,10 @@ def graph_visualization_by_graphviz():
 def graph_visualization_by_agraph():
     if 'graph_builder' in st.session_state and st.session_state.graph_builder:
         rdf_graph = st.session_state.graph_builder.get_rdf_graph()
+        print(f"rdf graph {rdf_graph}")
         namespace = st.session_state.graph_builder.get_namespace()
         nodes, edges = convert_rdf_to_agraph(rdf_graph, namespace)
+        print(f"rdf nodes {nodes} rdf edges {edges}")
 
         config = Config(width=800, height=600, directed=True, physics=True, hierarchical=False)
 
@@ -119,14 +121,25 @@ def graph_visualization_by_pyvis():
             with open(tmpfile.name, 'r', encoding='utf-8') as f:
                 components.html(f.read(), height=600)
 
+
 def middle_ui():
     st.title("Graph Application")
-
     if st.session_state.uploaded_file is not None:
         try:
-            graph_data = json.load(st.session_state.uploaded_file)
-            nodes, edges = st.session_state.graph_builder.import_data(graph_data)
 
+            # the file pointer being at the end of the file after the first read. When you try to read it again,
+            # there's no data left to read. To resolve this, you need to reset the file pointer to the beginning
+            # before reading it again.
+            # Reset the file pointer to the beginning
+            st.session_state.uploaded_file.seek(0)
+
+            graph_data = json.load(st.session_state.uploaded_file)
+
+            # After reading, reset the file pointer again for potential future reads
+            st.session_state.uploaded_file.seek(0)
+
+            nodes, edges = st.session_state.graph_builder.import_data(graph_data)
+            print(f"Imported {nodes} nodes, {edges} edges")
             visualization_method = st.selectbox(
                 "Select visualization method",
                 ["Graphviz", "Agraph", "Pyvis"]
@@ -148,10 +161,10 @@ def middle_ui():
                 st.error(f"HTTP Error: {str(e)}")
         except Exception as e:
             st.error(f"Failed to import graph: {str(e)}")
-        # else:
-        #     st.write("Upload a graph JSON file to view or modify the graph.")
-    # else:
-    #     st.write("Upload a graph JSON file on left.")
+        else:
+            st.write("Upload a graph JSON file to view or modify the graph.")
+    else:
+        st.write("Upload a graph JSON file on left.")
 
 
 def right_sidebar_ui():
