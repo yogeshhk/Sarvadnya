@@ -31,17 +31,23 @@ class GraphBuilder:
         # return False
 
     def add_node(self, node_id, properties=None):
-        self.graph.add_node(node_id)
+        self.graph.add_node(node_id, label=node_id)
         if properties:
             for key, value in properties.items():
                 self.graph.nodes[node_id][key] = value
                 self.rdf_graph.add((URIRef(self.ns[node_id]), URIRef(self.ns[key]), Literal(value)))
 
     def add_edge(self, source, target, properties=None):
-        if self.check_edge_exists(source, target):
+
+        if source is None or target is None:  # Add edge only if both source and target exist
+            print("add ege: one of them is None")
             return
 
-        self.graph.add_edge(source, target)
+        if self.check_edge_exists(source, target):
+            print(f"add ege: already exists {source} and {target}")
+            return
+
+        self.graph.add_edge(source, target, weight=1)
         self.rdf_graph.add((self.ns[source], self.ns['connected_to'], self.ns[target]))
         if properties:
             for key, value in properties.items():
@@ -103,6 +109,20 @@ class GraphBuilder:
     def export_to_networkx(self):
         return self.graph.copy()
 
+    def export_to_pyvis(self) -> None:
+        net = Network(notebook=False, width="100%", height="600px", directed=True)
+        # net.from_nx(nx_graph)
+
+        edges = self.graph.edges(data=True)
+        nodes = self.graph.nodes(data=True)
+
+        if len(edges) > 0:
+            for e in edges:
+                net.add_node(e[0], **nodes[e[0]])
+                net.add_node(e[1], **nodes[e[1]])
+                net.add_edge(e[0], e[1])
+        return net
+
     def get_rdf_graph(self):
         return self.rdf_graph
 
@@ -142,6 +162,11 @@ class GraphBuilder:
         for node in data['elements']['nodes']:
             node_id = node['data']['id']
             self.add_node(node_id, node['data'])
+            # node_id = node["data"].get("ID", node["data"].get("id"))  # Check for both "ID" and "id" keys
+            # if node_id:
+            #     self.add_node(node_id)  # Use Devanagari Text for label
+            # else:
+            #     print(f"Warning: Skipping node with missing ID in data: {node}")
 
         # Process edges
         for edge in data['elements']['edges']:

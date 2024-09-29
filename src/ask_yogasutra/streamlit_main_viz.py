@@ -112,10 +112,8 @@ def graph_visualization_by_agraph():
 
 def graph_visualization_by_pyvis():
     if 'graph_builder' in st.session_state and st.session_state.graph_builder:
-        nx_graph = st.session_state.graph_builder.export_to_networkx()
-        net = Network(notebook=True, width="100%", height="600px")
-        net.from_nx(nx_graph)
-
+        net = st.session_state.graph_builder.export_to_pyvis()
+        # net.write_html('example.html', open_browser=True, notebook=False)
         with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmpfile:
             net.save_graph(tmpfile.name)
             with open(tmpfile.name, 'r', encoding='utf-8') as f:
@@ -139,7 +137,6 @@ def middle_ui():
             st.session_state.uploaded_file.seek(0)
 
             nodes, edges = st.session_state.graph_builder.import_data(graph_data)
-            print(f"Imported {nodes} nodes, {edges} edges")
             visualization_method = st.selectbox(
                 "Select visualization method",
                 ["Graphviz", "Agraph", "Pyvis"]
