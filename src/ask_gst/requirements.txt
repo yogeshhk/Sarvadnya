@@ -132,7 +132,7 @@ networkx==3.1
 nltk==3.9
 notebook==6.5.4
 notebook_shim==0.2.3
-numexpr==2.8.4
+numexpr==2.8.5
 numpy==1.26.2
 openai==1.2.4
 openapi-schema-pydantic==1.2.4
