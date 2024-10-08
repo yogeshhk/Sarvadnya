@@ -82,3 +82,60 @@ On error "AxiosError: Request failed with status code 403"
 enableXsrfProtection = false
 enableCORS = false
 
+# Ask Yogasutra - Phase 1: Visualizing and Editing Verses Graph
+
+## Overview
+
+This project aims to create an interactive graph-based representation of Patanjali's Yogasutra using **Streamlit**. Each node represents a verse (sutra), and edges connect related verses. Users can view verse details by selecting a node, edit the graph, and save changes back to a JSON file.
+
+## Workflow
+
+1. **Import JSON of Verses**:
+   - Load a JSON file containing verses and their relationships.
+
+2. **Visualize the Graph**:
+   - Construct an interactive graph using libraries like **Graphviz**, **Pyvis**, and **Agraph**.
+   - Each node displays verse information; edges indicate direct relationships.
+
+3. **Select and View Verse Properties**:
+   - Click on a node to view detailed properties of the selected verse.
+
+4. **Edit the Graph**:
+   - Modify connections and properties directly in the graph interface.
+
+5. **Save Changes**:
+   - Updated information is saved back to the JSON file.
+
+## Libraries Used
+
+- **Streamlit**: For building the web application.
+- **Graphviz**: For creating visual graphs.
+- **Pyvis**: For interactive graph visualizations.
+- **Agraph**: For additional graph handling capabilities.
+
+# Ask Yogasutra - Phase 2: Chatbot Integration with Graph Retrieval
+
+## Overview
+
+In Phase 2, we aim to develop a chatbot that leverages the graph created in Phase 1 to retrieve information from the Patanjali Yogasutra verses. The chatbot will utilize Graph Retrieval-Augmented Generation (RAG) to answer users' questions based on the interconnected verses.
+
+## Workflow
+
+1. **Integrate the Chatbot**:
+   - Implement a chatbot interface within the existing Streamlit application.
+
+2. **Graph Retrieval**:
+   - Use the graph data structure to access relevant verses based on user queries.
+   - Implement Graph RAG techniques to enhance answer generation.
+
+3. **Answering Questions**:
+   - The chatbot will process user input and retrieve relevant verse information.
+   - Generate responses based on the relationships and content of the verses.
+
+4. **User Interaction**:
+   - Allow users to ask questions and receive answers in a conversational format.
+
+## Libraries Used
+
+- **Streamlit**: For the web application interface.
+
