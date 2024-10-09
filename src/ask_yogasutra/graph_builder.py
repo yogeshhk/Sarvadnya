@@ -109,7 +109,7 @@ class GraphBuilder:
     def export_to_networkx(self):
         return self.graph.copy()
 
-    def export_to_pyvis(self) -> None:
+    def export_to_pyvis(self) -> Network:
         net = Network(notebook=False, width="100%", height="600px", directed=True)
         # net.from_nx(nx_graph)
 
