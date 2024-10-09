@@ -10,6 +10,7 @@ def main():
     1. Explore the connections between different sutras
     2. View and edit sutra details
     3. Understand the structure of the yoga sutras
+    4. Add and remove connections between sutras
     
     Navigate to the 'Graph Viewer' page in the sidebar to start exploring!
     """)

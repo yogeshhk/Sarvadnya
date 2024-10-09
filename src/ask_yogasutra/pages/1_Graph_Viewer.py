@@ -2,8 +2,6 @@ import streamlit as st
 from streamlit_agraph import agraph, Config
 from backend.graph_constructor import GraphConstructor
 
-st.set_page_config(page_title="Yoga Sutras Explorer - Graph Viewer", layout="wide")
-
 class GraphViewer:
     def __init__(self, graph_constructor):
         self.graph_constructor = graph_constructor
@@ -91,6 +89,30 @@ class GraphViewer:
         else:
             st.markdown("No connected sutras found.")
 
+    def display_connection_editor(self, selected_node: str):
+        st.markdown("### Edit Connections")
+        
+        # Add new connection
+        st.subheader("Add New Connection")
+        all_nodes = self.graph_constructor.get_all_node_ids()
+        target_node = st.selectbox("Select target node", [node for node in all_nodes if node != selected_node])
+        if st.button("Add Connection"):
+            self.graph_constructor.add_connection(selected_node, target_node)
+            st.success(f"Connection added between {selected_node} and {target_node}")
+            st.rerun()
+
+        # Remove existing connection
+        st.subheader("Remove Existing Connection")
+        connected_nodes = self.graph_constructor.get_connected_nodes(selected_node)
+        if connected_nodes:
+            node_to_remove = st.selectbox("Select connection to remove", connected_nodes)
+            if st.button("Remove Connection"):
+                self.graph_constructor.remove_connection(selected_node, node_to_remove)
+                st.success(f"Connection removed between {selected_node} and {node_to_remove}")
+                st.rerun()
+        else:
+            st.write("No existing connections to remove.")
+
     def render(self):
         st.title("Sutras Graph Viewer")
         self._set_styles()
@@ -110,8 +132,9 @@ class GraphViewer:
             elif selected_node:
                 self.display_node_info(selected_node)
                 self.display_connected_nodes(selected_node)
+                self.display_connection_editor(selected_node)
             else:
-                st.markdown("Click on a node to view sutra details and connections.")
+                st.markdown("Click on a node to view sutra details, connections, and edit connections.")
 
 def main():
     graph_constructor = GraphConstructor('data/graph.json')

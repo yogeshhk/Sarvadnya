@@ -28,7 +28,7 @@ class Edge:
     def to_dict(self):
         return asdict(self)
 
-    def to_agraph_node(self):
+    def to_agraph_edge(self):
         return AgraphEdge(**self.to_dict())
 
 class GraphConstructor:
@@ -81,7 +81,7 @@ class GraphConstructor:
 
     def get_agraph_nodes_and_edges(self):
         agraph_nodes = [node.to_agraph_node() for node in self.nodes]
-        agraph_edges = [edge.to_agraph_node() for edge in self.edges]
+        agraph_edges = [edge.to_agraph_edge() for edge in self.edges]
         return agraph_nodes, agraph_edges
 
     def save_changes(self, node_id: str, field: str, new_value: str) -> None:
@@ -91,8 +91,42 @@ class GraphConstructor:
                 self.node_dict[node_id][field] = new_value
                 break
         
-        with open(self.json_file_path, 'w', encoding='utf-8') as file:
-            json.dump(self.json_data, file, ensure_ascii=False, indent=2)
+        self._save_json()
 
     def get_connected_nodes(self, selected_node: str) -> List[str]:
         return [target for source, target in self.edge_data if source == selected_node]
+
+    def add_connection(self, source: str, target: str) -> None:
+        if (source, target) not in self.edge_data:
+            self.edge_data.append((source, target))
+            self.edges.append(Edge(
+                source=source,
+                target=target,
+                type="STRAIGHT",
+                color="#614051",
+                width=1
+            ))
+            self.json_data['elements']['edges'].append({
+                'data': {
+                    'source': source,
+                    'target': target
+                }
+            })
+            self._save_json()
+
+    def remove_connection(self, source: str, target: str) -> None:
+        if (source, target) in self.edge_data:
+            self.edge_data.remove((source, target))
+            self.edges = [edge for edge in self.edges if not (edge.source == source and edge.target == target)]
+            self.json_data['elements']['edges'] = [
+                edge for edge in self.json_data['elements']['edges']
+                if not (edge['data']['source'] == source and edge['data']['target'] == target)
+            ]
+            self._save_json()
+
+    def _save_json(self) -> None:
+        with open(self.json_file_path, 'w', encoding='utf-8') as file:
+            json.dump(self.json_data, file, ensure_ascii=False, indent=2)
+
+    def get_all_node_ids(self) -> List[str]:
+        return list(self.node_dict.keys())
