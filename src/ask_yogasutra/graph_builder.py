@@ -1,34 +1,29 @@
 import json
-
-import graphviz
-import matplotlib.pyplot as plt
 import networkx as nx
-from pyvis.network import Network
 from rdflib import Graph as RDFGraph, Literal, URIRef, Namespace
 from rdflib.plugins.sparql import prepareQuery
 
-
 class GraphBuilder:
-    def __init__(self):
-        self.graph = nx.Graph()  # MultiGraph()
+    def __init__(self, json_file='data/graph.json'):
+        self.graph = nx.Graph()
         self.rdf_graph = RDFGraph()
         self.ns = Namespace("http://example.org/")
         self.rdf_graph.bind("ex", self.ns)
+        self.json_file = json_file
+        self.load_data()
 
-    # Check if edge exists
+    def load_data(self):
+        try:
+            with open(self.json_file, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            self.import_data(data)
+        except FileNotFoundError:
+            print(f"File not found: {self.json_file}")
+        except json.JSONDecodeError:
+            print(f"Invalid JSON in file: {self.json_file}")
+
     def check_edge_exists(self, source_node_id, target_node_id):
-        # Method 1: Using get_edges()
-        edges = self.graph.edges()
-        for edge in edges:
-            if edge[0] == source_node_id and edge[1] == target_node_id:
-                return True
-        return False
-        #
-        # # Method 2: Using get_adjacency()
-        # adjacency_matrix = network.get_adjacency()
-        # if adjacency_matrix[source_node_id][target_node_id] > 0:
-        #     return True
-        # return False
+        return self.graph.has_edge(source_node_id, target_node_id)
 
     def add_node(self, node_id, properties=None):
         self.graph.add_node(node_id, label=node_id)
@@ -38,13 +33,12 @@ class GraphBuilder:
                 self.rdf_graph.add((URIRef(self.ns[node_id]), URIRef(self.ns[key]), Literal(value)))
 
     def add_edge(self, source, target, properties=None):
-
-        if source is None or target is None:  # Add edge only if both source and target exist
-            print("add ege: one of them is None")
+        if source is None or target is None:
+            print("add edge: one of them is None")
             return
 
         if self.check_edge_exists(source, target):
-            print(f"add ege: already exists {source} and {target}")
+            print(f"add edge: already exists {source} and {target}")
             return
 
         self.graph.add_edge(source, target, weight=1)
@@ -56,20 +50,9 @@ class GraphBuilder:
 
     def get_node_properties(self, node_id):
         return self.graph.nodes[node_id]
-        # properties = {}
-        # for _, pred, obj in self.rdf_graph.triples((self.ns[node_id], None, None)):
-        #     key = pred.split(self.ns)[-1]
-        #     properties[key] = obj.toPython()
-        # return properties
 
     def get_edge_properties(self, source, target):
         return self.graph[source][target]
-        # properties = {}
-        # for pred, obj in self.rdf_graph.predicate_objects(self.ns[source]):
-        #     if obj == self.ns[target]:
-        #         key = pred.split(self.ns)[-1]
-        #         properties[key] = "True"
-        # return properties
 
     def update_node_properties(self, node_id, properties):
         self.graph.nodes[node_id].update(properties)
@@ -84,44 +67,8 @@ class GraphBuilder:
         for key, value in properties.items():
             self.rdf_graph.set((source_uri, URIRef(self.ns[key]), target_uri))
 
-    def visualize_by_pyvis(self):
-        net = Network('500px', '500px', select_menu=True, filter_menu=True)
-        net.from_nx(self.graph)
-        net.show('nx-before.html', False)  # Display Graph
-        return net
-
-    def visualize_with_matplotlib(self):
-        # Draw the NetworkX graph using matplotlib
-        plt.figure(figsize=(8, 6))
-        nx.draw_networkx(self.graph, with_labels=True, font_size=10)
-        plt.show()
-
-    def save_pic_with_graphviz(self):
-        dot = graphviz.Digraph(format='png')
-        for node in self.graph.nodes():
-            dot.node(str(node))
-        for edge in self.graph.edges(data=True):
-            source, target, data = edge
-            dot.edge(str(source), str(target), label=str(data.get('label', '')))
-        # dot.render('graph')
-        return dot
-
     def export_to_networkx(self):
         return self.graph.copy()
-
-    def export_to_pyvis(self) -> Network:
-        net = Network(notebook=False, width="100%", height="600px", directed=True)
-        # net.from_nx(nx_graph)
-
-        edges = self.graph.edges(data=True)
-        nodes = self.graph.nodes(data=True)
-
-        if len(edges) > 0:
-            for e in edges:
-                net.add_node(e[0], **nodes[e[0]])
-                net.add_node(e[1], **nodes[e[1]])
-                net.add_edge(e[0], e[1])
-        return net
 
     def get_rdf_graph(self):
         return self.rdf_graph
@@ -145,164 +92,68 @@ class GraphBuilder:
         return results
 
     def import_data(self, data):
-        # try:
-        #     with open(file_path, 'r') as file:
-        #         data = json.load(file)
-        # except FileNotFoundError:
-        #     raise FileNotFoundError(f"File not found: {file_path}")
-        # except json.JSONDecodeError:
-        #     raise ValueError(f"Invalid JSON in file: {file_path}")
-
         self.graph = nx.Graph()
         self.rdf_graph = RDFGraph()
         self.ns = Namespace("http://example.org/")
         self.rdf_graph.bind("ex", self.ns)
 
-        # Process nodes
         for node in data['elements']['nodes']:
             node_id = node['data']['id']
             self.add_node(node_id, node['data'])
-            # node_id = node["data"].get("ID", node["data"].get("id"))  # Check for both "ID" and "id" keys
-            # if node_id:
-            #     self.add_node(node_id)  # Use Devanagari Text for label
-            # else:
-            #     print(f"Warning: Skipping node with missing ID in data: {node}")
 
-        # Process edges
         for edge in data['elements']['edges']:
             source = edge['data']['source']
             target = edge['data']['target']
             self.add_edge(source, target, edge['data'])
 
-        # Process positions
-        for node_id, pos in data['positions'].items():
-            if node_id in self.graph.nodes:
-                self.update_node_properties(node_id, {'x': pos['x'], 'y': pos['y']})
+        if 'positions' in data:
+            for node_id, pos in data['positions'].items():
+                if node_id in self.graph.nodes:
+                    self.update_node_properties(node_id, {'x': pos['x'], 'y': pos['y']})
 
         return len(self.graph.nodes), len(self.graph.edges)
 
-    def import_from_file(self, file_path):
-        try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"File not found: {file_path}")
-        except json.JSONDecodeError:
-            raise ValueError(f"Invalid JSON in file: {file_path}")
-        except UnicodeDecodeError:
-            # If UTF-8 fails, try with 'latin-1' encoding
-            try:
-                with open(file_path, 'r', encoding='latin-1') as file:
-                    data = json.load(file)
-            except UnicodeDecodeError:
-                raise ValueError(f"Unable to decode file: {file_path}. Please ensure it's a valid text file.")
+    def get_connected_nodes(self, selected_node):
+        return list(self.graph.neighbors(selected_node))
 
-        return self.import_data(data)
+    def add_connection(self, source, target):
+        self.add_edge(source, target)
 
+    def remove_connection(self, source, target):
+        self.graph.remove_edge(source, target)
+        self.rdf_graph.remove((self.ns[source], self.ns['connected_to'], self.ns[target]))
 
-def test_sythetic_data():
-    test_data = {
-        "elements": {
-            "nodes": [
-                {"data": {"id": "1", "label": "Node 1"}},
-                {"data": {"id": "2", "label": "Node 2"}},
-                {"data": {"id": "3", "label": "Node 3"}}
-            ],
-            "edges": [
-                {"data": {"source": "1", "target": "2", "label": "Edge 1-2"}},
-                {"data": {"source": "2", "target": "3", "label": "Edge 2-3"}}
-            ]
-        },
-        "positions": {
-            "1": {"x": 100, "y": 100},
-            "2": {"x": 200, "y": 200},
-            "3": {"x": 300, "y": 300}
+    def get_all_node_ids(self):
+        return list(self.graph.nodes())
+
+    def save_changes(self, node_id, field, new_value):
+        self.update_node_properties(node_id, {field: new_value})
+
+    def export_to_json(self):
+        data = {
+            "elements": {
+                "nodes": [],
+                "edges": []
+            },
+            "positions": {}
         }
-    }
 
-    # Create a GraphBuilder instance
-    graph_builder = GraphBuilder()
+        for node, attrs in self.graph.nodes(data=True):
+            node_data = {"id": node}
+            node_data.update(attrs)
+            data["elements"]["nodes"].append({"data": node_data})
+            if 'x' in attrs and 'y' in attrs:
+                data["positions"][node] = {"x": attrs['x'], "y": attrs['y']}
 
-    # Test import_data function
-    nodes_count, edges_count = graph_builder.import_data(test_data)
+        for source, target, attrs in self.graph.edges(data=True):
+            edge_data = {"source": source, "target": target}
+            edge_data.update(attrs)
+            data["elements"]["edges"].append({"data": edge_data})
 
-    print(f"Imported {nodes_count} nodes and {edges_count} edges.")
+        return json.dumps(data, indent=2)
 
-    # Test some other functions
-    print("\nNode properties:")
-    for node in graph_builder.graph.nodes:
-        print(f"Node {node}: {graph_builder.get_node_properties(node)}")
-
-    print("\nEdge properties:")
-    for edge in graph_builder.graph.edges:
-        print(f"Edge {edge}: {graph_builder.get_edge_properties(*edge)}")
-
-    # Test SPARQL query
-    query = """
-    SELECT ?node ?label
-    WHERE {
-        ?node <http://example.org/label> ?label
-    }
-    """
-    results = graph_builder.sparql_query(query)
-    print("\nSPARQL query results:")
-    for row in results:
-        print(f"Node: {row.node}, Label: {row.label}")
-
-
-def test_file_data():
-    print("\nTesting import from file:")
-    file_path = "D:/Yogesh/GitHub/Sarvadnya/src/ask_yogasutra/data/graph.json"
-
-    # Create a GraphBuilder instance
-    graph_builder = GraphBuilder()
-    try:
-        # Use the temporary file to test import_from_file
-        file_nodes_count, file_edges_count = graph_builder.import_from_file(file_path)
-        print(f"Imported from file: {file_nodes_count} nodes and {file_edges_count} edges.")
-
-        # Verify the imported data
-        print("\nVerifying imported data:")
-        print("Node properties:")
-        for node in graph_builder.graph.nodes:
-            print(f"Node {node}: {graph_builder.get_node_properties(node)}")
-
-        print("\nEdge properties:")
-        for edge in graph_builder.graph.edges:
-            print(f"Edge {edge}: {graph_builder.get_edge_properties(*edge)}")
-
-    finally:
-        # Clean up the temporary file
-        # os.unlink(file_path)
-        print("\nImport tests completed.")
-
-
-def test_visualize_data():
-    print("\nTesting Visualization from file:")
-    file_path = "D:/Yogesh/GitHub/Sarvadnya/src/ask_yogasutra/data/graph.json"
-    # Create a GraphBuilder instance
-    graph_builder = GraphBuilder()
-    try:
-        # Use the temporary file to test import_from_file
-        file_nodes_count, file_edges_count = graph_builder.import_from_file(file_path)
-        print(f"Imported from file: {file_nodes_count} nodes and {file_edges_count} edges.")
-
-        # Verify the imported data
-        # graph_builder.visualize_by_pyvis()
-        # graph_builder.visualize_with_matplotlib()
-        graph_builder.save_pic_with_graphviz()
-    finally:
-        # Clean up the temporary file
-        # os.unlink(file_path)
-        print("\n Visualize Data completed.")
-
-
-if __name__ == "__main__":
-    # # Test data
-    # test_sythetic_data()
-    #
-    # # Test import from file
-    # test_file_data()
-
-    # Test Visualize data
-    test_visualize_data()
+    def save_to_file(self, file_path=None):
+        if file_path is None:
+            file_path = self.json_file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(json.loads(self.export_to_json()), f, ensure_ascii=False, indent=2)
