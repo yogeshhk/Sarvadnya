@@ -73,6 +73,15 @@ def left_sidebar_ui():
             unsafe_allow_html=True
         )
 
+    st.sidebar.markdown("### SPARQL Query")
+    sparql_query = st.sidebar.text_area("Enter SPARQL query:")
+    if st.sidebar.button("Run Query"):
+        if 'graph_builder' in st.session_state and st.session_state.graph_builder:
+            results = st.session_state.graph_builder.sparql_query(sparql_query)
+            st.sidebar.write("Query Results:")
+            for row in results:
+                st.sidebar.write(row)
+
 def graph_visualization():
     if 'graph_builder' in st.session_state and st.session_state.graph_builder:
         rdf_graph = st.session_state.graph_builder.get_rdf_graph()
