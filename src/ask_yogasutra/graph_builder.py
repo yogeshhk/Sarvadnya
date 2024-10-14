@@ -124,7 +124,13 @@ class GraphBuilder:
         self.rdf_graph.remove((self.ns[source], self.ns['connected_to'], self.ns[target]))
 
     def get_all_node_ids(self):
-        return list(self.graph.nodes())
+        return sorted(list(self.graph.nodes()))
+
+    def get_all_node_fields(self):
+        fields = set()
+        for node, data in self.graph.nodes(data=True):
+            fields.update(data.keys())
+        return sorted(list(fields))
 
     def save_changes(self, node_id, field, new_value):
         self.update_node_properties(node_id, {field: new_value})
@@ -157,3 +163,16 @@ class GraphBuilder:
             file_path = self.json_file
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(json.loads(self.export_to_json()), f, ensure_ascii=False, indent=2)
+
+    def get_all_tags(self):
+        tags = set()
+        for node, data in self.graph.nodes(data=True):
+            if 'tags' in data:
+                tags.update(data['tags'].split(','))
+        return sorted(list(tags))
+
+    def get_node_tags(self, node_id):
+        node_data = self.graph.nodes[node_id]
+        if 'tags' in node_data:
+            return node_data['tags'].split(',')
+        return []
