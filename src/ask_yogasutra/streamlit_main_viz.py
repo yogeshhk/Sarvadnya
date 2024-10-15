@@ -8,7 +8,7 @@ import colorsys
 
 st.set_page_config(page_title="YogaSutra Graph Viewer", layout="wide")
 
-# Custom CSS for Yoga theme
+# Custom CSS for Yoga theme (unchanged)
 st.markdown("""
     <style>
     .stApp {
@@ -49,46 +49,70 @@ st.markdown("""
         border: 2px solid #4f77c7;
         margin-bottom: 20px;
     }
+    .color-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    .color-item {
+        display: flex;
+        align-items: center;
+    }
+    .color-box {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        border: 1px solid #4a4a4a;
+    }
     </style>
     """, unsafe_allow_html=True)
 
+# Updated colors to better match the theme
 NODE_COLORS = {
-    'I': "#D4A5A5",
-    'II': "#9D7E79",
-    'III': "#614051",
-    'IV': "#A26769"
+    'I': "#e6b17a",
+    'II': "#d88c51",
+    'III': "#c77d4f",
+    'IV': "#a85c2f"
 }
 
 def generate_colors(n):
-    hsv_tuples = [(x * 1.0 / n, 0.5, 0.5) for x in range(n)]
+    hsv_tuples = [(x * 1.0 / n, 0.7, 0.9) for x in range(n)]
     return ['#%02x%02x%02x' % tuple(int(x*255) for x in colorsys.hsv_to_rgb(*hsv)) for hsv in hsv_tuples]
 
-def get_node_color(node_id, highlight_pada, highlight_tags, tag_colors):
-    if highlight_pada == "None" and not highlight_tags:
-        return st.session_state.node_color
+def get_node_color(node_id, properties, highlight_tags, tag_colors):
     pada = node_id.split('.')[0]
-    node_tags = st.session_state.graph_builder.get_node_tags(node_id)
-    if highlight_pada != "None" and pada == highlight_pada:
-        return NODE_COLORS.get(pada, st.session_state.node_color)
-    if any(tag in node_tags for tag in highlight_tags):
-        return tag_colors.get(next(tag for tag in highlight_tags if tag in node_tags), st.session_state.node_color)
-    return st.session_state.node_color
+    base_color = NODE_COLORS.get(pada, "#eadb8d")
+    
+    node_tags = properties.get('tags', '').split(',')
+    matching_tags = set(node_tags) & set(highlight_tags)
+    
+    if matching_tags:
+        # If there are matching tags, use the color of the first matching tag
+        return tag_colors[list(matching_tags)[0]]
+    
+    return base_color
 
-def convert_rdf_to_agraph(rdf_graph, namespace, highlight_pada, highlight_tags, tag_colors):
+def convert_rdf_to_agraph(rdf_graph, namespace, highlight_tags, tag_colors):
     nodes = []
     edges = []
+    positions = st.session_state.graph_builder.get_node_positions()
 
     for s, p, o in rdf_graph:
         if isinstance(s, URIRef):
             node_id = str(s).replace(str(namespace), '')
             if not any(node.id == node_id for node in nodes):
-                color = get_node_color(node_id, highlight_pada, highlight_tags, tag_colors)
-                nodes.append(Node(id=node_id, label=node_id, color=color, shape="dot", size=25))
+                properties = st.session_state.graph_builder.get_node_properties(node_id)
+                color = get_node_color(node_id, properties, highlight_tags, tag_colors)
+                x, y = positions.get(node_id, (None, None))
+                label = f"{properties.get('title', '')}\n{node_id}\n{properties.get('Devanagari_Text', '')}"
+                nodes.append(Node(id=node_id, label=label, color=color, shape="box", size=25, x=x, y=y))
 
         if p == namespace['connected_to']:
             source = str(s).replace(str(namespace), '')
             target = str(o).replace(str(namespace), '')
-            edges.append(Edge(source=source, target=target, color=st.session_state.connection_color))
+            edges.append(Edge(source=source, target=target, color="#8e6343"))
 
     return nodes, edges
 
@@ -107,21 +131,13 @@ def left_sidebar_ui(graph_builder):
                 st.session_state.graph_builder = GraphBuilder()
                 st.session_state.graph_builder.import_data(graph_data)
 
-        st.markdown("### Highlight Pada")
-        highlight_pada = st.selectbox("Select Pada to highlight", ["None"] + list(NODE_COLORS.keys()))
-
         st.markdown("### Highlight Tags")
         all_tags = [tag for tag in graph_builder.get_all_tags() if tag.strip()]  
         highlight_tags = st.multiselect("Select tags to highlight", all_tags)
 
-        st.markdown("### Color Options")
-        st.session_state.node_color = st.color_picker("Choose node color", "#c77d4f")
-        st.session_state.connection_color = st.color_picker("Choose connection color", "#8e6343")
-        st.session_state.text_color = st.color_picker("Choose text color", "#4a4a4a")
-
         st.markdown("### Select Node Details")
-        default_fields = ['id', 'Sanskrit_Text', 'Word_for_Word_Analysis', 'Translation_Bryant', 'Vyasa_commentary']
-        all_fields = graph_builder.get_all_node_fields()
+        default_fields = [ 'id', 'Sanskrit_Text', 'Devanagari_Text', 'Word_for_Word_Analysis', 'Translation_Bryant', 'Vyasa_commentary']
+        all_fields = [field for field in graph_builder.get_all_node_fields() if field not in ['x', 'y', 'references', 'label']]
         selected_fields = st.multiselect("Choose fields to display", all_fields, default=default_fields)
         st.session_state.selected_fields = selected_fields
 
@@ -129,41 +145,34 @@ def left_sidebar_ui(graph_builder):
             graph_builder.save_to_file()
             st.success("JSON exported successfully!")
 
-    return highlight_pada, highlight_tags
+        st.markdown("### Pada Color Legend")
+        for pada, color in NODE_COLORS.items():
+            st.markdown(f"<div style='display: flex; align-items: center;'><div style='width: 20px; height: 20px; background-color: {color}; margin-right: 10px;'></div>Pada {pada}</div>", unsafe_allow_html=True)
 
-def graph_visualization(graph_builder, highlight_pada, highlight_tags):
+    return highlight_tags
+
+def graph_visualization(graph_builder, highlight_tags):
     rdf_graph = graph_builder.get_rdf_graph()
     namespace = graph_builder.get_namespace()
-    tag_colors = dict(zip(graph_builder.get_all_tags(), generate_colors(len(graph_builder.get_all_tags()))))
-    nodes, edges = convert_rdf_to_agraph(rdf_graph, namespace, highlight_pada, highlight_tags, tag_colors)
+    tag_colors = dict(zip(highlight_tags, generate_colors(len(highlight_tags))))
+    nodes, edges = convert_rdf_to_agraph(rdf_graph, namespace, highlight_tags, tag_colors)
     
     config = Config(width="100%", 
-                    height=600, 
+                    height=800,
                     directed=True, 
-                    physics=True,
+                    physics=False,
                     hierarchical=False)
-    config.node = {"color": st.session_state.node_color}
-    config.link = {"color": st.session_state.connection_color}
-    config.font = {"color": st.session_state.text_color}
+    config.node = {
+        "shape": "box",
+        "font": {"multi": True, "size": 12}
+    }
+    config.link = {"color": "#8e6343"}
+    config.font = {"color": "#4a4a4a"}
     
     config.view = {
         "zoom": 1, 
-        "minZoom": 0.5,  
-        "maxZoom": 2  
-    }
-
-    config.physics = {
-        "enabled": True,
-        "forceAtlas2Based": {
-            "gravitationalConstant": -50,
-            "centralGravity": 0.01,
-            "springLength": 300,
-            "springConstant": 0.08
-        },
-        "maxVelocity": 50,
-        "solver": "forceAtlas2Based",
-        "timestep": 0.35,
-        "stabilization": {"iterations": 150}
+        "minZoom": 0.5,
+        "maxZoom": 2
     }
 
     return_value = agraph(nodes=nodes, edges=edges, config=config)
@@ -171,17 +180,28 @@ def graph_visualization(graph_builder, highlight_pada, highlight_tags):
     if return_value:
         st.session_state.selected_element = return_value
 
+    # Display color legend for highlighted tags
+    if highlight_tags:
+        st.markdown("### Highlighted Tags")
+        st.markdown('<div class="color-legend">', unsafe_allow_html=True)
+        for tag in highlight_tags:
+            color = tag_colors[tag]
+            st.markdown(f'<div class="color-item"><div class="color-box" style="background-color: {color};"></div>{tag}</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
 def information_panel(graph_builder):
     if 'selected_element' in st.session_state and st.session_state.selected_element:
         element_id = st.session_state.selected_element
         properties = graph_builder.get_node_properties(element_id)
-        st.markdown(f"<div class='node-info'><h3>Sutra {element_id}</h3>", unsafe_allow_html=True)
+        st.markdown(f"### Sutra {element_id}")
         
         for key in st.session_state.selected_fields:
             if key in properties:
-                st.markdown(f"<strong>{key.replace('_', ' ').title()}:</strong>", unsafe_allow_html=True)
+                st.markdown(f"**{key.replace('_', ' ').title()}:**")
                 
-                if st.session_state.get('editing') == (element_id, key):
+                if key in ['id', 'Sanskrit_Text', 'Devanagari_Text']:
+                    st.markdown(f'<div class="scrollable-text">{properties[key]}</div>', unsafe_allow_html=True)
+                elif st.session_state.get('editing') == (element_id, key):
                     new_value = st.text_area(f"Edit {key}", value=properties[key], height=150)
                     col1, col2 = st.columns(2)
                     with col1:
@@ -196,9 +216,10 @@ def information_panel(graph_builder):
                             st.rerun()
                 else:
                     st.markdown(f'<div class="scrollable-text">{properties[key]}</div>', unsafe_allow_html=True)
-                    if st.button(f"Edit {key.replace('_', ' ').title()}", key=f"edit_{key}"):
-                        st.session_state.editing = (element_id, key)
-                        st.rerun()
+                    if key not in ['id', 'Sanskrit_Text', 'Devanagari_Text']:
+                        if st.button(f"Edit {key.replace('_', ' ').title()}", key=f"edit_{key}"):
+                            st.session_state.editing = (element_id, key)
+                            st.rerun()
 
         st.markdown("---")
 
@@ -228,8 +249,6 @@ def information_panel(graph_builder):
                     st.rerun()
             else:
                 st.write("No existing connections to remove.")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.write("Click on a node to view sutra details and edit connections.")
 
@@ -240,14 +259,8 @@ def main():
         st.session_state.selected_element = None
     if 'editing' not in st.session_state:
         st.session_state.editing = None
-    if 'node_color' not in st.session_state:
-        st.session_state.node_color = "#c77d4f"
-    if 'connection_color' not in st.session_state:
-        st.session_state.connection_color = "#8e6343"
-    if 'text_color' not in st.session_state:
-        st.session_state.text_color = "#4a4a4a"
     if 'selected_fields' not in st.session_state:
-        st.session_state.selected_fields = ['id', 'Sanskrit_Text', 'Word_for_Word_Analysis', 'Translation_Bryant', 'Vyasa_commentary']
+        st.session_state.selected_fields = ['title', 'id', 'Sanskrit_Text', 'Devanagari_Text', 'Word_for_Word_Analysis', 'Translation_Bryant', 'Vyasa_commentary']
 
     st.title("YogaSutra Graph Viewer")
 
@@ -255,17 +268,17 @@ def main():
         st.markdown("""
         - Click on a node in the graph to view sutra details.
         - Use the sidebar to customize the graph view and select which fields to display.
-        - Edit sutra details using the "Edit" button next to each field.
+        - Edit sutra details using the "Edit" button next to each field (except id, Sanskrit_Text, and Devanagari_Text).
         - Changes are reflected in real-time but not saved permanently.
         - Click "Export JSON" in the sidebar to save all changes to the file.
         """)
 
-    highlight_pada, highlight_tags = left_sidebar_ui(st.session_state.graph_builder)
+    highlight_tags = left_sidebar_ui(st.session_state.graph_builder)
 
     col1, col2 = st.columns([3, 1])
 
     with col1:
-        graph_visualization(st.session_state.graph_builder, highlight_pada, highlight_tags)
+        graph_visualization(st.session_state.graph_builder, highlight_tags)
 
     with col2:
         information_panel(st.session_state.graph_builder)
