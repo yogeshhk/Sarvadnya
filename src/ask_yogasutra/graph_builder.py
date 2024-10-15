@@ -10,6 +10,7 @@ class GraphBuilder:
         self.ns = Namespace("http://example.org/")
         self.rdf_graph.bind("ex", self.ns)
         self.json_file = json_file
+        self.positions = {}
         self.load_data()
 
     def load_data(self):
@@ -109,6 +110,7 @@ class GraphBuilder:
         if 'positions' in data:
             for node_id, pos in data['positions'].items():
                 if node_id in self.graph.nodes:
+                    self.positions[node_id] = (pos['x'], pos['y'])
                     self.update_node_properties(node_id, {'x': pos['x'], 'y': pos['y']})
 
         return len(self.graph.nodes), len(self.graph.edges)
@@ -176,3 +178,6 @@ class GraphBuilder:
         if 'tags' in node_data:
             return node_data['tags'].split(',')
         return []
+
+    def get_node_positions(self):
+        return self.positions
