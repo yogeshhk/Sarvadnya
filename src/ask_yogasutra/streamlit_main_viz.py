@@ -70,11 +70,24 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Updated colors to better match the theme
+# NODE_COLORS = {
+    # 'I': "#e6b17a",
+    # 'II': "#d88c51",
+    # 'III': "#c77d4f",
+    # 'IV': "#a85c2f"
+# }
+
+# Light Sky Blue (#87CEFA)
+# Pale Green (#98FB98)
+# Light Coral (#F08080)
+# Lavender (#D6B3E6)
+
+
 NODE_COLORS = {
-    'I': "#e6b17a",
-    'II': "#d88c51",
-    'III': "#c77d4f",
-    'IV': "#a85c2f"
+    'I': "#87CEFA",
+    'II': "#98FB98",
+    'III': "#F08080",
+    'IV': "#D6B3E6"
 }
 
 def generate_colors(n):
