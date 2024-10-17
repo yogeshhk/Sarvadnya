@@ -4,7 +4,7 @@ A chatbot for queries on the *Yogasutra* by Patanjali.
 
 **Ask Yogasutra** is built to explore and understand the *Yogasutra* of Patanjali, offering immediate access to the original Sutra text, its commentaries, and multiple English translations. This application also allows users to manually annotate the Sutra-s by adding tags, references, and notes for each Sutra.
 
-Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. Planning to incorprate GraphRAG on Togasutra-Graph to be able to answer multi-hop queries.
+Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. Planning to incorporate GraphRAG on Togasutra-Graph to be able to answer multi-hop queries.
 
 ## Features
 
@@ -60,6 +60,7 @@ The project uses datasets from existing works and community contributions, inclu
 	- [Documentation](https://project-patanjali.gitbook.io/yoga-sutra-trees/why-the-yoga-sutra-as-a-graph)
 	- [Builder](https://yogasutratrees.pages.dev/)
 	- [GitBook](https://project-patanjali.gitbook.io/yoga-sutra-trees/)
+	- [GitHub](https://github.com/Giacomo-De-Luca/YogaSutraTrees)
 	- [Website (Beta)](https://giacomo-de-luca.github.io/YogaSutraTrees/#)
 	- [Lecture: Giacomo De Luca - Yoga Sutra Trees - 7th ISCLS, Auroville](https://www.youtube.com/watch?v=86wcFqKNgxg)
 - [Patanjali Yoga Sutras - English Yogic Gurukul Playlist](https://www.youtube.com/playlist?list=PLAV4BpXSJLOqHHfh6BNF53wfiA_bjcde2)
