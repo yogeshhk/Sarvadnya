@@ -8,7 +8,7 @@ pyarrow
 streamlit==1.31.0
 sentence-transformers==2.3.1
 transformers==4.37.2
-llama-index==0.9.40
+llama-index==0.10.13
 llama-cpp-python==0.2.72
 networkx==3.1
 matplotlib==3.7.1
