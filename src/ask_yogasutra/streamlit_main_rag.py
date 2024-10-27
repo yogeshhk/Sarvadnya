@@ -1,55 +1,106 @@
 import streamlit as st
-from langchain.llms import HuggingFacePipeline
-from langchain.embeddings import HuggingFaceEmbeddings
-from llama_index.core import VectorStoreIndex, ServiceContext
-from llama_index.core.node_parser import SimpleNodeParser, TokenTextSplitter
-# from llama_index.langchain_helpers.text_splitter import TokenTextSplitter
-from llama_index.readers.json.base import JSONReader
-from graphrag_backend import process_query
+import json
+import os
+import psutil
+from graphrag_backend import GraphRAGBackend
 
-# Set page configuration
-st.set_page_config(page_title="Ask Yogasutra", layout="wide")
+def initialize_session_state():
+    """Initialize session state variables."""
+    if 'messages' not in st.session_state:
+        st.session_state.messages = []
+    if 'backend' not in st.session_state:
+        st.session_state.backend = GraphRAGBackend()
 
-# Sidebar
-st.sidebar.title("Configuration")
+def get_memory_usage():
+    """Get current memory usage of the process."""
+    process = psutil.Process(os.getpid())
+    return process.memory_info().rss / 1024 / 1024
 
-# File uploader widget
-uploaded_file = st.sidebar.file_uploader("Upload JSON file", type="json")
+def display_chat_messages():
+    """Display chat messages in the Streamlit interface."""
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
-# LLM selection dropdown
-llm_options = ["gemma", "llama", "mistral"]
-selected_llm = st.sidebar.selectbox("Select LLM", llm_options)
+def main():
+    st.title("Yoga Sutras Graph RAG Chatbot")
+    
+    initialize_session_state()
 
-# Main window
-st.title("Ask Yogasutra")
+    with st.sidebar:
+        st.header("Instructions")
+        st.write("""
+        1. Upload your JSON file containing the graph data
+        2. Wait for the graph to be processed
+        3. Ask questions about the Yoga Sutras
+        
+        Example questions:
+        - What is the definition of yoga?
+        - What does the Vyasa commentary say about sutra 1.1?
+        - Explain the Sanskrit text and word analysis of sutra 1.2
+        """)
+        
+        st.header("Model Information")
+        if st.session_state.backend.query_engine is not None:
+            st.success("✓ Models loaded and ready")
+            if st.session_state.backend.graph_store is not None:
+                st.success("✓ Knowledge graph active")
+        else:
+            st.info("⋯ Waiting for file upload")
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# React to user input
-if prompt := st.chat_input("What would you like to know about Yogasutra?"):
-    # Display user message in chat message container
-    st.chat_message("user").markdown(prompt)
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    uploaded_file = st.file_uploader("Choose a JSON file", type="json")
 
     if uploaded_file is not None:
-        response = process_query(prompt, uploaded_file, selected_llm)
-        
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            st.markdown(response)
-        # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
-    else:
-        st.warning("Please upload a JSON file to proceed.")
+        try:
+            json_data = json.load(uploaded_file)
+            
+            if st.session_state.backend.query_engine is None:
+                with st.spinner("Processing graph data..."):
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    
+                    def update_progress(batch_start, batch_end, total_nodes):
+                        progress = batch_end / total_nodes
+                        progress_bar.progress(progress)
+                        status_text.text(f"Processing nodes {batch_start + 1} to {batch_end} of {total_nodes}")
+                    
+                    success = st.session_state.backend.setup_knowledge_base(
+                        json_data,
+                        progress_callback=update_progress
+                    )
+                    
+                    if success:
+                        st.success("Graph data processed successfully!")
+                        progress_bar.empty()
+                        status_text.empty()
 
-# Add a footer
-st.markdown("---")
-st.markdown("Built with ❤️ using LangChain, LlamaIndex, and Streamlit")
+        except Exception as e:
+            st.error(f"Error loading JSON file: {str(e)}")
+
+    display_chat_messages()
+
+    if prompt := st.chat_input("What would you like to know about the Yoga Sutras?"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                try:
+                    response = st.session_state.backend.process_query(prompt)
+                    st.markdown(response)
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                except Exception as e:
+                    st.error(f"Error processing query: {str(e)}")
+        
+    if st.checkbox("Show Memory Usage"):
+        memory_placeholder = st.empty()
+        import time
+        while True:
+            memory_mb = get_memory_usage()
+            memory_placeholder.text(f"Current Memory Usage: {memory_mb:.2f} MB")
+            time.sleep(1)
+
+if __name__ == "__main__":
+    main()
