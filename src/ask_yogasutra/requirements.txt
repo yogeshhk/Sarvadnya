@@ -5,7 +5,7 @@ matplotlib
 pyvis
 streamlit-agraph
 pyarrow
-streamlit==1.31.0
+streamlit==1.37.0
 sentence-transformers==2.3.1
 transformers==4.37.2
 llama-index==0.9.40
