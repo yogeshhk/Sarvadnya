@@ -47,7 +47,7 @@ The graph visualization component is implemented using Streamlit and includes th
 
 2. **Visualization Interface (`streamlit_main_viz.py`)**:
    ```python
-   streamlit run streamlit_main_viz.py
+   streamlit run streamlit_main_visualization.py
    ```
    Features:
    - Interactive graph visualization using Streamlit-Agraph
@@ -71,9 +71,9 @@ The chatbot implementation combines graph-based retrieval with language model ge
    - Implements citation-aware query engine
    - Handles document processing and embedding
 
-2. **Chatbot Interface (`streamlit_main_rag.py`)**:
+2. **Chatbot Interface (`streamlit_main_graphrag.py`)**:
    ```python
-   streamlit run streamlit_main_rag.py
+   streamlit run streamlit_main_graphrag.py
    ```
    Features:
    - Chat interface with message history
@@ -136,7 +136,7 @@ print(response)
 
 2. **New Visualization Options**:
    ```python
-   # Add to streamlit_main_viz.py
+   # Add to streamlit_main_graphrag.py
    def custom_view_config():
        return Config(
            width="100%",
