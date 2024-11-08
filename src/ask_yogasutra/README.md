@@ -13,130 +13,178 @@ Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. 
 - **Query Understanding:** Chatbot built on Retrieval-Augmented Generation (RAG) techniques for answering queries on the *Yogasutra*.
 - **Knowledge Graph Structure:** Nodes represent Sutras, each having associated meanings, tags, and commentaries. Edges represent relationships such as definitions and explanations between Sutras.
 - **Multiple Translations:** Access to various English translations for better comprehension.
-  
-## How it Works
 
-This application builds a **Knowledge Graph** of the *Yogasutra*, where:
-
-- **Nodes** are individual aphorisms (Sutras), with properties such as meanings, tags, and associated commentaries.
-- **Edges** represent relationships between Sutras, such as definitions, explanations, and thematic connections.
-  
-Based on **Graph Retrieval-Augmented Generation (RAG)**, the chatbot can retrieve relevant information and provide accurate answers based on the user's query.
-
-## Getting Started
+## Installation and Setup
 
 1. Clone the repository:
     ```bash
     git clone https://github.com/yourusername/ask-yogasutra.git
     cd ask-yogasutra
     ```
+
 2. Install dependencies:
     ```bash
     pip install -r requirements.txt
     ```
-3. Run the application:
+
+3. Download the required model:
     ```bash
-    python app.py
+    # Download llama-2-7b-chat.Q4_K_M.gguf and place it in the project root
+    wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf
     ```
 
-# Graph Editor Implementation Plan using Streamlit
+## Implementation Guide
 
-## 1. Setup and Environment
+### Phase 1: Graph Visualization
 
-1. Set up a new Python environment
-2. Install required libraries:
-   - Streamlit
-   - NetworkX
-   - Pyvis (for graph visualization)
-   - RDFLib (for SPARQL support)
+The graph visualization component is implemented using Streamlit and includes the following key features:
 
+1. **Graph Builder (`graph_builder.py`)**:
+   - Manages the graph structure using NetworkX
+   - Handles node and edge operations
+   - Supports RDF integration for semantic queries
+   - Provides JSON import/export functionality
 
-## References
+2. **Visualization Interface (`streamlit_main_viz.py`)**:
+   ```python
+   streamlit run streamlit_main_viz.py
+   ```
+   Features:
+   - Interactive graph visualization using Streamlit-Agraph
+   - Color-coded nodes based on Pada (chapter)
+   - Tag-based highlighting
+   - Node property editing
+   - Connection management
 
-The project uses datasets from existing works and community contributions, including:
+3. **Customization Options**:
+   - Field selection for node details
+   - Tag-based filtering
+   - Graph layout controls
+   - Export capabilities
 
-- **Patanjali-project YogaSutraTrees-Giacomo-De-Luca:** A graph-based visualization project for the *Yoga Sutra* and its commentaries.
+### Phase 2: GraphRAG Chatbot
 
-	- [Documentation](https://project-patanjali.gitbook.io/yoga-sutra-trees/why-the-yoga-sutra-as-a-graph)
-	- [Builder](https://yogasutratrees.pages.dev/)
-	- [GitBook](https://project-patanjali.gitbook.io/yoga-sutra-trees/)
-	- [GitHub](https://github.com/Giacomo-De-Luca/YogaSutraTrees)
-	- [Website (Beta)](https://giacomo-de-luca.github.io/YogaSutraTrees/#)
-	- [Lecture: Giacomo De Luca - Yoga Sutra Trees - 7th ISCLS, Auroville](https://www.youtube.com/watch?v=86wcFqKNgxg)
-- [Patanjali Yoga Sutras - English Yogic Gurukul Playlist](https://www.youtube.com/playlist?list=PLAV4BpXSJLOqHHfh6BNF53wfiA_bjcde2)
-- [siva-sh: Spirituality meets Technology](https://siva.sh/patanjali-yoga-sutra)
+The chatbot implementation combines graph-based retrieval with language model generation:
 
-## License
+1. **Backend Setup (`graphrag_backend.py`)**:
+   - Uses LlamaIndex for knowledge graph creation
+   - Implements citation-aware query engine
+   - Handles document processing and embedding
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+2. **Chatbot Interface (`streamlit_main_rag.py`)**:
+   ```python
+   streamlit run streamlit_main_rag.py
+   ```
+   Features:
+   - Chat interface with message history
+   - JSON data upload
+   - Progress tracking
+   - Memory usage monitoring
+
+3. **Configuration Requirements**:
+   - LlamaCPP model setup
+   - Embedding model configuration
+   - Graph store initialization
+
+## Usage Examples
+
+### Graph Visualization
+
+```python
+# Initialize graph with default data
+graph_builder = GraphBuilder('data/graph.json')
+
+# Add custom node
+graph_builder.add_node('1.1', {
+    'Sanskrit_Text': 'अथ योगानुशासनम्',
+    'Translation': 'Now, the exposition of Yoga begins'
+})
+
+# Add connection
+graph_builder.add_connection('1.1', '1.2')
+
+# Save changes
+graph_builder.save_to_file()
+```
+
+### GraphRAG Queries
+
+```python
+# Initialize backend
+backend = GraphRAGBackend()
+
+# Load graph data
+with open('data/graph.json', 'r') as f:
+    json_data = json.load(f)
+backend.setup_knowledge_base(json_data)
+
+# Query the system
+response = backend.process_query("What is the definition of yoga?")
+print(response)
+```
+
+## Development and Extension
+
+### Adding New Features
+
+1. **Custom Node Properties**:
+   ```python
+   # Add new property to graph_builder.py
+   def add_custom_property(self, node_id, property_name, value):
+       self.update_node_properties(node_id, {property_name: value})
+   ```
+
+2. **New Visualization Options**:
+   ```python
+   # Add to streamlit_main_viz.py
+   def custom_view_config():
+       return Config(
+           width="100%",
+           height=800,
+           directed=True,
+           physics=False
+       )
+   ```
 
 ## Contributions
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
-## Debugging
-On error "AxiosError: Request failed with status code 403"
-[Fix](https://discuss.streamlit.io/t/axioserror-request-failed-with-status-code-403/38112/12):
- Create a new folder called .streamlit and create a “config.toml” file inside it. Then add this to the file:
+## Troubleshooting
 
+### Common Issues
+
+1. **Graph Visualization**:
+   - If nodes don't appear: Check JSON format
+   - If layout is cluttered: Adjust physics settings
+   - If colors don't update: Clear browser cache
+
+2. **ChatBot**:
+   - Memory issues: Adjust batch size
+   - Slow responses: Check GPU configuration
+   - Missing model: Verify model path
+
+### Debug Configuration
+
+Create `.streamlit/config.toml`:
+```toml
 [server]
 enableXsrfProtection = false
 enableCORS = false
+```
 
-# Ask Yogasutra - Phase 1: Visualizing and Editing Verses Graph
+## License
 
-## Overview
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
-This project aims to create an interactive graph-based representation of Patanjali's Yogasutra using **Streamlit**. Each node represents a verse (sutra), and edges connect related verses. Users can view verse details by selecting a node, edit the graph, and save changes back to a JSON file.
+## References
 
-## Workflow
-
-1. **Import JSON of Verses**:
-   - Load a JSON file containing verses and their relationships.
-
-2. **Visualize the Graph**:
-   - Construct an interactive graph using libraries like **Graphviz**, **Pyvis**, and **Agraph**.
-   - Each node displays verse information; edges indicate direct relationships.
-
-3. **Select and View Verse Properties**:
-   - Click on a node to view detailed properties of the selected verse.
-
-4. **Edit the Graph**:
-   - Modify connections and properties directly in the graph interface.
-
-5. **Save Changes**:
-   - Updated information is saved back to the JSON file.
-
-## Libraries Used
-
-- **Streamlit**: For building the web application.
-- **Graphviz**: For creating visual graphs.
-- **Pyvis**: For interactive graph visualizations.
-- **Agraph**: For additional graph handling capabilities.
-
-# Ask Yogasutra - Phase 2: Chatbot Integration with Graph Retrieval
-
-## Overview
-
-In Phase 2, we aim to develop a chatbot that leverages the graph created in Phase 1 to retrieve information from the Patanjali Yogasutra verses. The chatbot will utilize Graph Retrieval-Augmented Generation (RAG) to answer users' questions based on the interconnected verses.
-
-## Workflow
-
-1. **Integrate the Chatbot**:
-   - Implement a chatbot interface within the existing Streamlit application.
-
-2. **Graph Retrieval**:
-   - Use the graph data structure to access relevant verses based on user queries.
-   - Implement Graph RAG techniques to enhance answer generation.
-
-3. **Answering Questions**:
-   - The chatbot will process user input and retrieve relevant verse information.
-   - Generate responses based on the relationships and content of the verses.
-
-4. **User Interaction**:
-   - Allow users to ask questions and receive answers in a conversational format.
-
-## Libraries Used
-
-- **Streamlit**: For the web application interface.
-
+- **Patanjali-project YogaSutraTrees-Giacomo-De-Luca:** A graph-based visualization project for the *Yoga Sutra* and its commentaries.
+  - [Documentation](https://project-patanjali.gitbook.io/yoga-sutra-trees/why-the-yoga-sutra-as-a-graph)
+  - [Builder](https://yogasutratrees.pages.dev/)
+  - [GitBook](https://project-patanjali.gitbook.io/yoga-sutra-trees/)
+  - [GitHub](https://github.com/Giacomo-De-Luca/YogaSutraTrees)
+  - [Website (Beta)](https://giacomo-de-luca.github.io/YogaSutraTrees/#)
+  - [Lecture: Giacomo De Luca - Yoga Sutra Trees - 7th ISCLS, Auroville](https://www.youtube.com/watch?v=86wcFqKNgxg)
+- [Patanjali Yoga Sutras - English Yogic Gurukul Playlist](https://www.youtube.com/playlist?list=PLAV4BpXSJLOqHHfh6BNF53wfiA_bjcde2)
+- [siva-sh: Spirituality meets Technology](https://siva.sh/patanjali-yoga-sutra)
