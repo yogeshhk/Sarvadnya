@@ -91,6 +91,11 @@ We welcome contributions from the community! If you'd like to contribute to Agen
 Before submitting a pull request, please ensure that your code follows the project's coding style and that all tests pass.
 
 ## References
+- [LangGraph Mastery Playlist - by Sunny Savita](https://www.youtube.com/playlist?list=PLQxDHpeGU14AJ4sBRWLBqjMthxrLXJmgF)
+- [AI Agents by Atef Ataya](https://www.youtube.com/playlist?list=PLQog6EfhK_pIVm6A6f-CyZwvZAy5sKmwe)
+- [LangGraph: Mastering Advanced AI Workflows by Atef Ataya](https://www.youtube.com/playlist?list=PLQog6EfhK_pJ7I4bLBobe7Yikp5fQfEXU)
+- [Large Language Model Agents MOOC, Fall 2024](https://llmagents-learning.org/f24), [Youtube Playlist](https://www.youtube.com/playlist?list=PLS01nW3RtgopsNLeM936V4TNSsvvVglLc)
+- [New Course: AI Agents in LangGraph DeepLearningAI](https://www.youtube.com/watch?app=desktop&v=EqEXTGot2xs)
 
 Agents builds upon the work of several influential projects and research papers in the field of natural language processing and large language models. Here are some key references:
 
