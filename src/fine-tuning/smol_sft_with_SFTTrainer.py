@@ -77,15 +77,3 @@ trainer.train()
 trainer.save_model(f"./models/{finetune_name}")
 
 # trainer.push_to_hub(tags=finetune_tags)
-
-# Test the fine-tuned model on the same prompt
-
-# Let's test the base model before training
-prompt = "Write a haiku about programming"
-
-# Format with template
-messages = [{"role": "user", "content": prompt}]
-formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-
-# Generate response
-inputs = tokenizer(formatted_prompt, return_tensors="pt").to(device)
