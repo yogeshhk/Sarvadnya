@@ -2,6 +2,7 @@
 __pycache__/
 .idea/
 models/
+sft_output/
 *.py[cod]
 *$py.class
 
