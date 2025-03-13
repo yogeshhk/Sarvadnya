@@ -1,0 +1,27 @@
+llm:
+  api_type: "open_llm"
+  # api_type: "openai"
+  base_url: 'YOUR_BASE_URL'
+  # model: 'gpt-3.5-turbo'
+  # api_type: "openai"  # or ollama  etc.
+  model: "llama3.1:8b8k"
+  api_key: "YOUR_API_KEY"
+
+embedding:
+  api_type: "hf"  # or  ollama / etc.
+  # base_url: "https://cfcus02.opapi.win/v1"  # or forward url / other llm url
+  api_key: "YOUR_API_KEY"
+  model: "BAAI/bge-m3"
+  cache_dir: ""
+  dimensions: 1024
+  max_token_size: 8102
+  embed_batch_size: 128
+  embedding_func_max_async: 16
+ 
+data_root:  "YOUR_ROOT_DATA" # Root directory for data
+
+
+
+working_dir: ./ # Result directory for the experiment
+exp_name:  # Experiment name
+# 
