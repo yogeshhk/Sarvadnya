@@ -7,9 +7,9 @@ from transformers import AutoModel, AutoTokenizer
 from lightrag.kg.shared_storage import initialize_pipeline_status
 
 import asyncio
-import nest_asyncio
+# import nest_asyncio
 
-nest_asyncio.apply()
+# nest_asyncio.apply()
 
 WORKING_DIR = "./dickens"
 
@@ -21,7 +21,7 @@ async def initialize_rag():
     rag = LightRAG(
         working_dir=WORKING_DIR,
         llm_model_func=hf_model_complete,
-        llm_model_name="meta-llama/Llama-3.1-8B-Instruct",
+        llm_model_name= "Qwen/Qwen2.5-3B", # "meta-llama/Llama-3.1-8B-Instruct", # "google/gemma-7b",
         embedding_func=EmbeddingFunc(
             embedding_dim=384,
             max_token_size=5000,
@@ -46,7 +46,7 @@ async def initialize_rag():
 def main():
     rag = asyncio.run(initialize_rag())
 
-    with open("./book.txt", "r", encoding="utf-8") as f:
+    with open("./data/book.txt", "r", encoding="utf-8") as f:
         rag.insert(f.read())
 
     # Perform naive search
