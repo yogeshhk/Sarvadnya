@@ -1,0 +1,13 @@
+{
+  "mix": {
+    "74841f633560f3d5a40ff3191ba2a192": {
+      "return": "{\"high_level_keywords\": [\"Story themes\", \"Narrative analysis\"], \"low_level_keywords\": [\"Plot\", \"Character development\", \"Setting\", \"Conflict resolution\"]}",
+      "cache_type": "keywords",
+      "embedding": null,
+      "embedding_shape": null,
+      "embedding_min": null,
+      "embedding_max": null,
+      "original_prompt": "What are the top themes in this story?"
+    }
+  }
+}
