@@ -37,7 +37,7 @@ googleapis-common-protos==1.65.0
 graphql-core==3.2.4
 greenlet==3.0.3
 grpcio==1.66.1
-h11==0.14.0
+h11==0.16.0
 hdbscan==0.8.38.post1
 httpcore==1.0.5
 httptools==0.6.1
