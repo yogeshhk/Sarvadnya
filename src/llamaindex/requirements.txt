@@ -143,7 +143,7 @@ soupsieve==2.6
 SQLAlchemy==2.0.34
 sqlean.py==3.45.1
 starlette==0.40.0
-strawberry-graphql==0.236.0
+strawberry-graphql==0.258.0
 striprtf==0.0.26
 sympy==1.13.2
 tenacity==8.5.0
