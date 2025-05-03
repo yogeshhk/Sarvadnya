@@ -1,9 +1,9 @@
-# import torch
-# print(torch.cuda.is_available())  # Should return True
-# print(torch.__version__)          # e.g., 2.3.0+cu121
+import torch
+print(torch.cuda.is_available())  # Should return True
+print(torch.__version__)          # e.g., 2.3.0+cu121
 
 # --- Import necessary LlamaIndex components ---
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
+from llama_index.core import Settings
 # from llama_index.llms.openai import OpenAI # For the LM Studio LLM endpoint
 from llama_index.llms.lmstudio import LMStudio
 # >>> Using HuggingFace embeddings locally is generally recommended with LM Studio <<<
@@ -59,51 +59,3 @@ print("Embedding model initialized.")
 Settings.llm = llm
 Settings.embed_model = embed_model
 print("LlamaIndex Settings configured.")
-
-# --- Load documents (no change here) ---
-print("Loading documents from 'pdf/' directory...")
-try:
-    documents = SimpleDirectoryReader("pdf/").load_data()
-    print(f"Loaded {len(documents)} documents.")
-    if not documents:
-        print("Warning: No documents found in 'pdf/' directory.")
-        # Decide if you want to exit or continue without documents
-        # exit()
-except Exception as e:
-    print(f"Error loading documents: {e}")
-    exit()
-
-
-# --- Create index using the configured settings (no change here) ---
-# This step will use the HuggingFace model to create embeddings locally
-# and store them.
-print("Creating vector store index...")
-try:
-    index = VectorStoreIndex.from_documents(documents)
-    print("Index created successfully.")
-except Exception as e:
-    print(f"Error creating index: {e}")
-    # This could be due to issues with embedding model, memory, etc.
-    exit()
-
-
-# --- Create query engine (no change here) ---
-# The query engine will use the HuggingFace embeddings for retrieval
-# and the LM Studio LLM for synthesizing the final answer.
-print("Creating query engine...")
-query_engine = index.as_query_engine()
-print("Query engine created.")
-
-# --- Query the engine (no change here) ---
-query = "What are the design goals and give details about it please."
-print(f"\nQuerying index: '{query}'")
-try:
-    response = query_engine.query(query)
-    # --- Print response (no change here) ---
-    print("\nResponse from LLM:")
-    print(response)
-except Exception as e:
-    print(f"Error during query: {e}")
-    # This could be a timeout from LM Studio, OOM error, etc.
-
-print("\n--- Script Finished ---")

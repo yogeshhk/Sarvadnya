@@ -1,0 +1,6 @@
+__pycache__/
+models/
+.idea/
+.project
+.pydevproject
+
