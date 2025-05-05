@@ -2,3 +2,5 @@
 .env
 chroma_db/
 storage/
+data/
+__pycache__/
