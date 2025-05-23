@@ -4,10 +4,13 @@ from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.groq import Groq
-from llama_index.vector_stores.chromadb import ChromaVectorStore
+from llama_index.vector_stores.chroma import ChromaVectorStore
 import chromadb
 import os
 from dotenv import load_dotenv
+
+# --- 1. Page Configuration (MUST BE THE FIRST STREAMLIT COMMAND) ---
+st.set_page_config(layout="wide", page_title="Excel RAG Chatbot")
 
 # Load environment variables (for GROQ_API_KEY)
 load_dotenv()

@@ -1,5 +1,35 @@
-# Code
+# RAG on Paired Data
 
+## Prompt
+```
+You are an expert in llamaindex coding. Need to build chatbot application PoC using streamlit ui, open source models from groq and llamaindex.
+
+
+
+Here is the problem for which code needs to be written using the RAG(retrieval augmented generation) approach. Here RAG training or indexing data is in MS Excel with two columns format. First column is English query and second column is of the response. The type of response can vary as below:
+
+-  paragraph for FAQ chatbot
+
+-  sql for text 2 sql application 
+
+-  testing steps for QA application 
+
+-  code blog for coding application 
+
+
+
+Generate sample excel for all the above types, read them in python code, index them chormadb and build full end to end application using llamaindex framework
+
+
+
+Here indexing is done for the first column primarily and when user query comes, it's matched in index for the first column and top k corresponding answers from second column are brought in the prompt for response generation. If there is any ready class for such Rag approach, use it or code it from scratch.
+```
+
+Refinement
+
+```
+Split the code in app.py into two files app.py which contains primarliy srtealit code and then rag.py for rag related llamaindex code, make rag code into a class, test it with some examples in __main__ below that file , streamlit from app.y should just instantiate rag class and call it's member functions
+```
 ## Prerequisites:
 
 - Install libraries:
