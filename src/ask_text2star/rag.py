@@ -1,7 +1,7 @@
 # rag.py
 import os
 import pandas as pd
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.core.node_parser import SentenceSplitter # Though Settings.chunk_size handles this generally
@@ -10,8 +10,8 @@ from llama_index.llms.groq import Groq
 from llama_index.vector_stores.chroma import ChromaVectorStore # Corrected import
 import chromadb
 
-# Load environment variables at the module level if needed by LlamaIndex settings early
-load_dotenv()
+# # Load environment variables at the module level if needed by LlamaIndex settings early
+# load_dotenv()
 
 class RAGSystem:
     def __init__(self,
@@ -19,7 +19,7 @@ class RAGSystem:
                  llm_model_name="llama3-8b-8192",
                  chunk_size=512,
                  top_k=3,
-                 db_path="./chroma_db_excel_poc_class",
+                 db_path="./db/chroma_db_excel_poc_class",
                  collection_name="my_excel_rag_collection_class"):
         """
         Initializes the RAG system with specified configurations.
@@ -120,7 +120,7 @@ class RAGSystem:
                                                # or create if it does not exist (though we get it first)
                                                # This usage might be tricky; let's use from_vector_store if loading,
                                                # and from_documents if truly building fresh.
-
+                )
                 # A safer way for "create or update":
                 # 1. Try to get collection.
                 # 2. If exists, load index from it. Then add new documents.
@@ -265,82 +265,91 @@ class RAGSystem:
         
         return final_answer, retrieved_info_for_display
 
+
 # --- Main block for testing RAGSystem ---
 if __name__ == "__main__":
-    print("Testing RAGSystem...")
+    print("Testing RAGSystem - Inference Mode...")
 
-    # Ensure GROQ_API_KEY is set in your .env file or environment
+    # --- Configuration ---
+    DATA_DIR = "./data"
+    TEST_DB_PATH = "./db/test_rag_chroma_db_inference" # Use a specific DB for this test
+    TEST_COLLECTION_NAME = "test_rag_collection_inference"
+
+    # --- Check for API Key ---
     if not os.getenv("GROQ_API_KEY"):
         print("Error: GROQ_API_KEY not set. Please set it in your .env file or environment.")
         exit()
 
-    # Create dummy Excel files for testing
-    dummy_faq_data = {
-        "English Query": ["What is RAG?", "How does LlamaIndex work?"],
-        "Response": ["RAG stands for Retrieval Augmented Generation.", "LlamaIndex helps build applications with LLMs over your data."]
-    }
-    dummy_sql_data = {
-        "English Query": ["Show all customers", "Count orders"],
-        "Response": ["SELECT * FROM customers;", "SELECT COUNT(*) FROM orders;"]
-    }
-    faq_file_path = "dummy_faq_data.xlsx"
-    sql_file_path = "dummy_sql_data.xlsx"
+    # --- Check for Data Directory and Files ---
+    if not os.path.exists(DATA_DIR):
+        print(f"Error: Data directory '{DATA_DIR}' not found.")
+        print("Please create it and place your Excel files (faq_data.xlsx, etc.) inside.")
+        exit()
 
-    pd.DataFrame(dummy_faq_data).to_excel(faq_file_path, index=False)
-    pd.DataFrame(dummy_sql_data).to_excel(sql_file_path, index=False)
+    excel_files = [os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR) if f.endswith('.xlsx')]
 
-    print(f"Created dummy files: {faq_file_path}, {sql_file_path}")
+    if not excel_files:
+        print(f"Error: No .xlsx files found in the '{DATA_DIR}' directory.")
+        exit()
+
+    print(f"Found {len(excel_files)} Excel files in '{DATA_DIR}':")
+    for f in excel_files:
+        print(f"  - {os.path.basename(f)}")
 
     # 1. Initialize RAGSystem
     try:
         rag_system = RAGSystem(
-            db_path="./test_rag_chroma_db", # Use a separate DB for testing
-            collection_name="test_rag_collection"
+            db_path=TEST_DB_PATH,
+            collection_name=TEST_COLLECTION_NAME
         )
-        print("RAGSystem initialized.")
+        print("\nRAGSystem initialized.")
     except ValueError as e:
         print(f"Failed to initialize RAGSystem: {e}")
         exit()
 
-    # 2. Load and Index Data
-    file_paths_to_index = [faq_file_path, sql_file_path]
-    print(f"Attempting to load and index data from: {file_paths_to_index}")
-    message, num_docs, num_files = rag_system.load_and_index_data(file_paths_to_index)
-    print(f"Load and Index Result: {message}, Docs: {num_docs}, Files: {num_files}")
+    # 2. Load and Index Data (This will build/load the index)
+    print(f"\nAttempting to load and index data from: {DATA_DIR}")
+    message, num_docs, num_files = rag_system.load_and_index_data(excel_files)
+    print(f"Load and Index Result: {message}")
 
     if rag_system.index is None:
-        print("Index was not created. Exiting test.")
+        print("Index was not created or loaded. Cannot proceed with inference. Exiting test.")
         exit()
+    else:
+        print("Index is ready for querying.")
 
-    # 3. Test Querying
-    print("\nTesting queries...")
+
+    # 3. Test Querying (Inference)
+    print("\n--- Testing Inference Queries ---")
     queries_to_test = [
-        "What is RAG?",
-        "Tell me about LlamaIndex",
-        "Query for all customers",
-        "How many orders are there?",
-        "What is the capital of France?" # Test a query not in data
+        # FAQ Queries
+        "What are your business hours?",
+        "How can I reset my password?",
+        # Text-to-SQL Queries
+        "Show me all users from New York",
+        "How many orders were placed last month?",
+        # QA Testing Queries
+        "How to test user login functionality?",
+        "Steps to verify search product feature?",
+        # Coding Queries
+        "How to write a Python function to read a CSV?",
+        "Basic Flask app structure in Python",
+        # General/Out-of-Scope Query
+        "What's the weather like today?"
     ]
 
     for q_idx, query in enumerate(queries_to_test):
-        print(f"\n--- Query {q_idx+1}: {query} ---")
+        print(f"\n--- Query {q_idx+1}: '{query}' ---")
         answer, retrieved = rag_system.query_index(query)
-        print(f"Answer: {answer}")
+        print(f"🤖 Answer: {answer}")
         if retrieved:
-            print("Retrieved Documents:")
+            print("🔍 Retrieved Context:")
             for i, doc_info in enumerate(retrieved):
-                print(f"  Doc {i+1}:")
-                print(f"    Matched Query: {doc_info['matched_query']}")
-                print(f"    Response: {doc_info['response']}")
-                print(f"    Score: {doc_info['score']}")
-                print(f"    Source: {doc_info['source']}")
+                print(f"  - Source: {doc_info['source']}, Score: {doc_info['score']}")
+                print(f"    Matched Q: {doc_info['matched_query'][:80]}...") # Show snippet
+                # print(f"    Retrieved A: {doc_info['response'][:80]}...") # Optionally show answer snippet
         else:
-            print("  No documents retrieved.")
-    
-    # Clean up dummy files
-    os.remove(faq_file_path)
-    os.remove(sql_file_path)
-    print(f"\nCleaned up dummy files: {faq_file_path}, {sql_file_path}")
-    # You might want to manually clean up the "./test_rag_chroma_db" directory after testing.
-    print("RAGSystem testing complete.")
-    print("Note: You may need to manually delete the './test_rag_chroma_db' directory.")
+            print("  (No specific documents retrieved)")
+
+    print("\n--- RAGSystem Inference Testing Complete ---")
+    print(f"Note: The test database is stored at '{TEST_DB_PATH}'. You might want to remove it manually if not needed.")
