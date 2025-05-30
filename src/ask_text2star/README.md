@@ -241,4 +241,10 @@ Now, let's write the Python script.
 5.  Your browser should open with the Streamlit application.
 6.  Upload your Excel files, click "Process Files & Build/Load Index", and then start chatting\!
 
+** Sample Questions:**
+- What are your business hours?
+- Show me all users from New York
+- How to test user login functionality?
+- How to write a Python function to read a CSV? 
+
 This setup provides a good foundation. You can expand it further with more sophisticated data cleaning, advanced LlamaIndex features, or a more complex UI as needed. Good luck\! 👍
