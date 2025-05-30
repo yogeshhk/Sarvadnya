@@ -146,6 +146,6 @@ if user_query := st.chat_input("Ask something about your data...", key="chat_inp
                 with st.expander("📚 See Retrieved Information"):
                     for i, doc_info in enumerate(retrieved_docs):
                         st.markdown(f"**📄 Document {i+1} (Score: {doc_info['score']})** - Source: `{doc_info['source']}`")
-                        st.text_area(f"Matched Query {i+1}", value=doc_info['matched_query'], height=50, disabled=True)
+                        st.text_area(f"Matched Query {i+1}", value=doc_info['matched_query'], height=70, disabled=True)
                         st.text_area(f"Retrieved Response {i+1}", value=doc_info['response'], height=100, disabled=True)
                         st.markdown("---")
