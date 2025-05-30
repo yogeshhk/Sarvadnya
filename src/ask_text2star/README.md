@@ -1,5 +1,8 @@
 # RAG on Paired Data
 
+A generic RAG (Retrieval Augmented Generation) framework to fetch responses from multiple formats such as docs, code, SQL and testcases.
+
+<!-- 
 ## Prompt
 ```
 You are an expert in llamaindex coding. Need to build chatbot application PoC using streamlit ui, open source models from groq and llamaindex.
@@ -29,7 +32,30 @@ Refinement
 
 ```
 Split the code in app.py into two files app.py which contains primarliy srtealit code and then rag.py for rag related llamaindex code, make rag code into a class, test it with some examples in __main__ below that file , streamlit from app.y should just instantiate rag class and call it's member functions
-```
+``` 
+-->
+
+**How the RAG works here?:**
+
+1.  **User Query:** You type a question.
+2.  **Embedding:** Your query is converted into a vector by the `HuggingFaceEmbedding` model.
+3.  **Similarity Search:** This vector is compared against all the vectors of the "English Query" column entries stored in ChromaDB.
+4.  **Retrieval:** The `top_k` most similar "English Query" entries are retrieved along with their associated `metadata` (which contains your "Response" from Excel).
+5.  **Prompt Augmentation:** The retrieved queries and their responses are formatted into a prompt for the Groq LLM.
+6.  **Generation:** The Groq LLM uses this augmented prompt to generate a final, coherent answer. It's guided to use the direct Excel responses if they are highly relevant.
+
+-----
+
+** What makes it different?:**
+✅ One System, Multiple Use Cases: FAQ responses, SQL generation, QA testing steps, and code snippets 
+✅ Excel-Powered Knowledge Base: Non-technical users can easily update training data 
+✅ Modern Tech Stack: LlamaIndex + ChromaDB + Groq + Streamlit 
+✅ Cost-Effective: Leverages open-source models with fast inference 
+✅ Production-Ready?: Complete implementation is there but of academic level, not ready to use or is production worthy.
+
+Read corresponding article: https://medium.com/analytics-vidhya/building-a-multi-format-rag-app-7dd70bc8daca
+
+
 ## Prerequisites:
 
 - Install libraries:
@@ -53,6 +79,7 @@ Here's how we'll approach it:
 
 Let's get started\!
 
+<!-- 
 -----
 
 ## 📝 Sample Excel Data
@@ -198,18 +225,9 @@ Now, let's write the Python script.
       * **Retrieved Information Display:** An expander shows the `matched_query`, the `response` from Excel, the similarity `score`, and the `source` file for each retrieved document, giving transparency.
       * **State Management (`st.session_state`):** Used to store the `vector_index`, `messages` for the chat, and `data_loaded` status across reruns.
       * **Error Handling:** Basic checks for API keys, file formats, and index availability.
-7.  **Directory for ChromaDB:** The script will create a directory (e.g., `chroma_db_excel_poc`) in the same location as `app.py` to store the vector database. Ensure your environment has write permissions there.
+7.  **Directory for ChromaDB:** The script will create a directory (e.g., `chroma_db_excel_poc`) in the same location as `app.py` to store the vector database. Ensure your environment has write permissions there. 
+-->
 
-**How the RAG works here:**
-
-1.  **User Query:** You type a question.
-2.  **Embedding:** Your query is converted into a vector by the `HuggingFaceEmbedding` model.
-3.  **Similarity Search:** This vector is compared against all the vectors of the "English Query" column entries stored in ChromaDB.
-4.  **Retrieval:** The `top_k` most similar "English Query" entries are retrieved along with their associated `metadata` (which contains your "Response" from Excel).
-5.  **Prompt Augmentation:** The retrieved queries and their responses are formatted into a prompt for the Groq LLM.
-6.  **Generation:** The Groq LLM uses this augmented prompt to generate a final, coherent answer. It's guided to use the direct Excel responses if they are highly relevant.
-
------
 
 **To Run the Application:**
 
