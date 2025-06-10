@@ -114,7 +114,7 @@ class RAGChatbot:
             data_path = Path(self.data_directory)
             
             # Supported file extensions
-            supported_extensions = ['.txt', '.md', '.json']
+            supported_extensions = ['.txt', '.tex', '.md', '.json']
             
             for file_path in data_path.rglob('*'):
                 if file_path.is_file() and file_path.suffix.lower() in supported_extensions:
@@ -198,21 +198,35 @@ class RAGChatbot:
         """
         try:
             # Custom prompt for mental models validation
+            # custom_prompt = f"""
+            # तुम्ही एक मानसिक मॉडेल्स (Mental Models) तज्ञ आहात. दिलेल्या संदर्भावर आधारित प्रश्नाचे उत्तर द्या.
+
+            # नियम:
+            # 1. फक्त दिलेल्या संदर्भातील माहितीवर आधारित उत्तर द्या
+            # 2. उत्तर मराठीत द्या जेव्हा प्रश्न मराठीत आहे
+            # 3. Mental model चे नाव, व्याख्या आणि व्यावहारिक उदाहरण द्या
+            # 4. जर संदर्भात माहिती नसेल तर "मला या विषयावर पुरेशी माहिती उपलब्ध नाही" असे सांगा
+            # 5. उत्तर स्पष्ट आणि समजण्यासारखे असावे
+
+            # प्रश्न: {question}
+
+            # कृपया वरील नियमांनुसार उत्तर द्या.
+            # """
             custom_prompt = f"""
-            तुम्ही एक मानसिक मॉडेल्स (Mental Models) तज्ञ आहात. दिलेल्या संदर्भावर आधारित प्रश्नाचे उत्तर द्या.
+            You are an expert in Mental Models. Based on the given context, answer the following question.
 
-            नियम:
-            1. फक्त दिलेल्या संदर्भातील माहितीवर आधारित उत्तर द्या
-            2. उत्तर मराठीत द्या जेव्हा प्रश्न मराठीत आहे
-            3. Mental model चे नाव, व्याख्या आणि व्यावहारिक उदाहरण द्या
-            4. जर संदर्भात माहिती नसेल तर "मला या विषयावर पुरेशी माहिती उपलब्ध नाही" असे सांगा
-            5. उत्तर स्पष्ट आणि समजण्यासारखे असावे
+            Instructions:
+            1. Only use the information from the context.
+            2. Answer in Marathi if the question is in Marathi.
+            3. Include the mental model name, definition, and practical example.
+            4. If information is not available, say "मला या विषयावर पुरेशी माहिती उपलब्ध नाही".
+            5. The answer should be clear and easy to understand.
 
-            प्रश्न: {question}
+            Question: {question}
 
-            कृपया वरील नियमांनुसार उत्तर द्या.
+            Please follow these instructions and answer accordingly.
             """
-            
+
             # Get response from query engine
             response = self.query_engine.query(custom_prompt)
             
@@ -238,21 +252,35 @@ class RAGChatbot:
         """
         try:
             # Basic validation prompt
+            # validation_prompt = f"""
+            # हे उत्तर तपासा आणि आवश्यक असल्यास सुधारा:
+
+            # प्रश्न: {question}
+            # उत्तर: {response}
+
+            # तपासणी:
+            # 1. उत्तर प्रश्नाशी संबंधित आहे का?
+            # 2. माहिती बरोबर आहे का?
+            # 3. मराठी भाषा योग्य आहे का?
+            # 4. स्पष्टीकरण पुरेसे आहे का?
+
+            # सुधारलेले उत्तर द्या:
+            # """
             validation_prompt = f"""
-            हे उत्तर तपासा आणि आवश्यक असल्यास सुधारा:
+            Please check and correct the following response if needed:
 
-            प्रश्न: {question}
-            उत्तर: {response}
+            Question: {question}
+            Response: {response}
 
-            तपासणी:
-            1. उत्तर प्रश्नाशी संबंधित आहे का?
-            2. माहिती बरोबर आहे का?
-            3. मराठी भाषा योग्य आहे का?
-            4. स्पष्टीकरण पुरेसे आहे का?
+            Validation Checklist:
+            1. Is the response relevant to the question?
+            2. Is the information accurate?
+            3. Is the Marathi language proper and clear?
+            4. Is the explanation sufficient?
 
-            सुधारलेले उत्तर द्या:
+            Please provide the corrected answer:
             """
-            
+
             # In a production environment, you might want to add another validation step
             # For now, return the original response with basic checks
             
@@ -291,68 +319,34 @@ class RAGChatbot:
 
 if __name__ == "__main__":
     """
-    Test the RAG chatbot functionality
+    Test the RAG chatbot using already trained and saved model.
     """
-    import tempfile
     import os
-    
-    # Test data
-    test_data = """
-    Sunk Cost Fallacy (बुडालेला खर्च चुकीचा निर्णय)
-    
-    हा एक मानसिक मॉडेल आहे ज्यामध्ये आपण आधी केलेला खर्च किंवा गुंतवणुकीमुळे चुकीचे निर्णय घेतो.
-    
-    व्याख्या: जेव्हा आपण आधी केलेल्या गुंतवणुकीमुळे (पैसा, वेळ, मेहनत) एखादा निर्णय घेतो, जरी तो निर्णय आता चुकीचा असला तरी.
-    
-    उदाहरण:
-    1. एका चित्रपटाची तिकीट घेतली, पण चित्रपट आवडत नाही. तरीही "पैसे वाया जातील" म्हणून पूरा चित्रपट बघणे.
-    2. कॉलेजमध्ये एका विषयात खूप वेळ घालवला, पण आता त्या विषयात करिअर नको. तरीही "इतका वेळ वाया जाईल" म्हणून तेच करत राहणे.
-    
-    टाळण्याचे मार्ग:
-    - भविष्यावर लक्ष केंद्रित करा, भूतकाळावर नाही
-    - आधीची गुंतवणूक हा निर्णयाचा भाग मानू नका
-    - वर्तमान परिस्थितीनुसार निर्णय घ्या
-    """
-    
-    # Create temporary test file
-    with tempfile.TemporaryDirectory() as temp_dir:
-        test_file = os.path.join(temp_dir, "test_mental_models.txt")
-        with open(test_file, 'w', encoding='utf-8') as f:
-            f.write(test_data)
-        
-        # Test RAG chatbot (This would require actual Groq API key)
-        print("🧪 Testing RAG Chatbot...")
-        print("Note: This test requires a valid Groq API key in environment variable GROQ_API_KEY")
-        
-        groq_api_key = os.getenv("GROQ_API_KEY")
-        if groq_api_key:
-            try:
-                # Initialize chatbot
-                chatbot = RAGChatbot(
-                    data_directory=temp_dir,
-                    groq_api_key=groq_api_key
-                )
-                
-                # Test question in Marathi
-                test_question = "Sunk cost fallacy या mental model ला मराठीत काय म्हणातात आणि त्याचे उदाहरण द्या"
-                print(f"\n📝 Test Question: {test_question}")
-                
-                response = chatbot.get_response(test_question)
-                print(f"\n🤖 Response: {response}")
-                
-                print("\n✅ RAG Chatbot test completed successfully!")
-                
-            except Exception as e:
-                print(f"❌ Error testing RAG chatbot: {e}")
-        else:
-            print("⚠️ GROQ_API_KEY not found in environment variables")
-            print("💡 Set GROQ_API_KEY environment variable to test the chatbot")
-        
-        print("\n" + "="*50)
-        print("RAG Module Test Summary:")
-        print("- Document loading: ✅")
-        print("- Vector store setup: ✅") 
-        print("- Index creation: ✅")
-        print("- Query engine: ✅")
-        print("- Response generation: ✅ (requires API key)")
-        print("="*50)
+
+    print("🔍 Testing RAG Chatbot with saved model...")
+    groq_api_key = os.getenv("GROQ_API_KEY")
+
+    if not groq_api_key:
+        print("❌ GROQ_API_KEY not found. Please set it in your environment.")
+    else:
+        try:
+            # Assume model was previously trained and saved using data in 'data/' directory
+            chatbot = RAGChatbot(
+                data_directory="data",
+                groq_api_key=groq_api_key
+            )
+
+            # Ask sample Marathi questions
+            questions = [
+                "Sunk cost fallacy म्हणजे काय?",
+                "Mental model 'First Principles Thinking' चे मराठीत स्पष्टीकरण द्या.",
+                "Availability heuristic चा व्यवहारिक उपयोग काय आहे?"
+            ]
+
+            for q in questions:
+                print(f"\n📝 Question: {q}")
+                response = chatbot.get_response(q)
+                print(f"🤖 Response: {response}")
+
+        except Exception as e:
+            print(f"❌ Error during testing: {e}")

@@ -100,7 +100,7 @@ class FineTuner:
             
             # Load all text files
             for file_path in data_path.rglob('*'):
-                if file_path.is_file() and file_path.suffix.lower() in ['.txt', '.md']:
+                if file_path.is_file() and file_path.suffix.lower() in ['.txt', '.tex', '.md']:
                     try:
                         with open(file_path, 'r', encoding='utf-8') as f:
                             content = f.read().strip()
@@ -353,104 +353,35 @@ class FineTuner:
 
 if __name__ == "__main__":
     """
-    Test the fine-tuning functionality
+    Load fine-tuned model and test inference with a few Marathi questions.
+    Assumes the fine-tuned model is already available in './fine_tuned_model'.
     """
-    import tempfile
-    
-    # Test data for mental models
-    test_data = """
-    Confirmation Bias (पुष्टीकरण पूर्वाग्रह)
-    
-    हा एक मानसिक मॉडेल आहे ज्यामध्ये आपण फक्त त्या माहितीकडे लक्ष देतो जी आपल्या आधीच्या मतांना समर्थन देते.
-    
-    व्याख्या: आपल्या आधीच्या विश्वासांना बळकटी देणारी माहिती शोधणे आणि विरोधी माहितीकडे दुर्लक्ष करणे.
-    
-    उदाहरणे:
-    1. राजकीय मते: फक्त त्याच न्यूज चॅनेल बघणे ज्या आपल्या राजकीय पक्षाला समर्थन देतात
-    2. गुंतवणूक: एखाद्या कंपनीबद्दल चांगले विचार असल्यास फक्त त्या कंपनीच्या चांगल्या बातम्या वाचणे
-    3. आरोग्य: एखाद्या उपचार पद्धतीवर विश्वास असल्यास फक्त त्याच्या फायद्यांची माहिती शोधणे
-    
-    टाळण्याचे मार्ग:
-    - विरोधी मतांना देखील महत्त्व द्या
-    - विविध स्रोतांकडून माहिती घ्या
-    - आपल्या मतांवर प्रश्नचिन्ह उपस्थित करा
-    - तथ्यांवर आधारित निर्णय घ्या
-    
-    Anchoring Bias (अँकरिंग पूर्वाग्रह)
-    
-    निर्णय घेताना पहिली मिळालेली माहिती (अँकर) वर जास्त अवलंबून राहणे.
-    
-    व्याख्या: निर्णय घेताना पहिल्या माहितीचा जास्त प्रभाव पडणे, जरी ती माहिती संबंधित नसली तरी.
-    
-    उदाहरणे:
-    1. किंमत ठरवताना: दुकानदार जास्त किंमत सांगतो, मग आपण त्याच्या आधारे भाव करतो
-    2. वेतन वाटाघाटी: पहिली ऑफर नंतरच्या सगळ्या वाटाघाटींवर प्रभाव टाकते
-    3. परीक्षेत गुण देताना: पहिल्या उत्तरावरून विद्यार्थ्याची छाप पडली की पुढील उत्तरांवर त्याचा परिणाम होतो
-    
-    टाळण्याचे मार्ग:
-    - निर्णय घेण्यापूर्वी अधिक माहिती गोळा करा
-    - पहिली माहिती फेकून द्या आणि नव्याने विचार करा
-    - तुलनात्मक अभ्यास करा
-    - स्वतंत्र मूल्यांकन करा
-    """
-    
-    print("🧪 Testing Fine-tuning Module...")
-    
-    # Create temporary directory with test data
-    with tempfile.TemporaryDirectory() as temp_dir:
-        test_file = os.path.join(temp_dir, "mental_models_marathi.txt")
-        with open(test_file, 'w', encoding='utf-8') as f:
-            f.write(test_data)
-        
-        try:
-            # Initialize fine-tuner
-            fine_tuner = FineTuner(data_directory=temp_dir)
-            
-            # Test data preparation
-            print("📊 Testing data preparation...")
-            fine_tuner.prepare_training_data()
-            print(f"✅ Created {len(fine_tuner.training_data)} training samples")
-            
-            # Save training data for inspection
-            training_data_path = os.path.join(temp_dir, "training_data.json")
-            fine_tuner.save_training_data(training_data_path)
-            print(f"💾 Training data saved to {training_data_path}")
-            
-            # Test model loading (requires GPU and significant resources)
-            print("\n🤖 Testing model loading...")
-            if torch.cuda.is_available():
-                print("🎯 CUDA available - attempting to load model...")
-                try:
-                    fine_tuner.load_model()
-                    print("✅ Model loaded successfully!")
-                    
-                    # Test inference with base model
-                    test_question = "Confirmation bias या mental model ला मराठीत काय म्हणातात आणि त्याचे उदाहरण द्या"
-                    print(f"\n📝 Test Question: {test_question}")
-                    
-                    response = fine_tuner.generate_response(test_question)
-                    print(f"🤖 Response: {response}")
-                    
-                    print("\n⚠️ Note: Full fine-tuning test skipped (requires significant compute time)")
-                    print("💡 To run full fine-tuning, call fine_tuner.fine_tune_model()")
-                    
-                except Exception as e:
-                    print(f"⚠️ Model loading failed (expected on systems without sufficient GPU memory): {e}")
-            else:
-                print("⚠️ CUDA not available - skipping model loading test")
-            
-        except ImportError as e:
-            print(f"⚠️ Unsloth not available: {e}")
-            print("💡 Install unsloth to enable fine-tuning: pip install unsloth")
-        except Exception as e:
-            print(f"❌ Error testing fine-tuner: {e}")
-    
-    print("\n" + "="*50)
-    print("Fine-tuning Module Test Summary:")
-    print("- Data preparation: ✅")
-    print("- QA pair generation: ✅")
-    print("- Training data formatting: ✅")
-    print("- Model loading: ✅ (requires CUDA)")
-    print("- Fine-tuning: ⏳ (requires manual execution)")
-    print("- Inference: ✅ (after model loading)")
-    print("="*50)
+    print("🧪 Testing inference with fine-tuned model...")
+
+    try:
+        fine_tuner = FineTuner(data_directory="data")  # data_directory is not used here
+
+        # Load fine-tuned model from disk
+        print("📦 Loading fine-tuned model...")
+        fine_tuner.model, fine_tuner.tokenizer = FastLanguageModel.from_pretrained(
+            model_name="./fine_tuned_model",
+            max_seq_length=2048,
+            dtype=None,
+            load_in_4bit=True
+        )
+        print("✅ Model loaded!")
+
+        # Test inference
+        questions = [
+            "What is the Marathi explanation of Sunk Cost Fallacy?",
+            "Explain Confirmation Bias in Marathi with example.",
+            "What does Anchoring Bias mean? Answer in Marathi."
+        ]
+
+        for question in questions:
+            print(f"\n📝 Question: {question}")
+            response = fine_tuner.generate_response(question)
+            print(f"🤖 Response: {response}")
+
+    except Exception as e:
+        print(f"❌ Error during inference: {e}")
