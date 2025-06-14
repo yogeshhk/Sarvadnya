@@ -43,6 +43,9 @@ class RAGChatbot:
         self.groq_api_key = groq_api_key
         self.model_name = model_name
         self.embedding_model = embedding_model
+        self.db_path = "./chroma_db/"
+        self.index_path = "./chroma_db/index.pkl"
+        self.collection_name = "mental_models_marathi"
         
         # Initialize components
         self._setup_llm()
@@ -86,12 +89,12 @@ class RAGChatbot:
         try:
             # Initialize Chroma client
             chroma_client = chromadb.PersistentClient(
-                path="./chroma_db",
+                path=self.db_path,
                 settings=ChromaSettings(anonymized_telemetry=False)
             )
             
             # Get or create collection
-            collection_name = "mental_models_marathi"
+            collection_name = self.collection_name
             try:
                 chroma_collection = chroma_client.get_collection(collection_name)
                 logger.info(f"Loaded existing collection: {collection_name}")
@@ -130,6 +133,7 @@ class RAGChatbot:
                                         "file_type": file_path.suffix
                                     }
                                 )
+                                print(f"Read {file_path.name} ...")
                                 self.documents.append(doc)
                     except Exception as e:
                         logger.warning(f"Error reading file {file_path}: {e}")
@@ -144,27 +148,36 @@ class RAGChatbot:
             raise
     
     def _create_index(self):
-        """Create vector index"""
+        """Create or load vector index"""
         try:
-            # Setup text splitter for better chunking
-            text_splitter = SentenceSplitter(
-                chunk_size=512,
-                chunk_overlap=50
-            )
-            Settings.text_splitter = text_splitter
-            
-            # Create index
-            self.index = VectorStoreIndex.from_documents(
-                self.documents,
-                storage_context=self.storage_context,
-                show_progress=True
-            )
-            logger.info("Vector index created successfully")
-            
+            if os.path.exists(self.index_path):
+                # Load existing index
+                # self.index = VectorStoreIndex.load_from_disk("./chroma_db/index.pkl")
+                db = chromadb.PersistentClient(path=self.index_path)
+                logger.info("Loaded existing vector index")
+                # 2. Get the collection
+                chroma_collection = db.get_collection(name=self.collection_name) # Raises if not found
+                # 3. Create the vector store object
+                vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+                # 4. Load the index FROM the vector store
+                self.index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+                print(f"Successfully loaded existing index from collection: {self.collection_name}")                
+            else:
+                # Create index from documents
+                text_splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+                Settings.text_splitter = text_splitter
+
+                self.index = VectorStoreIndex.from_documents(
+                    self.documents,
+                    storage_context=self.storage_context,
+                    show_progress=True
+                )
+                self.index.storage_context.persist("./chroma_db/index.pkl") # self.index.save_to_disk("./chroma_db/index.pkl")
+                logger.info("Vector index created and saved")
         except Exception as e:
-            logger.error(f"Error creating index: {e}")
+            logger.error(f"Error creating/loading index: {e}")
             raise
-    
+        
     def _setup_query_engine(self):
         """Setup query engine with custom prompt"""
         try:
@@ -230,8 +243,12 @@ class RAGChatbot:
             # Get response from query engine
             response = self.query_engine.query(custom_prompt)
             
+            print(f"For question: {question} \n Got Response: {response}")
+            
             # Validate response
             validated_response = self._validate_response(str(response), question)
+            
+            print(f"Validated Response: {validated_response}")
             
             return validated_response
             
