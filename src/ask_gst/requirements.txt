@@ -147,7 +147,7 @@ platformdirs @ file:///C:/b/abs_73cc5cz_1u/croots/recipe/platformdirs_1662711386
 prometheus-client==0.17.0
 prompt-toolkit @ file:///C:/b/abs_6coz5_9f2s/croot/prompt-toolkit_1672387908312/work
 proto-plus==1.22.3
-protobuf==4.23.3
+protobuf==4.25.8
 psutil @ file:///C:/Windows/Temp/abs_b2c2fd7f-9fd5-4756-95ea-8aed74d0039flsd9qufz/croots/recipe/psutil_1656431277748/work
 pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
 pyarrow==14.0.1
