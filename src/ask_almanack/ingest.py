@@ -1,37 +1,62 @@
-"""This is the logic for ingesting Notion data into LangChain."""
-from pathlib import Path
-from langchain.text_splitter import CharacterTextSplitter
-import faiss
-from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+import os
 import pickle
-from config import *
+from config import DATA_FOLDER, VECTORSTORE_DIR, DOCS_INDEX, FAISS_STORE_PKL
 
-# Here we load in the data
-ps = list(Path(DATA_FOLDER).glob("**/*.txt"))
+from langchain_community.vectorstores import FAISS
+from langchain_community.document_loaders import TextLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-data = []
-sources = []
-for p in ps:
-    with open(p, encoding='utf-8') as f:
-        data.append(f.read())
-    filename = str(p).replace(BASE_DIR, "")
-    sources.append(filename)
+from sentence_transformers import SentenceTransformer
+import faiss
 
-# Here we split the documents, as needed, into smaller chunks.
-# We do this due to the context limits of the LLMs.
-text_splitter = CharacterTextSplitter(chunk_size=5000, separator="\n") # YHK: smaller size gives RATE ERROR
-docs = []
-metadatas = []
-for i, d in enumerate(data):
-    splits = text_splitter.split_text(d)
-    docs.extend(splits)
-    metadatas.extend([{"source": sources[i]}] * len(splits))
+# 1. Load all .txt files from the data folder
+def load_documents(data_folder):
+    docs = []
+    for filename in os.listdir(data_folder):
+        if filename.endswith(".txt"):
+            path = os.path.join(data_folder, filename)
+            loader = TextLoader(path)
+            loaded = loader.load()
+            docs.extend(loaded)
+    return docs
 
+# 2. Split documents into chunks
+def split_documents(docs):
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+    return splitter.split_documents(docs)
 
-# Here we create a vector store from the documents and save it to disk.
-store = FAISS.from_texts(docs, OpenAIEmbeddings(), metadatas=metadatas)
-faiss.write_index(store.index, DOCS_INDEX)
-store.index = None
-with open(FAISS_STORE_PKL, "wb") as f:
-    pickle.dump(store, f)
+# 3. Embed and create FAISS index using local model
+def create_vectorstore(chunks):
+    texts = [chunk.page_content for chunk in chunks]
+    metadatas = [chunk.metadata for chunk in chunks]
+
+    # Use SentenceTransformer for local embedding
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    vectors = model.encode(texts)
+
+    # Create FAISS store
+    faiss_store = FAISS.from_embeddings(vectors, texts, metadatas)
+
+    return faiss_store
+
+# 4. Save index and metadata
+def save_vectorstore(store):
+    faiss.write_index(store.index, DOCS_INDEX)
+    with open(FAISS_STORE_PKL, "wb") as f:
+        pickle.dump(store, f)
+
+if __name__ == "__main__":
+    print("[INFO] Loading documents...")
+    documents = load_documents(DATA_FOLDER)
+    print(f"[INFO] Loaded {len(documents)} documents.")
+
+    print("[INFO] Splitting documents...")
+    chunks = split_documents(documents)
+    print(f"[INFO] Split into {len(chunks)} chunks.")
+
+    print("[INFO] Creating FAISS vectorstore with local embeddings...")
+    store = create_vectorstore(chunks)
+
+    print("[INFO] Saving vectorstore...")
+    save_vectorstore(store)
+    print("[SUCCESS] Ingestion complete. Vectorstore saved.")
