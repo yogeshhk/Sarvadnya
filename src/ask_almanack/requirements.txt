@@ -1,5 +1,9 @@
-langchain>=0.0.225
-openai
+# langchain>=0.0.225
+# openai
+# faiss-cpu
+# streamlit
+# streamlit-chat
+llama-index>=0.12.42
+langchain
 faiss-cpu
-streamlit
-streamlit-chat
+sentence-transformers
