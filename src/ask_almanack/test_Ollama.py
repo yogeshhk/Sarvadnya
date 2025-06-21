@@ -1,3 +1,4 @@
+
 import os
 import pickle
 from config import DATA_FOLDER, VECTORSTORE_DIR, DOCS_INDEX, FAISS_STORE_PKL
@@ -5,8 +6,7 @@ from config import DATA_FOLDER, VECTORSTORE_DIR, DOCS_INDEX, FAISS_STORE_PKL
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-from sentence_transformers import SentenceTransformer
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import faiss
 
 # 1. Load all .txt files from the data folder
@@ -25,19 +25,10 @@ def split_documents(docs):
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     return splitter.split_documents(docs)
 
-# 3. Embed and create FAISS index using local model
+# 3. Embed and create FAISS index using LangChain's embedding wrapper
 def create_vectorstore(chunks):
-    texts = [chunk.page_content for chunk in chunks]
-    metadatas = [chunk.metadata for chunk in chunks]
-
-    # Use SentenceTransformer for local embedding
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    vectors = model.encode(texts)
-
-    # Create FAISS store
-    faiss_store = FAISS.from_embeddings(vectors, texts, metadatas)
-
-    return faiss_store
+    embedding = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    return FAISS.from_documents(chunks, embedding)
 
 # 4. Save index and metadata
 def save_vectorstore(store):
