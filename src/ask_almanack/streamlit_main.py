@@ -1,3 +1,6 @@
+
+# Usage: streamlit run streamlit_main.py --server.fileWatcherType none
+
 import streamlit as st
 import os
 from langchain_community.vectorstores import FAISS
@@ -5,13 +8,17 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain.chains import RetrievalQA
 
+# Suppress the torch.classes warning
+import warnings
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
 # Define vectorstore directory directly (avoid config import issues)
 VECTORSTORE_DIR = os.path.join(os.path.dirname(__file__), "vectorstore")
 
-st.set_page_config(page_title="Ask Docs (Groq)")
+st.set_page_config(page_title="Ask Almanack of Naval Ravikant")
 
-st.title("Ask Documents")
-st.markdown("Ask anything from your ingested documents. Powered by Groq & LLaMA3.")
+st.title("Ask Almanack of Naval Ravikant")
+st.markdown("Ask anything from Almanack of Naval Ravikant documents. Powered by Groq & LLaMA3.")
 
 # Load vectorstore (FAISS index) using the new format
 @st.cache_resource
