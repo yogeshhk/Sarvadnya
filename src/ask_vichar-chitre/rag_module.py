@@ -21,6 +21,11 @@ from chromadb.config import Settings as ChromaSettings
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+LLM_MODEL_AT_HUGGINGFACE = "l3cube-pune/indic-sentence-bert-nli" # "gemma-7b-it"
+EMBEDDING_MODEL_AT_HUGGINGFACE = "l3cube-pune/indic-sentence-bert-nli" 
+# sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+# I3cube-pune/marathi-sentence-similarity-sbert
+
 class RAGChatbot:
     """
     Retrieval Augmented Generation Chatbot for Mental Models in Marathi
@@ -28,8 +33,8 @@ class RAGChatbot:
     """
     
     def __init__(self, data_directory: str, groq_api_key: str, 
-                 model_name: str = "gemma-7b-it", 
-                 embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"):
+                 model_name: str = LLM_MODEL_AT_HUGGINGFACE, 
+                 embedding_model: str = EMBEDDING_MODEL_AT_HUGGINGFACE):
         """
         Initialize the RAG chatbot
         
