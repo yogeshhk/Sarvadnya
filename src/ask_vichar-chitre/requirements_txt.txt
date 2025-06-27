@@ -1,0 +1,46 @@
+# Core dependencies
+streamlit>=1.28.0
+python-dotenv>=1.0.0
+
+# LlamaIndex and RAG dependencies
+llama-index>=0.9.0
+llama-index-llms-groq>=0.1.0
+llama-index-embeddings-huggingface>=0.1.0
+llama-index-vector-stores-chroma>=0.1.0
+
+# Vector database
+chromadb>=0.4.0
+
+# Machine Learning and NLP
+torch>=2.0.0
+transformers>=4.35.0
+sentence-transformers>=2.2.0
+datasets>=2.14.0
+
+# Fine-tuning dependencies
+unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git
+peft>=0.6.0
+trl>=0.7.0
+accelerate>=0.24.0
+bitsandbytes>=0.41.0
+
+# Groq API client
+groq>=0.4.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+pathlib2>=2.3.0
+
+# Utilities
+tqdm>=4.65.0
+python-json-logger>=2.0.0
+
+# Optional: for development and testing
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
+
+# System dependencies (may need manual installation)
+# Note: Some dependencies may require specific CUDA versions
+# For GPU support, ensure appropriate PyTorch version with CUDA support
