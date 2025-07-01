@@ -1,0 +1,107 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hey
+      - howdy
+      - hey there
+      - hello
+      - hi
+      - good morning
+      - good evening
+      - dear sir
+
+  - intent: affirm
+    examples: |
+      - yes
+      - yep
+      - yeah
+      - indeed
+      - that's right
+      - ok
+      - great
+      - right, thank you
+      - correct
+      - great choice
+      - sounds really good
+
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - good bye
+      - See you
+      - CU
+      - Chao
+      - Bye bye
+      - have a good one
+
+  - intent: query
+    examples: |
+      - What is [Background](column) for [Afghanistan](row) ?
+      - For  [Afghanistan](row), what is the [Background](column) ?
+      - What is [Location](column) for [Afghanistan](row) ?
+      - For  [Afghanistan](row), what is the [Location](column) ?
+      - What is [Geographic coordinates](column) for [Afghanistan](row) ?
+      - For  [Afghanistan](row), what is the [Geographic coordinates](column) ?
+      - What is [Map references](column) for [Afghanistan](row) ?
+      - For  [Afghanistan](row), what is the [Map references](column) ?
+      - What is [Background](column) for [Akrotiri](row) ?
+      - For  [Akrotiri](row), what is the [Background](column) ?
+      - What is [Location](column) for [Akrotiri](row) ?
+      - For  [Akrotiri](row), what is the [Location](column) ?
+      - What is [Geographic coordinates](column) for [Akrotiri](row) ?
+      - For  [Akrotiri](row), what is the [Geographic coordinates](column) ?
+      - What is [Map references](column) for [Akrotiri](row) ?
+      - For  [Akrotiri](row), what is the [Map references](column) ?
+      - What is [Background](column) for [Albania](row) ?
+      - For  [Albania](row), what is the [Background](column) ?
+      - What is [Location](column) for [Albania](row) ?
+      - For  [Albania](row), what is the [Location](column) ?
+      - What is [Geographic coordinates](column) for [Albania](row) ?
+      - For  [Albania](row), what is the [Geographic coordinates](column) ?
+      - What is [Map references](column) for [Albania](row) ?
+      - For  [Albania](row), what is the [Map references](column) ?
+      - What is [Background](column) for [Algeria](row) ?
+      - For  [Algeria](row), what is the [Background](column) ?
+      - What is [Location](column) for [Algeria](row) ?
+      - For  [Algeria](row), what is the [Location](column) ?
+      - What is [Geographic coordinates](column) for [Algeria](row) ?
+      - For  [Algeria](row), what is the [Geographic coordinates](column) ?
+      - What is [Map references](column) for [Algeria](row) ?
+      - For  [Algeria](row), what is the [Map references](column) ?
+      - What is [Background](column) for [American Samoa](row) ?
+      - For  [American Samoa](row), what is the [Background](column) ?
+      - What is [Location](column) for [American Samoa](row) ?
+      - For  [American Samoa](row), what is the [Location](column) ?
+      - What is [Geographic coordinates](column) for [American Samoa](row) ?
+      - For  [American Samoa](row), what is the [Geographic coordinates](column) ?
+      - What is [Map references](column) for [American Samoa](row) ?
+      - For  [American Samoa](row), what is the [Map references](column) ?
+      - What is [Population](column) of [India](row)?
+      - What is [GDP](column) of [India](row)?
+      - What is [Location](column) of [India](row)?
+      - What is [Background](column) of [India](row)?
+      - For [India](row), what is the [Background](column)?
+      - Give me the [Geographic coordinates](column) of [India](row)
+
+      - What is [Population](column) of [China](row)?
+      - Tell me the [GDP](column) of [China](row)
+      - Where is [China](row) located? What’s its [Location](column)?
+      - What is [Background](column) for [China](row)?
+
+      - What is [Population](column) of [Brazil](row)?
+      - What is [GDP](column) of [Brazil](row)?
+      - Tell me [Map references](column) of [Brazil](row)
+
+      - What is [Location](column) of [United States](row)?
+      - Give me the [Background](column) of [United States](row)
+      - What is [Geographic coordinates](column) of [United States](row)?
+
+      - What is [Location](column) of [United Kingdom](row)?
+      - What is the [Background](column) of [United Kingdom](row)?
+      - What are the [Geographic coordinates](column) of [United Kingdom](row)?
+
+      - Tell me the [Population](column) of [Germany](row)
+      - What is the [GDP](column) of [Germany](row)?

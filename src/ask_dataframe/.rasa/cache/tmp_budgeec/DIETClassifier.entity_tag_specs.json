@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-column",
+      "2": "I-column",
+      "3": "L-column",
+      "4": "U-column",
+      "5": "B-row",
+      "6": "I-row",
+      "7": "L-row",
+      "8": "U-row",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-column": 1,
+      "I-column": 2,
+      "L-column": 3,
+      "U-column": 4,
+      "B-row": 5,
+      "I-row": 6,
+      "L-row": 7,
+      "U-row": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]

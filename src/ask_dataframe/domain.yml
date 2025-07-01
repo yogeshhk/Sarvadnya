@@ -1,0 +1,39 @@
+version: "3.1"
+
+intents:
+  - greet
+  - affirm
+  - goodbye
+  - query
+
+entities:
+  - column
+  - row
+
+slots:
+  column:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: column
+
+  row:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: row
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you today?"
+
+  utter_goodbye:
+    - text: "Goodbye! Have a great day."
+
+  utter_affirm:
+    - text: "Got it!"
+
+actions:
+  - action_query_country_data
