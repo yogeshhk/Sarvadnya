@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 import pandas as pd
-from graphrag import GraphRAG
+from graphrag_main import GraphRAG
 import tempfile
 
 # Page configuration
