@@ -188,3 +188,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
   - [Lecture: Giacomo De Luca - Yoga Sutra Trees - 7th ISCLS, Auroville](https://www.youtube.com/watch?v=86wcFqKNgxg)
 - [Patanjali Yoga Sutras - English Yogic Gurukul Playlist](https://www.youtube.com/playlist?list=PLAV4BpXSJLOqHHfh6BNF53wfiA_bjcde2)
 - [siva-sh: Spirituality meets Technology](https://siva.sh/patanjali-yoga-sutra)
+- [Graph-Code: A Multi-Language Graph-Based RAG System](https://github.com/vitali87/code-graph-rag)

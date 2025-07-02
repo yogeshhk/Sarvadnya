@@ -1,3 +1,5 @@
+# This PEFT needs training data in QnA pairs. I just had text. Wanted to do domain adaptation in CLM (Causal Language Model)
+# Thats not possible with this tutorial code. Need to work later
 import os
 import json
 import logging
@@ -126,7 +128,7 @@ class FineTuner:
         logger.info("Training data formatted")
         return dataset
 
-    def fine_tune_model(self, output_dir: str = "./models",
+    def fine_tune_model(self, output_dir: str = "./models/fine_tuned_model",
                         num_train_epochs: int = 3,
                         learning_rate: float = 2e-4,
                         per_device_train_batch_size: int = 2):
@@ -193,7 +195,7 @@ if __name__ == "__main__":
     try:
         fine_tuner = FineTuner(data_directory="data")
         print("📦 Loading fine-tuned model...")
-        fine_tuner.tokenizer = AutoTokenizer.from_pretrained("./models")
+        fine_tuner.tokenizer = AutoTokenizer.from_pretrained("./models/fine_tuned_model")
         fine_tuner.model = AutoModelForCausalLM.from_pretrained(
             "./fine_tuned_model",
             torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,

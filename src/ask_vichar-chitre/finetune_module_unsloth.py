@@ -1,3 +1,9 @@
+#
+# Unsloth could not be installed on Windows 11. I have Nvidia GPU MX570 A with Pytorch 2.7.1 on cu118 (but installed CUDA 12.1)
+# Tried to get pytorch+cu version compatible with Unsloth. Thought this worked, 'triton gave problem. There is Windows triton hack
+# After installation it gave that triton.ops not avilable. May be via bitsandbytes call. Its instlllation did not work. 
+# So ABANDONING for now.
+#
 import os
 import json
 import logging

@@ -180,3 +180,7 @@ ask-vichar-chitre-chatbot/
 ├── .env               # Environment variables (create this)
 ├── data/              # Your mental models data (create this)
 ├─
+
+
+## References
+- [MarathiNLP: l3cube-pune: ](https://github.com/l3cube-pune/MarathiNLP), datasets, models etc
