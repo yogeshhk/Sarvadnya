@@ -1,9 +1,15 @@
-from os import path
+import os
 
-BASE_DIR = path.dirname(__file__)
+# Define base directories
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DOCS_INDEX = path.join(BASE_DIR, "vectorstore", "docs.index") # D:/Yogesh/GitHub/Sarvadnya/src/ask_almanack/vectorstore/docs.index
-FAISS_STORE_PKL =  path.join(BASE_DIR, "vectorstore", "faiss_store.pkl") # "D:/Yogesh/GitHub/Sarvadnya/src/ask_almanack/vectorstore/faiss_store.pkl
-DATA_FOLDER = path.join(BASE_DIR, "data") # "D:/Yogesh/GitHub/Sarvadnya/src/ask_almanack/data/"
+DATA_FOLDER = os.path.join(BASE_DIR, "data")
+VECTORSTORE_DIR = os.path.join(BASE_DIR, "vectorstore")
 
-APP_NAME = "Ask Almanack Bot"
+# # Paths for FAISS index and metadata storage
+# DOCS_INDEX = os.path.join(VECTORSTORE_DIR, "index.faiss")
+# FAISS_STORE_PKL = os.path.join(VECTORSTORE_DIR, "index.pkl")
+
+# Create folders if they don't exist
+os.makedirs(DATA_FOLDER, exist_ok=True)
+os.makedirs(VECTORSTORE_DIR, exist_ok=True)

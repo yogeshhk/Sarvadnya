@@ -30,3 +30,14 @@ except ImportError:
     print("sageattention is not installed or cannot be imported")
 except AttributeError:
     print("sageattention is installed but has no __version__ attribute")
+    
+    
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+    
+# Test if embeddings work
+embed_model = HuggingFaceEmbedding(
+    model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+)
+test_text = "Mental model म्हणजे काय?"
+embedding = embed_model.get_text_embedding(test_text)
+print(f"Embedding length: {len(embedding)}")

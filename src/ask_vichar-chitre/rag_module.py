@@ -21,6 +21,10 @@ from chromadb.config import Settings as ChromaSettings
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Fixed model configurations
+LLM_MODEL_AT_GROQ = "gemma2-9b-it"
+EMBEDDING_MODEL_AT_HUGGINGFACE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
 class RAGChatbot:
     """
     Retrieval Augmented Generation Chatbot for Mental Models in Marathi
@@ -28,8 +32,8 @@ class RAGChatbot:
     """
     
     def __init__(self, data_directory: str, groq_api_key: str, 
-                 model_name: str = "gemma-7b-it", 
-                 embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"):
+                 model_name: str = LLM_MODEL_AT_GROQ, 
+                 embedding_model: str = EMBEDDING_MODEL_AT_HUGGINGFACE):
         """
         Initialize the RAG chatbot
         
@@ -44,15 +48,26 @@ class RAGChatbot:
         self.model_name = model_name
         self.embedding_model = embedding_model
         self.db_path = "./chroma_db/"
-        self.index_path = "./chroma_db/index.pkl"
         self.collection_name = "mental_models_marathi"
         
-        # Initialize components
+        # Initialize components step by step with diagnostics
+        print("🔧 Step 1: Setting up LLM...")
         self._setup_llm()
+        self._test_llm()
+        
+        print("🔧 Step 2: Setting up embeddings...")
         self._setup_embeddings()
+        
+        print("🔧 Step 3: Setting up vector store...")
         self._setup_vector_store()
+        
+        print("🔧 Step 4: Loading documents...")
         self._load_documents()
+        
+        print("🔧 Step 5: Creating index...")
         self._create_index()
+        
+        print("🔧 Step 6: Setting up query engine...")
         self._setup_query_engine()
         
         logger.info("RAG Chatbot initialized successfully")
@@ -63,12 +78,30 @@ class RAGChatbot:
             self.llm = Groq(
                 model=self.model_name,
                 api_key=self.groq_api_key,
-                temperature=0.1
+                temperature=0.3,
+                max_tokens=1024
             )
             Settings.llm = self.llm
             logger.info(f"LLM setup completed with model: {self.model_name}")
         except Exception as e:
             logger.error(f"Error setting up LLM: {e}")
+            raise
+    
+    def _test_llm(self):
+        """Test LLM directly"""
+        try:
+            print("🧪 Testing LLM directly...")
+            test_prompt = "What is a mental model? Answer in one sentence."
+            response = self.llm.complete(test_prompt)
+            print(f"✅ LLM Direct Test Response: {str(response)}")
+            
+            # Test with Marathi
+            marathi_prompt = "Mental model म्हणजे काय? एका वाक्यात उत्तर द्या."
+            marathi_response = self.llm.complete(marathi_prompt)
+            print(f"✅ LLM Marathi Test Response: {str(marathi_response)}")
+            
+        except Exception as e:
+            print(f"❌ LLM Test Failed: {e}")
             raise
     
     def _setup_embeddings(self):
@@ -87,22 +120,20 @@ class RAGChatbot:
     def _setup_vector_store(self):
         """Setup ChromaDB vector store"""
         try:
-            # Initialize Chroma client
+            os.makedirs(self.db_path, exist_ok=True)
+            
             chroma_client = chromadb.PersistentClient(
                 path=self.db_path,
                 settings=ChromaSettings(anonymized_telemetry=False)
             )
             
-            # Get or create collection
-            collection_name = self.collection_name
             try:
-                chroma_collection = chroma_client.get_collection(collection_name)
-                logger.info(f"Loaded existing collection: {collection_name}")
+                chroma_collection = chroma_client.get_collection(self.collection_name)
+                logger.info(f"Loaded existing collection: {self.collection_name}")
             except:
-                chroma_collection = chroma_client.create_collection(collection_name)
-                logger.info(f"Created new collection: {collection_name}")
+                chroma_collection = chroma_client.create_collection(self.collection_name)
+                logger.info(f"Created new collection: {self.collection_name}")
             
-            # Create vector store
             self.vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
             self.storage_context = StorageContext.from_defaults(vector_store=self.vector_store)
             
@@ -116,7 +147,9 @@ class RAGChatbot:
             self.documents = []
             data_path = Path(self.data_directory)
             
-            # Supported file extensions
+            if not data_path.exists():
+                raise ValueError(f"Data directory {data_path} does not exist")
+            
             supported_extensions = ['.txt', '.tex', '.md', '.json']
             
             for file_path in data_path.rglob('*'):
@@ -124,7 +157,7 @@ class RAGChatbot:
                     try:
                         with open(file_path, 'r', encoding='utf-8') as f:
                             content = f.read()
-                            if content.strip():  # Only add non-empty files
+                            if content.strip():
                                 doc = Document(
                                     text=content,
                                     metadata={
@@ -133,12 +166,12 @@ class RAGChatbot:
                                         "file_type": file_path.suffix
                                     }
                                 )
-                                print(f"Read {file_path.name} ...")
+                                print(f"📄 Loaded: {file_path.name} ({len(content)} chars)")
                                 self.documents.append(doc)
                     except Exception as e:
                         logger.warning(f"Error reading file {file_path}: {e}")
             
-            logger.info(f"Loaded {len(self.documents)} documents")
+            logger.info(f"Total documents loaded: {len(self.documents)}")
             
             if not self.documents:
                 raise ValueError("No valid documents found in the data directory")
@@ -148,49 +181,53 @@ class RAGChatbot:
             raise
     
     def _create_index(self):
-        """Create or load vector index"""
+        """Create vector index"""
         try:
-            if os.path.exists(self.index_path):
-                # Load existing index
-                # self.index = VectorStoreIndex.load_from_disk("./chroma_db/index.pkl")
-                db = chromadb.PersistentClient(path=self.index_path)
-                logger.info("Loaded existing vector index")
-                # 2. Get the collection
-                chroma_collection = db.get_collection(name=self.collection_name) # Raises if not found
-                # 3. Create the vector store object
-                vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-                # 4. Load the index FROM the vector store
-                self.index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-                print(f"Successfully loaded existing index from collection: {self.collection_name}")                
-            else:
-                # Create index from documents
-                text_splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
-                Settings.text_splitter = text_splitter
+            # Check if collection already has documents
+            try:
+                collection_count = self.vector_store.client.count()
+                if collection_count > 0:
+                    logger.info(f"Loading existing index with {collection_count} documents")
+                    self.index = VectorStoreIndex.from_vector_store(self.vector_store)
+                    return
+            except:
+                pass
+            
+            # Create new index
+            logger.info("Creating new vector index...")
+            
+            # Setup text splitter
+            text_splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
+            Settings.text_splitter = text_splitter
 
-                self.index = VectorStoreIndex.from_documents(
-                    self.documents,
-                    storage_context=self.storage_context,
-                    show_progress=True
-                )
-                self.index.storage_context.persist("./chroma_db/index.pkl") # self.index.save_to_disk("./chroma_db/index.pkl")
-                logger.info("Vector index created and saved")
+            # Create index from documents
+            self.index = VectorStoreIndex.from_documents(
+                self.documents,
+                storage_context=self.storage_context,
+                show_progress=True
+            )
+            
+            logger.info("Vector index created successfully")
+            
         except Exception as e:
-            logger.error(f"Error creating/loading index: {e}")
+            logger.error(f"Error creating index: {e}")
             raise
-        
+    
     def _setup_query_engine(self):
-        """Setup query engine with custom prompt"""
+        """Setup query engine"""
         try:
             # Create retriever
             retriever = VectorIndexRetriever(
                 index=self.index,
-                similarity_top_k=5
+                similarity_top_k=3
             )
             
-            # Create query engine with postprocessor
+            # Create query engine - simplest approach
             self.query_engine = RetrieverQueryEngine(
                 retriever=retriever,
-                node_postprocessors=[SimilarityPostprocessor(similarity_cutoff=0.7)]
+                node_postprocessors=[
+                    SimilarityPostprocessor(similarity_cutoff=0.5)
+                ]
             )
             
             logger.info("Query engine setup completed")
@@ -199,171 +236,90 @@ class RAGChatbot:
             logger.error(f"Error setting up query engine: {e}")
             raise
     
+    def diagnose_query_engine(self, question: str):
+        """Diagnose query engine step by step"""
+        try:
+            print(f"\n🔍 Diagnosing query: {question}")
+            
+            # Step 1: Test retrieval
+            print("Step 1: Testing retrieval...")
+            retriever = VectorIndexRetriever(
+                index=self.index,
+                similarity_top_k=3
+            )
+            
+            nodes = retriever.retrieve(question)
+            print(f"✅ Retrieved {len(nodes)} nodes")
+            
+            if nodes:
+                for i, node in enumerate(nodes):
+                    print(f"   Node {i+1}: Score={node.score:.3f}, Text='{node.text[:100]}...'")
+            
+            # Step 2: Test query engine response
+            print("Step 2: Testing query engine...")
+            response = self.query_engine.query(question)
+            print(f"Query engine response type: {type(response)}")
+            print(f"Query engine response: '{str(response)}'")
+            print(f"Response length: {len(str(response))}")
+            
+            # Step 3: Test with direct LLM call using retrieved context
+            print("Step 3: Testing direct LLM with context...")
+            if nodes:
+                context = "\n\n".join([node.text for node in nodes[:2]])
+                
+                direct_prompt = f"""Context:
+{context}
+
+Question: {question}
+
+Based on the context above, please answer the question. If the question is in Marathi, answer in Marathi."""
+                
+                direct_response = self.llm.complete(direct_prompt)
+                print(f"✅ Direct LLM Response: {str(direct_response)}")
+                
+                return str(direct_response)
+            
+            return str(response)
+            
+        except Exception as e:
+            print(f"❌ Diagnosis failed: {e}")
+            import traceback
+            traceback.print_exc()
+            return f"Error: {str(e)}"
+    
     def get_response(self, question: str) -> str:
-        """
-        Get response to user question using RAG
-        
-        Args:
-            question: User question in Marathi or English
-            
-        Returns:
-            Generated response
-        """
-        try:
-            # Custom prompt for mental models validation
-            # custom_prompt = f"""
-            # तुम्ही एक मानसिक मॉडेल्स (Mental Models) तज्ञ आहात. दिलेल्या संदर्भावर आधारित प्रश्नाचे उत्तर द्या.
-
-            # नियम:
-            # 1. फक्त दिलेल्या संदर्भातील माहितीवर आधारित उत्तर द्या
-            # 2. उत्तर मराठीत द्या जेव्हा प्रश्न मराठीत आहे
-            # 3. Mental model चे नाव, व्याख्या आणि व्यावहारिक उदाहरण द्या
-            # 4. जर संदर्भात माहिती नसेल तर "मला या विषयावर पुरेशी माहिती उपलब्ध नाही" असे सांगा
-            # 5. उत्तर स्पष्ट आणि समजण्यासारखे असावे
-
-            # प्रश्न: {question}
-
-            # कृपया वरील नियमांनुसार उत्तर द्या.
-            # """
-            custom_prompt = f"""
-            You are an expert in Mental Models. Based on the given context, answer the following question.
-
-            Instructions:
-            1. Only use the information from the context.
-            2. Answer in Marathi if the question is in Marathi.
-            3. Include the mental model name, definition, and practical example.
-            4. If information is not available, say "मला या विषयावर पुरेशी माहिती उपलब्ध नाही".
-            5. The answer should be clear and easy to understand.
-
-            Question: {question}
-
-            Please follow these instructions and answer accordingly.
-            """
-
-            # Get response from query engine
-            response = self.query_engine.query(custom_prompt)
-            
-            print(f"For question: {question} \n Got Response: {response}")
-            
-            # Validate response
-            validated_response = self._validate_response(str(response), question)
-            
-            print(f"Validated Response: {validated_response}")
-            
-            return validated_response
-            
-        except Exception as e:
-            logger.error(f"Error generating response: {e}")
-            return f"माफ करा, उत्तर तयार करताना त्रुटी आली: {str(e)}"
-    
-    def _validate_response(self, response: str, question: str) -> str:
-        """
-        Validate and enhance the response
-        
-        Args:
-            response: Generated response
-            question: Original question
-            
-        Returns:
-            Validated response
-        """
-        try:
-            # Basic validation prompt
-            # validation_prompt = f"""
-            # हे उत्तर तपासा आणि आवश्यक असल्यास सुधारा:
-
-            # प्रश्न: {question}
-            # उत्तर: {response}
-
-            # तपासणी:
-            # 1. उत्तर प्रश्नाशी संबंधित आहे का?
-            # 2. माहिती बरोबर आहे का?
-            # 3. मराठी भाषा योग्य आहे का?
-            # 4. स्पष्टीकरण पुरेसे आहे का?
-
-            # सुधारलेले उत्तर द्या:
-            # """
-            validation_prompt = f"""
-            Please check and correct the following response if needed:
-
-            Question: {question}
-            Response: {response}
-
-            Validation Checklist:
-            1. Is the response relevant to the question?
-            2. Is the information accurate?
-            3. Is the Marathi language proper and clear?
-            4. Is the explanation sufficient?
-
-            Please provide the corrected answer:
-            """
-
-            # In a production environment, you might want to add another validation step
-            # For now, return the original response with basic checks
-            
-            if len(response.strip()) < 10:
-                return "माफ करा, या प्रश्नावर मला पुरेशी माहिती मिळाली नाही. कृपया अधिक स्पष्ट प्रश्न विचारा."
-            
-            return response
-            
-        except Exception as e:
-            logger.error(f"Error validating response: {e}")
-            return response
-    
-    def get_response_with_finetuned(self, question: str, finetuned_model=None) -> str:
-        """
-        Get response using fine-tuned model if available
-        
-        Args:
-            question: User question
-            finetuned_model: Fine-tuned model object
-            
-        Returns:
-            Generated response
-        """
-        if finetuned_model is not None:
-            try:
-                # Use fine-tuned model for generation
-                # This would integrate with the fine-tuned model from fine_tune.py
-                logger.info("Using fine-tuned model for response generation")
-                # Implementation would depend on the fine-tuned model structure
-                pass
-            except Exception as e:
-                logger.error(f"Error using fine-tuned model: {e}")
-        
-        # Fallback to regular RAG
-        return self.get_response(question)
+        """Get response with full diagnosis"""
+        return self.diagnose_query_engine(question)
 
 if __name__ == "__main__":
     """
-    Test the RAG chatbot using already trained and saved model.
+    Test the RAG chatbot
     """
     import os
 
-    print("🔍 Testing RAG Chatbot with saved model...")
+    print("🔍 Testing RAG Chatbot...")
     groq_api_key = os.getenv("GROQ_API_KEY")
 
     if not groq_api_key:
         print("❌ GROQ_API_KEY not found. Please set it in your environment.")
     else:
         try:
-            # Assume model was previously trained and saved using data in 'data/' directory
             chatbot = RAGChatbot(
                 data_directory="data",
                 groq_api_key=groq_api_key
             )
-
-            # Ask sample Marathi questions
-            questions = [
-                "Sunk cost fallacy म्हणजे काय?",
-                "Mental model 'First Principles Thinking' चे मराठीत स्पष्टीकरण द्या.",
-                "Availability heuristic चा व्यवहारिक उपयोग काय आहे?"
-            ]
-
-            for q in questions:
-                print(f"\n📝 Question: {q}")
-                response = chatbot.get_response(q)
-                print(f"🤖 Response: {response}")
+            
+            # Test one question with full diagnosis
+            test_question = "Mental model म्हणजे काय?"
+            print(f"\n" + "="*80)
+            print(f"FULL DIAGNOSTIC TEST")
+            print(f"="*80)
+            
+            response = chatbot.get_response(test_question)
+            
+            print(f"\n🎯 Final Response: {response}")
 
         except Exception as e:
             print(f"❌ Error during testing: {e}")
+            import traceback
+            traceback.print_exc()

@@ -1,74 +1,96 @@
-# 
-# Assuming OPENAI_API_KEY set in Environment variables
+import os
+from dotenv import load_dotenv
+from langchain_community.chat_models import ChatOpenAI 
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnableSequence
+from colorama import Fore, init
 
-from langchain.llms import OpenAI, HuggingFaceHub
-from langchain import PromptTemplate
-from langchain import LLMChain
-from colorama import Fore
 
+load_dotenv()
+init(autoreset=True)
 
 def ask_inputs():
-    edu_phases = {0: "> 18 (School)", 1: "18-21 (College)", 2: "22-30 (Early Job)", 3: "30-50(Mid Career)",
-                  4: "50-60(Giving back?)"}
-    edu_phases_str = " choose career phase: age (phase): \n"
+    edu_phases = {
+        0: "> 18 (School)",
+        1: "18–21 (College)",
+        2: "22–30 (Early Job)",
+        3: "30–50 (Mid Career)",
+        4: "50–60 (Giving back?)"
+    }
+
+    print(Fore.MAGENTA + "Choose career phase:")
     for i, ph in edu_phases.items():
-        edu_phases_str += f"[{i}] {ph}\n"
-    edu_phases_str += "=> "
-    phase_input = int(input(Fore.MAGENTA + edu_phases_str))
-    phase = "If my current career phase is shown in the format as 'Age range in years (phase)' then I am in '" + \
-            edu_phases[phase_input] + "' of my life."
-    domains = input(Fore.YELLOW + "What are your current domains, such as project management, testing, etc: ")
+        print(f"[{i}] {ph}")
+    phase_input = int(input("=> "))
+    phase = f"If my current career phase is shown as 'Age range (phase)', then I am in '{edu_phases[phase_input]}' of my life."
+
+    domains = input(Fore.YELLOW + "\nWhat are your current domains (e.g., project management, testing, etc)?\n=> ")
 
     ratings = {0: "No", 1: "Can try", 2: "Absolutely"}
-    expertize = {0: "a novice", 1: "an intermediate", 2: "an expert"}
+    expertise = {0: "a novice", 1: "an intermediate", 2: "an expert"}
 
-    ratings_str = "\nChoose level: \n"
-    for i, rt in ratings.items():
-        ratings_str += f"[{i}] {rt}\n"
+    def ask_rating(question, color):
+        print(color + "\n" + question)
+        for i, label in ratings.items():
+            print(f"[{i}] {label}")
+        choice = int(input("=> "))
+        return expertise[choice]
 
-    math_question = "Can you write gradient descent equation in two variables? "
-    maths_input = int(input(Fore.RED + math_question + ratings_str + "\n=> "))
-    maths = "In mathematics, I am " + expertize[maths_input]
+    maths = "In mathematics, I am " + ask_rating("Can you write gradient descent equation in two variables?", Fore.RED)
+    programming = "In programming, I am " + ask_rating("Can you code matrix multiplication?", Fore.BLUE)
+    ml = "In machine learning, I am " + ask_rating("Can you explain a Confusion Matrix?", Fore.CYAN)
 
-    programming_question = "Can you code matrix multiplication, now? "
-    programming_input = int(input(Fore.BLUE + programming_question + ratings_str + "\n=> "))
-    programming = "In programming, I am " + expertize[programming_input]
-
-    machinelearning_question = "Can you explain Confusion Matrix? "
-    ml_input = int(input(Fore.MAGENTA + machinelearning_question + ratings_str + "\n=> "))
-    ml = "In machine learning, I am " + expertize[ml_input]
-
-    prep = int(input(Fore.YELLOW + "In how many months you have to switch "))
+    prep = int(input(Fore.GREEN + "\nIn how many months do you want to switch to data science?\n=> "))
     return phase, domains, maths, programming, ml, prep
 
-
 def main():
+   
+    api_key = os.getenv("TOGETHER_API_KEY")
+    if not api_key:
+        raise ValueError("Missing TOGETHER_API_KEY in .env file")
+
     phase, domains, maths, programming, ml, prep = ask_inputs()
 
-    prompt_str = "You are an expert career counsellor specializing in guiding career transitions to data science. " \
-                 "{phase}. So far I have been working in domains of {domains}. {maths}. {programming}. {ml}. I wish " \
-                 "to change my career to data science in coming {prep} months, so I have only that much time to " \
-                 "prepare. With the above background suggest a detailed month-wise plan for preparation, including " \
-                 "articles to read, YouTube videos to watch, courses to take, certifications to do, etc. \n Plan: \n"
+    prompt_str = (
+        "You are an expert career counsellor specializing in guiding career transitions into data science.\n"
+        "{phase}\n"
+        "So far, I have been working in the domain(s) of {domains}.\n"
+        "{maths}\n"
+        "{programming}\n"
+        "{ml}\n"
+        "I wish to change my career to data science in the next {prep} months.\n"
+        "Based on the above background, suggest a detailed, month-wise preparation plan.\n"
+        "Include what articles to read, YouTube videos to watch, courses to take, certifications to pursue, etc.\n\n"
+        "Plan:\n"
+    )
 
-    prompt_template = PromptTemplate(template=prompt_str, input_variables=['phase', 'domains', 'maths',
-                                                                           'programming', 'ml', 'prep'])
+    prompt_template = PromptTemplate(
+        template=prompt_str,
+        input_variables=["phase", "domains", "maths", "programming", "ml", "prep"]
+    )
 
-    # prompt_template.format()
-    models_list = [
-        # {'name': 'Vicuna', 'model': HuggingFaceHub(repo_id="jeffwan/vicuna-13b")},
-        {'name': 'OpenAI', 'model': OpenAI(temperature=0)}]
+    
+    llm = ChatOpenAI(
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    openai_api_key=api_key,
+    base_url="https://api.together.xyz/v1" #this url is commonly used for Together AI models
+)
 
-    for llm_dict in models_list:
-        print(Fore.CYAN + "===========================")
-        llm_name = llm_dict['name']
-        print(Fore.RED + llm_name)
-        llm_model = llm_dict['model']
-        chain = LLMChain(llm=llm_model, prompt=prompt_template, verbose=False)
-        response = chain.run(phase=phase, domains=domains, maths=maths, programming=programming, ml=ml, prep=prep)
-        print(Fore.GREEN + response)
-        print(Fore.CYAN + "===========================")
+    chain: RunnableSequence = prompt_template | llm
 
+    print(Fore.CYAN + "\n==================== Together AI Response ====================")
+
+    response = chain.invoke({
+        "phase": phase,
+        "domains": domains,
+        "maths": maths,
+        "programming": programming,
+        "ml": ml,
+        "prep": prep
+    })
+
+    print(Fore.GREEN + response.content)
+    print(Fore.CYAN + "==============================================================")
 
 if __name__ == "__main__":
     main()

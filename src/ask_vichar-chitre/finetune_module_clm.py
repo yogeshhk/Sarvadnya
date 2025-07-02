@@ -1,3 +1,11 @@
+# CLM (Causal Language Model) is for text generation and PEFT like methods can be used to do domain adapatation with just documents
+# and not QnA pairs.
+#
+# Currently getting following error:
+#   trainer = Trainer(
+# WARNING:accelerate.big_modeling:You shouldn't move a model that is dispatched using accelerate hooks.
+# ❌ Error: You can't move a model that has some modules offloaded to cpu or disk.
+
 import os
 import logging
 from pathlib import Path
