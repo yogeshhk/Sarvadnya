@@ -1,10 +1,10 @@
 {
-    "APP_NAME": "Yogi",
-    "DOCS_INDEX": "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/models/docs.index",
-    "FAISS_STORE_PKL": "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/models/faiss_store.pkl",
-    "MODEL_NAME": "VertexAI",
-    "FILES_PATHS": [
-        "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/data/cbic-gst_gov_in_fgaq.html",
-        "D:/Yogesh/GitHub/Sarvadnya/src/generate_faq_bot/data/nlp_faq_engine_faqs.csv"
-    ]
+  "APP_NAME": "Yogi",
+  "MODEL_NAME": "Groq",
+  "DOCS_INDEX": "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya/src/ask_faqs/models/docs.index",
+  "FAISS_STORE_PKL": "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya/src/ask_faqs/models/faiss_store.pkl",
+  "FILES_PATHS": [
+    "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya/src/ask_faqs/data/cbic-gst_gov_in_fgaq.html",
+    "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya/src/ask_faqs/data/nlp_faq_engine_faqs.csv"
+  ]
 }

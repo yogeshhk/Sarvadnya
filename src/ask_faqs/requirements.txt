@@ -1,5 +1,9 @@
-langchain>=0.0.225
-faiss-cpu
 streamlit
 streamlit-chat
-google-cloud-aiplatform==1.27
+faiss-cpu
+langchain
+langchain-groq
+python-dotenv
+pypdf
+unstructured
+html2text
