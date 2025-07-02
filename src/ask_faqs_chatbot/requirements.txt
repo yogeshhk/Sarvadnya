@@ -1,10 +1,10 @@
-absl-py==1.4.0
+absl-py==2.3.0
 astunparse==1.6.3
 bert-serving-client==1.10.0
 bert-serving-server==1.10.0
 cachetools==5.3.0
 en-core-web-sm==3.3.0
-faiss-cpu==1.7.4
+faiss-cpu==1.11.0
 flatbuffers==23.3.3
 gast==0.4.0
 google-auth==2.17.3
@@ -37,7 +37,6 @@ tensorflow-intel==2.12.0
 tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.2.0
 wrapt==1.14.1
-langchain==0.3.0
+langchain==0.3.26
 openai==0.27.4
-openapi-schema-pydantic==1.2.4
 tiktoken==0.3.3
