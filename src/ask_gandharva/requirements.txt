@@ -1,6 +1,6 @@
-sentence-transformers
-pypdf
-faiss-cpu
-chainlit
-langchain
-ctransformers
+sentence-transformers>=2.2.2
+pypdf>=3.17.4
+faiss-cpu>=1.7.4
+chainlit>=1.0.500
+langchain>=0.1.20
+ctransformers>=0.2.27
