@@ -1,0 +1,26 @@
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+import pandas as pd
+
+class ActionQueryCountryData(Action):
+    def name(self) -> str:
+        return "action_query_country_data"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: dict):
+
+        row = tracker.get_slot("row")
+        column = tracker.get_slot("column")
+
+        if not row or not column:
+            dispatcher.utter_message(text="Please provide both country and the data field.")
+            return []
+
+        df = pd.read_csv("data/countries.csv", encoding="ISO-8859-1")
+        try:
+            value = df.loc[df["Country"] == row, column].values[0]
+            dispatcher.utter_message(text=f"The value for {column} in {row} is: {value}")
+        except:
+            dispatcher.utter_message(text="Sorry, I couldn't find that information.")
+        return []

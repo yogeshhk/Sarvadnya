@@ -1,0 +1,188 @@
+[
+  {
+    "key": "entities",
+    "components": [
+      {
+        "key": "entity",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "dense",
+                "key": "component_entities_entity_0_0_array",
+                "shape": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mask",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "group",
+                "subcomponents": [
+                  {
+                    "type": "list",
+                    "key": "component_entities_mask_0_0_0_list"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "label",
+    "components": [
+      {
+        "key": "ids",
+        "number_of_dimensions": 2,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "list",
+                "key": "component_label_ids_0_0_list"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "mask",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "group",
+                "subcomponents": [
+                  {
+                    "type": "list",
+                    "key": "component_label_mask_0_0_0_list"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sequence",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "sparse",
+                "key": "component_label_sequence_0_0",
+                "shape": [
+                  1,
+                  4
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sequence_lengths",
+        "number_of_dimensions": 1,
+        "features": [
+          {
+            "type": "list",
+            "key": "component_label_sequence_lengths_0_list"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "text",
+    "components": [
+      {
+        "key": "mask",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "group",
+                "subcomponents": [
+                  {
+                    "type": "list",
+                    "key": "component_text_mask_0_0_0_list"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sentence",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "sparse",
+                "key": "component_text_sentence_0_0",
+                "shape": [
+                  1,
+                  618
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sequence",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "sparse",
+                "key": "component_text_sequence_0_0",
+                "shape": [
+                  1,
+                  635
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sequence_lengths",
+        "number_of_dimensions": 1,
+        "features": [
+          {
+            "type": "list",
+            "key": "component_text_sequence_lengths_0_list"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "key": "label",
+    "components": [
+      {
+        "key": "sequence",
+        "number_of_dimensions": 3,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "sparse",
+                "key": "component_label_sequence_0_0",
+                "shape": [
+                  1,
+                  4
+                ]
+              },
+              {
+                "type": "sparse",
+                "key": "component_label_sequence_0_1",
+                "shape": [
+                  1,
+                  4
+                ]
+              },
+              {
+                "type": "sparse",
+                "key": "component_label_sequence_0_2",
+                "shape": [
+                  1,
+                  4
+                ]
+              },
+              {
+                "type": "sparse",
+                "key": "component_label_sequence_0_3",
+                "shape": [
+                  1,
+                  4
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "ids",
+        "number_of_dimensions": 2,
+        "features": [
+          {
+            "type": "group",
+            "subcomponents": [
+              {
+                "type": "list",
+                "key": "component_label_ids_0_0_list"
+              },
+              {
+                "type": "list",
+                "key": "component_label_ids_0_1_list"
+              },
+              {
+                "type": "list",
+                "key": "component_label_ids_0_2_list"
+              },
+              {
+                "type": "list",
+                "key": "component_label_ids_0_3_list"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sequence_lengths",
+        "number_of_dimensions": 1,
+        "features": [
+          {
+            "type": "list",
+            "key": "component_label_sequence_lengths_0_list"
+          }
+        ]
+      }
+    ]
+  }
+]
