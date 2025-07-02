@@ -1,71 +1,86 @@
 import streamlit as st
-from langchain.llms import VertexAI # Need to set GCP Credentials first
-# https://ai.gopubby.com/get-started-with-google-vertex-ai-api-and-langchain-integration-360262d05216
-# https://python.langchain.com/docs/integrations/llms/google_vertex_ai_palm
-# from langchain import PromptTemplate, LLMChain
-from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.document_loaders import UnstructuredHTMLLoader
-from langchain.document_loaders import PyPDFLoader
+import os
+from dotenv import load_dotenv
 
-
-from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceHubEmbeddings
+from langchain.prompts import PromptTemplate
+from langchain_community.document_loaders import CSVLoader, UnstructuredHTMLLoader
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
+from langchain_openai import ChatOpenAI
 
-## DO NOT RUN THIS IN ANY IDE but on command line `streamlit run streamlit_main.py`
+# Load .env variables
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["OPENAI_API_BASE"] = os.getenv("OPENAI_API_BASE", "https://api.groq.com/openai/v1")
+llm_model = os.getenv("OPENAI_API_MODEL", "llama3-70b-8192")
 
-template = """
-        You are a Goods and Services Tax (GST) Expert.  Give accurate answer to the following question.
-        Under no circumstances do you give any answer outside of GST.
-        
-        ### QUESTION
-        {question}
-        ### END OF QUESTION
-        
-        Answer:
-        """
+# Streamlit app setup
+st.set_page_config(page_title="GST Query Bot", layout="centered")
+st.title("🧾 GST FAQs Bot")
+st.markdown("Ask your questions about **Goods and Services Tax (GST)** and get instant answers powered by **LLaMA 3 on Groq**.")
 
-st.title('GST FAQs')
+# Prompt template for GST domain
+prompt_template = PromptTemplate(
+    input_variables=["context", "question"],
+    template="""
+You are a highly knowledgeable assistant in Indian Goods and Services Tax (GST).
+Always answer only GST-related queries. If the question is outside GST, politely refuse to answer.
 
-#
-# def generate_response(question):
-#     prompt = PromptTemplate(template=template, input_variables=["question"])
-#     llm = VertexAI()
-#     llm_chain = LLMChain(prompt=prompt, llm=llm)
-#     response = llm_chain.run({'question': question})
-#     st.info(response)
+### Context:
+{context}
 
+### Question:
+{question}
 
-def build_QnA_db():
-    loader = CSVLoader(file_path='./data/nlp_faq_engine_faqs.csv')
-    docs = loader.load()
+### Answer:
+"""
+)
 
-    # loader = PyPDFLoader("./data/Final-GST-FAQ-edition.pdf")
-    # docs = loader.load_and_split()
+@st.cache_resource(show_spinner="Setting up the knowledge base...")
+def build_QnA_chain():
+    # Load documents
+    csv_docs = CSVLoader(file_path="./data/nlp_faq_engine_faqs.csv").load()
+    html_docs = UnstructuredHTMLLoader(file_path="./data/cbic-gst_gov_in_fgaq.html").load()
+    documents = csv_docs + html_docs
 
-    loader = UnstructuredHTMLLoader("data/cbic-gst_gov_in_fgaq.html")
-    docs += loader.load()
+    # Vector store with embeddings
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    vectorstore = FAISS.from_documents(documents, embeddings)
+    retriever = vectorstore.as_retriever()
 
-    embeddings = HuggingFaceHubEmbeddings()
-    db = FAISS.from_documents(docs, embeddings)
-    retriver = db.as_retriever()
-    llm = VertexAI() # model_name="gemini-pro", deafult=
-    chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriver, verbose=False, chain_type="stuff")
+    # LLaMA 3 on Groq via OpenAI-compatible endpoint
+    llm = ChatOpenAI(
+        model=llm_model,
+        temperature=0.0,
+    )
+
+    # Retrieval QA chain with prompt
+    chain = RetrievalQA.from_chain_type(
+        llm=llm,
+        retriever=retriever,
+        chain_type="stuff",
+        chain_type_kwargs={"prompt": prompt_template}
+    )
     return chain
 
+# Load the chain once
+if "qa_chain" not in st.session_state:
+    st.session_state.qa_chain = build_QnA_chain()
 
-if "chain" not in st.session_state:
-    st.session_state["chain"] = build_QnA_db()
+# Question form
+with st.form("gst_query_form"):
+    question = st.text_area(" Ask a GST question", height=140)
+    submitted = st.form_submit_button("🔍 Get Answer")
+    if submitted and question.strip():
+        with st.spinner("Thinking..."):
+            try:
+                response = st.session_state.qa_chain.run(question)
+                st.success(" Answer:")
+                st.write(response)
+            except Exception as e:
+                st.error("Something went wrong while generating the answer.")
+                st.exception(e)
 
-
-def generate_response_from_db(question):
-    chain = st.session_state["chain"]
-    response = chain.run(question)
-    st.info(response)
-
-
-with st.form('my_form'):
-    text = st.text_area('Ask Question:', '... about GST')
-    submitted = st.form_submit_button('Submit')
-    if submitted:
-        generate_response_from_db(text)
+st.markdown("---")
+st.caption("Built with using LLaMA 3 on Groq, LangChain, and Streamlit.")
