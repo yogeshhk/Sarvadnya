@@ -1,64 +1,174 @@
-# Ref https://github.com/amrrs/QABot-LangChain/blob/main/Q%26A_Bot_with_Llama_Index_and_LangChain.ipynb
+# import os
+# from llama_index.core import (
+#     Settings, StorageContext, VectorStoreIndex,
+#     load_index_from_storage
+# )
+# from llama_index.core.readers import SimpleDirectoryReader
+# from llama_index.embeddings.langchain import LangchainEmbedding
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+# from rich.console import Console
+# from rich.text import Text
+# from rich.panel import Panel
 
-#from gpt_index import SimpleDirectoryReader, GPTListIndex, GPTSimpleVectorIndex, LLMPredictor, PromptHelper
-# from langchain import OpenAI
-from langchain.llms import VertexAI, LlamaCpp
-from llama_index import SimpleDirectoryReader, LangchainEmbedding, GPTListIndex,GPTVectorStoreIndex, PromptHelper
-from llama_index import LLMPredictor, ServiceContext, load_index_from_storage, StorageContext
-import sys
+# # Configuration
+# MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+# DATA_DIR = "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya_internship/src/ask_kautilya/data/"
+# INDEX_DIR = "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya_internship/src/ask_kautilya/model"
+
+# def set_local_embedding():
+#     Settings.llm = None
+#     Settings.embed_model = LangchainEmbedding(
+#         HuggingFaceEmbeddings(
+#             model_name=MODEL_NAME,
+#             model_kwargs={"device": "cpu"},
+#             encode_kwargs={"normalize_embeddings": True}
+#         )
+#     )
+
+# def construct_index(directory_path: str):
+#     set_local_embedding()
+#     documents = SimpleDirectoryReader(directory_path).load_data()
+#     index = VectorStoreIndex.from_documents(documents)
+#     index.storage_context.persist(persist_dir=INDEX_DIR)
+#     print("✅ Index built and saved at:", INDEX_DIR)
+
+# # def interactive_chat():
+# #     set_local_embedding()  # ✅ Must set again here!
+# #     storage = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+# #     index = load_index_from_storage(storage)
+# #     query_engine = index.as_query_engine()
+# #     print("\n🤖 Ask Kautilya is ready! Type 'exit' to quit.\n")
+
+# #     while True:
+# #         q = input("You: ")
+# #         if q.strip().lower() in ["exit", "quit"]:
+# #             print("👋 Goodbye!")
+# #             break
+# #         response = query_engine.query(q)
+# #         print("\nBot:", response, "\n")
+# console = Console()
+
+# def interactive_chat():
+#     set_local_embedding()  # Must reapply embedding settings
+#     storage = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+#     index = load_index_from_storage(storage)
+#     query_engine = index.as_query_engine()
+
+#     console.print(Panel.fit("🤖 [bold cyan]Ask Kautilya is Ready![/bold cyan]\n[dim]Type 'exit' to quit[/dim]", title="Welcome", subtitle="Arthashastra Bot"))
+
+#     while True:
+#         q = console.input("[bold yellow]You:[/bold yellow] ")
+
+#         if q.strip().lower() in ["exit", "quit"]:
+#             console.print("\n[bold red]👋 Goodbye![/bold red]")
+#             break
+
+#         response = query_engine.query(q)
+
+#         # Format the bot's response in a pretty panel
+#         console.print(Panel.fit(str(response), title="[green]Bot[/green]", border_style="cyan"))
+
+# if __name__ == "__main__":
+#     if not os.path.isdir(INDEX_DIR) or not os.path.exists(os.path.join(INDEX_DIR, "docstore.json")):
+#         print("🚨 Index not found. Building it now...")
+#         construct_index(DATA_DIR)
+
+#     interactive_chat()
 import os
-from langchain.embeddings import HuggingFaceEmbeddings, LlamaCppEmbeddings
+from llama_index.core import (
+    Settings, StorageContext, VectorStoreIndex, load_index_from_storage
+)
+from llama_index.core.readers import SimpleDirectoryReader
+from llama_index.embeddings.langchain import LangchainEmbedding
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+from rich.console import Console
+from rich.panel import Panel
+
+# ——— Configuration ———
+MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+DATA_DIR = (
+    "C:/Users/OMEN/OneDrive/Desktop/Warmup/"
+    "Sarvadnya_internship/src/ask_kautilya/data/"
+)
+INDEX_DIR = (
+    "C:/Users/OMEN/OneDrive/Desktop/Warmup/"
+    "Sarvadnya_internship/src/ask_kautilya/model/"
+)
+
+console = Console()
 
 
-def construct_index(directory_path):
-    # set maximum input size
-    max_input_size = 4096
-    # set number of output tokens
-    num_outputs = 256
-    # set maximum chunk overlap
-    max_chunk_overlap = 20
-
-    # Chunk overlap ratio must be between 0 and 1
-    chunk_overlap_ratio = 0.1
-
-    # set chunk size limit
-    chunk_size_limit = 600
-
-    prompt_helper = PromptHelper(max_input_size, num_outputs, chunk_overlap_ratio, chunk_size_limit=chunk_size_limit)
-
-    # define LLM
-    model_path = "D:/Yogesh/GitHub/Sarvadnya/src/models/llama-7b.ggmlv3.q4_0.gguf.bin"
-    llm = LlamaCpp(model_path=model_path) # VertexAI()  # need GCP account, project, config set in ENV variable
-    # llm = VertexAI()  # need GCP account, project, config set in ENV variable
-    llm_predictor = LLMPredictor(llm=llm)
-
-    # embeddings = HuggingFaceEmbeddings()
-    embeddings = LlamaCppEmbeddings(model_path=model_path)
-    embed_model = LangchainEmbedding(embeddings)
-
-    documents = SimpleDirectoryReader(directory_path).load_data()
-
-    service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, embed_model=embed_model)
-    index_obj = GPTVectorStoreIndex.from_documents(documents, service_context=service_context)
-
-    index_obj.storage_context.persist('./model')
-
-    return index_obj
+def set_local_embedding():
+    """Use a local HuggingFace model for embeddings."""
+    Settings.llm = None
+    Settings.embed_model = LangchainEmbedding(
+        HuggingFaceEmbeddings(
+            model_name=MODEL_NAME,
+            model_kwargs={"device": "cpu"},
+            encode_kwargs={"normalize_embeddings": True},
+        )
+    )
 
 
-def ask_bot(input_index='model/index.json'):
-    storage_context = StorageContext.from_defaults(persist_dir="./model")
-    index_obj = load_index_from_storage(storage_context)
-    query_engine = index_obj.as_query_engine()
-    # index_obj = GPTVectorStoreIndex(input_index)
+def construct_index(directory_path: str):
+    """Build and persist index from the given data directory."""
+    set_local_embedding()
+    documents = SimpleDirectoryReader(
+    directory_path,
+    chunk_size=512,
+    chunk_overlap=50
+    ).load_data()
+    index = VectorStoreIndex.from_documents(documents)
+    os.makedirs(INDEX_DIR, exist_ok=True)
+    index.storage_context.persist(persist_dir=INDEX_DIR)
+    console.print(f"[green]✅ Index built and saved at:[/green] {INDEX_DIR}")
+
+
+def interactive_chat():
+    """Start an interactive Rich-powered console chat."""
+    set_local_embedding()
+    storage = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+    index = load_index_from_storage(storage)
+
+    # Use compact mode to reduce long irrelevant dumps
+    query_engine = index.as_query_engine(response_mode="compact", similarity_top_k=2)
+
+    console.print(
+        Panel.fit(
+            "🤖 [bold cyan]Ask Kautilya is Ready![/bold cyan]\n[dim]Type 'exit' to quit[/dim]",
+            title="Welcome",
+            border_style="cyan",
+        )
+    )
+
     while True:
-        query = input('What do you want to ask the bot?   \n')
-        if query == "nothing":
-            return
-        response = query_engine.query(query)
-        print("\nBot says: \n\n" + response + "\n\n\n")
+        q = console.input("[bold yellow]You:[/bold yellow] ").strip()
+        if q.lower() in {"exit", "quit"}:
+            console.print("[bold red]👋 Goodbye![/bold red]")
+            break
+
+        try:
+            response = query_engine.query(q)
+            # Get only the clean answer from the response object
+            answer = getattr(response, "response", str(response)).strip()
+            answer = answer[:1000] + "..." if len(answer) > 1000 else answer
+
+            console.print(
+                Panel(
+                    answer,
+                    title="[green]Bot[/green]",
+                    border_style="magenta",
+                    expand=False,
+                )
+            )
+        except Exception as e:
+            console.print(f"[bold red]❌ Error:[/bold red] {e}")
 
 
-index = construct_index("data/")
+if __name__ == "__main__":
+    if not os.path.isdir(INDEX_DIR) or not os.path.exists(os.path.join(INDEX_DIR, "docstore.json")):
+        console.print("[yellow]🚨 Index not found. Building it now...[/yellow]")
+        construct_index(DATA_DIR)
 
-ask_bot('model/index.json')
+    interactive_chat()
