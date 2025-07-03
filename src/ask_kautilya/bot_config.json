@@ -1,9 +1,9 @@
 {
-    "APP_NAME": "Ask Kautilya",
-    "DOCS_INDEX": "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/models/docs.index",
-    "FAISS_STORE_PKL": "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/models/faiss_store.pkl",
-    "MODEL_NAME": "VertexAI",
-    "FILES_PATHS": [
-        "D:/Yogesh/GitHub/ArthaShastra/src/ask_kautilya/data/Arthashastra_of_Chanakya_English_small.txt"
-    ]
+  "APP_NAME": "Ask Kautilya",
+  "MODEL_NAME": "Groq",
+  "DOCS_INDEX": "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya_internship/src/ask_kautilya/models/docs.index",
+  "FAISS_STORE_PKL": "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya_internship/src/ask_kautilya/models/faiss_store.pkl",
+  "FILES_PATHS": [
+    "C:/Users/OMEN/OneDrive/Desktop/Warmup/Sarvadnya_internship/src/ask_kautilya/data/Arthashastra_of_Chanakya_English_small.txt"
+  ]
 }
