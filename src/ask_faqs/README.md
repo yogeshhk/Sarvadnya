@@ -1,10 +1,11 @@
 # FAQs Bot Generator
+
 A custom FAQs Bot Generator, driven by `config.json`
 
 ```
 {
   "APP_NAME": "MyApp",
-  "DOCS_INDEX":"/fullpath/to/docs.index", 
+  "DOCS_INDEX":"/fullpath/to/docs.index",
   "FAISS_STORE_PKL":"/fullpath/to/faiss_store.pkl",
   "FILES_PATHS": [
     "/fullpath/to/file1.csv",
@@ -14,34 +15,23 @@ A custom FAQs Bot Generator, driven by `config.json`
 }
 ```
 
-Typically, both DOCS_INDEX and FAISS_STORE_PKL are stored in `./models` directory and data files are stored in `./data/` directory. Both directories need to be present.
+**Files:**
+`streamlit_main.py` - Main chatbot UI and logic
+`bot_config_wizard.py` - GUI to create/update bot_config.json
+`bot_config.json` - Stores bot settings and paths
+`models/docs.index` - FAISS vector index (auto-generated)
+`models/faiss_store.pkl` - Metadata for vector index (auto-generated)
+`data/*.html, *.csv, etc.` - Your source knowledge documents
 
+## Flow (in short)
 
-You can manually edit it or run following wizard app to set the same parameters, it writes the same `config.json`.
+Load config.json → Load/Create FAISS Index from docs → Embed with MiniLM → Load Groq LLM → Build RetrievalQA → Streamlit UI → Ask questions → Get answers
 
-```shell
-python bot_config_wizard.py
-```
+- Run `bot_config_wizard.py` → Groq model, data files, and model storage path.
+- Run streamlit_main.py:
+  - Bot ingests files, builds index
+  - Starts chatbot using **Groq** model
 
-FAQs Bot Generator reads the `config.json` and creates the FAQs Bot. To run the generator, use
+Video:
 
-```shell
-streamlit run stremlit_main.py
-```
-
-
-
-## Prerequisites 
-
-### General
-- Create conda environment with python=3.10 (?) use `requirements.txt` for the setup
-- Activating that environment, pip install google-cloud-aiplatform==1.27
-
-### For running Vertex AI APIs
-- Select or create a Google Cloud project.
-- Make sure that billing is enabled for your project.
-- Enable the Vertex AI API
-- Create credentials json (Ref https://www.youtube.com/watch?v=rWcLDax-VmM)
-- Set Environment variable GOOGLE_APPLICATION_CREDENTIALS as the above created json
-
-
+https://github.com/user-attachments/assets/6b7664a7-22f7-4836-a2d1-c1cea08dd0cd

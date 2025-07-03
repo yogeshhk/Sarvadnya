@@ -82,8 +82,9 @@ class FaqEngine:
 if __name__ == "__main__":
     base_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     faqslist = [
-        os.path.join(base_path, "Greetings.csv"),
-        os.path.join(base_path, "GST FAQs 2.csv")
+    os.path.join(base_path, f)
+    for f in os.listdir(base_path)
+    if f.endswith(".csv")
     ]
     faqmodel = FaqEngine(faqslist, 'sentence-transformer')  # or 'groq' or your chosen tag
     response = faqmodel.query("Hi")
