@@ -47,9 +47,9 @@ chainlit run chainlit_main.py
 python -m streamlit run streamlit_main_360macky.py
 ```
 
-Video:
+[Demo Video](./demo_video.mp4)
 
-https://github.com/user-attachments/assets/b3f134ae-74f0-4745-951b-8e62fda8b6b7
+<!-- https://github.com/user-attachments/assets/b3f134ae-74f0-4745-951b-8e62fda8b6b7 -->
 
 References:
 
