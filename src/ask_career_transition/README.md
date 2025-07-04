@@ -18,7 +18,10 @@ It is powered by **Together AI's Mixtral-8x7B-Instruct-v0.1** LLM.
 | `career_transition.py` | Main script for interactive input and LLM query |
 | `.env`                 | Stores your Together API key securely           |
 
-**Input**
+### Images
+![Demo](./demo_screenshot.png)
+
+<!-- **Input**
 ![image](https://github.com/user-attachments/assets/f2abd5d3-6082-4d4f-9947-a2573126a645)
 **Output**
-![image](https://github.com/user-attachments/assets/f2136415-cc20-4e18-b040-73e06e977325)
+![image](https://github.com/user-attachments/assets/f2136415-cc20-4e18-b040-73e06e977325) -->
