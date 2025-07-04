@@ -21,5 +21,12 @@ streamlit run streamlit_main.py
 Web link : https://askgst-gehcuxfbbasx9enrawjurc.streamlit.app/
 Hugging Face Spaces : https://huggingface.co/spaces/chaitraliie/ask-gst
 
-**Video:**
-https://github.com/user-attachments/assets/2d4e2041-4861-4658-a51e-f82beee5b812
+## Demo
+Here is a sneak peak of my GST Query Bot, designed to tackle all your GST-related questions effortlessly.
+<a href="{https://www.youtube.com/watch?v=K2EmEzVtOZ0}" title="GST FAQ - YouTube"><img src="{https://www.youtube.com/watch?v=K2EmEzVtOZ0}" alt="GST FAQ - YouTube" /></a>
+
+[LinkedIn Post](https://www.linkedin.com/posts/yogeshkulkarni_gst-bot-huggingface-activity-7093395645473972224-O3Y8/)
+
+[Demo Video Aug 2023](./demo_video_aug2023.mp4)
+[Demo Video July 2025](./demo_video_jul2025.mp4)
+<!-- https://github.com/user-attachments/assets/2d4e2041-4861-4658-a51e-f82beee5b812 -->
