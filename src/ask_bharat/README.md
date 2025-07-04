@@ -78,10 +78,11 @@ my Query→ Chainlit UI→ retriever from faiss(finds relevant context from pdf)
 Embeddings generated using `sentence-transformers/all-MiniLM-L6-v2`
 
 ## Images
+![Demo](./demo_screenshot.png)
 
-![image 9png](https://github.com/user-attachments/assets/c6580883-85fc-498d-b134-ad3ceae42b6d)
+<!-- ![image 9png](https://github.com/user-attachments/assets/c6580883-85fc-498d-b134-ad3ceae42b6d)
 ![image45](https://github.com/user-attachments/assets/419ede79-4f26-435a-9a67-743b355186f3)
-
+ -->
 ## Docker Support
 
 1. Place your downloaded model in the models/ folder
@@ -135,6 +136,3 @@ Refer to LangChain Documentation
 
 Happy exploring the history of Ancient India 🇮🇳 with Ask Bharat! 🚀
 
-```
-
-```
