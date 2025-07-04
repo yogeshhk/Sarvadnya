@@ -46,3 +46,7 @@ Dependencies:
 
 Run:
 `python llamaindex_cmd_main.py`
+
+
+[Demo Video (cmd)](./demo_video_cmd.mp4)
+[Demo Video (UI)](./demo_video_UI.mp4)
