@@ -44,8 +44,8 @@ python -m spacy download en_core_web_sm
 python app.py
 ```
 
-**Video:**
-https://github.com/user-attachments/assets/977908f3-884a-4b82-a18f-12d4893cb5e3
+[Demo Video](./demo_video.mp4)
+<!-- https://github.com/user-attachments/assets/977908f3-884a-4b82-a18f-12d4893cb5e3 -->
 
 ## References
 
