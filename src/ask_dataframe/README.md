@@ -79,11 +79,12 @@ python app.py
 Visit: http://localhost:8080/
 ```
 
-Video (cmd based):
-https://github.com/user-attachments/assets/b8d30d8f-f6c3-4ecb-8aac-b447f251faf3
+## Demo
+[Video (cmd based)](./demo_video_cmd.mp4)
+<!-- https://github.com/user-attachments/assets/b8d30d8f-f6c3-4ecb-8aac-b447f251faf3 -->
 
-Video (UI):
-https://github.com/user-attachments/assets/bfa14b5e-d008-44ee-867b-7c059167937a
+[Video (UI)](./demo_video_UI.mp4)
+<!-- https://github.com/user-attachments/assets/bfa14b5e-d008-44ee-867b-7c059167937a -->
 
 ## References
 
