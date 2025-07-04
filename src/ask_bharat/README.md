@@ -2,136 +2,139 @@
 
 (Based on [this repo](https://github.com/AIAnytime/Llama2-Medical-Chatbot/blob/main/README.md))
 
+Ask Bharat is an interactive chatbot designed to answer questions related to Ancient Indian history. It uses LangChain + FAISS + Ollama for backend processing and a sleek Chainlit UI to deliver contextual answers, complete with hyperlinked document sources and an optional chatbot avatar.
+
+## Features
+
+- Semantic search over PDFs (Ancient India history, threads, documents)
+- Local LLM via **Ollama** (e.g., `llama2`)
+- Clean **Markdown responses** in Chainlit UI
+- Modular architecture: retriever + prompt + LLM
+
 ## Prerequisites
 
-Before you can start using the ASK BHARAT Bot, make sure you have the following prerequisites installed on your system:
-
-- Python 3.11 or higher
-- Required Python packages (you can install them using pip):
-    - langchain
-    - chainlit
-    - sentence-transformers
-    - faiss
-    - PyPDF2 (for PDF document loading)
+- Python 3.11+
+- Ollama installed (`https://ollama.com`)
+- Recommended Python packages:
+  - `langchain`
+  - `chainlit`
+  - `sentence-transformers`
+  - `faiss-cpu`
+  - `PyPDF2`
+  - `python-dotenv`
 
 ## Installation
 
-1. Clone this repository to your local machine.
+```bash
+git clone <repo path>
+ask_bharat.git
+cd ask_bharat
 
-    ```bash
-    git clone <repo path>
-    cd ask_bharat
-    ```
+# (Optional) Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-2. Create a Python virtual environment (optional but recommended):
-
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-    ```
-
-3. Install the required Python packages:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4. Download the required language models and data. Please refer to the Langchain documentation for specific instructions on how to download and set up the language model and vector store.
-
-5. Set up the necessary paths and configurations in your project, including the `DB_FAISS_PATH` variable and other configurations as per your needs.
+# Install dependencies
+pip install -r requirements.txt
+```
 
 ## Getting Started
 
-To get started with the Ask Bharat Bot, you need to:
+Prepare Vector DB
+Ingest your documents using FAISS-based embedding:
 
-1. Set up your environment and install the required packages as described in the Installation section.
+```bash
+python ingest.py
+```
 
-2. Configure your project by updating the `DB_FAISS_PATH` variable and any other custom configurations in the code.
+## Set Configuration
 
-3. Prepare the language model and data as per the Langchain documentation.
+Make sure the following are properly configured:
 
-4. Start the bot by running the provided Python script or integrating it into your application.
+`DB_FAISS_PATH` in your code
+`.env` file with any required secrets or keys
 
-## Usage
+## Start Ollama
 
-The Ask Bharat Bot can be used for answering Ancient India related queries. To use the bot, you can follow these steps:
+Load the required LLM (e.g., llama2):
 
-1. Start the bot by running your application or using the provided Python script.
+```bash
+ollama run llama2
+```
 
-2. Send a  Ancient India related query to the bot.
+## Run the Chatbot (Chainlit)
 
-3. The bot will provide a response based on the information available in its database.
+```bash
+chainlit run chainlit_main.py
+```
 
-4. If sources are found, they will be provided alongside the answer.
+## Flow
 
-5. The bot can be customized to return specific information based on the query and context provided.
+my Query→ Chainlit UI→ retriever from faiss(finds relevant context from pdf)→ prompt(build with user ques+context)→ LLM (llama2 via Ollama) generate full answer→ ans returned to Chainlit
 
-## Containerizing the application
+`index.faiss`: stores document embeddings
+`index.pkl`: holds metadata like source, page, and original text
 
-1. Download the model that you want to use and save that in models folder
+Embeddings generated using `sentence-transformers/all-MiniLM-L6-v2`
 
-2. Change the model path in the code (Line 50)
+## Images
 
-3. change directory to the directory where the Dockerfile is present and Run the following command to build the docker image
+![image 9png](https://github.com/user-attachments/assets/c6580883-85fc-498d-b134-ad3ceae42b6d)
+![image45](https://github.com/user-attachments/assets/419ede79-4f26-435a-9a67-743b355186f3)
 
-    ``` docker build -t bharat . ```
+## Docker Support
 
-4. Run the following command to run the docker image
+1. Place your downloaded model in the models/ folder
+2. Update the model path in chainlit_main.py (around line 50)
 
-    ``` docker run -p 8000:8080 bharat ```
+3. Build and run:
 
-5. Open the browser and go to http://localhost:8000 to access the bot.
+```bash
+docker build -t bharat .
+docker run -p 8000:8080 bharat
+```
 
-6. Type your query in the text field and press Enter to get a response from the bot.
+Visit http://localhost:8000
 
-## Deploy to Cloud Run
+## Deploy to Cloud Run (Optional)
 
-1. Create a Google Cloud project and enable the Cloud Run API.
+1. Create a Google Cloud project & enable Cloud Run API
+2. Set up Artifact Registry and Docker authentication
+   Build and push:
 
-2. Create a artifact repository in Google Cloud Artifact Registry to store the Docker image using the following command:
+```bash
+docker tag bharat <region>-docker.pkg.dev/<project>/<repo>/bharat
+docker push <region>-docker.pkg.dev/<project>/<repo>/bharat
+```
 
-    ```gcloud artifacts repositories create <repository_name> --repository-format=docker --location=<region> --description="Docker repository"```
+## Deploy:
 
-3. To Setup authnetication to Docker repository, use the following command:
+```bash
+gcloud run deploy bharat \
+  --image <region>-docker.pkg.dev/<project-id>/<repo>/bharat
+```
 
-    ``` gcloud auth configure-docker <region>-docker.pkg.dev ```
-
-4. Tag the docker image
-
-    ``` docker tag <image_name> <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
-
-5. Push the docker image
-
-    ``` docker push <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
-
-6. Deploy the image to Cloud Run
-
-    ``` gcloud run deploy <image_name> --image <region>-docker.pkg.dev/<project-id>/<repository_name>/<image_name> ```
-
-7. Select the appropriate region by putting the region number and then press Enter to continue.
-
-8. Allow unauthenticated invocations by pressing 'y'
+Allow unauthenticated access
+Select the region and confirm deployment
 
 ## Contributing
 
-Contributions to the Ask Bharat Bot are welcome! If you'd like to contribute to the project, please follow these steps:
-
-1. Fork the repository to your own GitHub account.
-
-2. Create a new branch for your feature or bug fix.
-
-3. Make your changes and ensure that the code passes all tests.
-
-4. Create a pull request to the main repository, explaining your changes and improvements.
-
-5. Your pull request will be reviewed, and if approved, it will be merged into the main codebase.
+1. Fork the repo and create a new branch
+2. Add your improvements or fixes
+3. Make sure code is tested and documented
+4. Submit a pull request — all contributions are welcome!
 
 ## License
 
-This project is licensed under the MIT License.
+MIT License
 
----
+## Docs & Support
 
-For more information on how to use, configure, and extend the Ask Bharat Bot, please refer to the Langchain documentation or contact the project maintainers.
+For more information:
+Refer to LangChain Documentation
 
-Happy coding with Ask Bharat Bot! 🚀
+Happy exploring the history of Ancient India 🇮🇳 with Ask Bharat! 🚀
+
+```
+
+```
