@@ -32,6 +32,6 @@ Load config.json → Load/Create FAISS Index from docs → Embed with MiniLM →
   - Bot ingests files, builds index
   - Starts chatbot using **Groq** model
 
-Video:
+[Demo Video](./demo_video.mp4)
 
-https://github.com/user-attachments/assets/6b7664a7-22f7-4836-a2d1-c1cea08dd0cd
+<!-- https://github.com/user-attachments/assets/6b7664a7-22f7-4836-a2d1-c1cea08dd0cd -->
