@@ -1,3 +1,18 @@
+# """An NLP based search engine module to interact with open source knowledge graphs"""
+# from langchain.chat_models import ChatOpenAI
+# from langchain.chains import GraphCypherQAChain
+# # os.environ['OPENAI_API_KEY'] = st.secrets["key"]
+# class GenerateCypher:
+    # def __init__(self, url:str, username:str, password:str) -> None:
+
+        # self.chain = GraphCypherQAChain.from_llm(
+            # ChatOpenAI(temperature=0),
+            # graph=graph,
+            # verbose=True,
+           # )
+    # def search(self, query: str) -> str:
+        # return self.chain.run(query)
+               
 import os
 import streamlit as st
 from langchain_community.graphs import Neo4jGraph

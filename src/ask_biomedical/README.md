@@ -51,10 +51,10 @@ streamlit run streamlit_app.py
 - Enter a query in the text box and press enter to receive a response
 
 ### Images
-
-![image49](https://github.com/user-attachments/assets/2ade64e9-9b7c-4774-b9cb-45092794d4bc)
+![Demo](./demo_screenshot.png)
+<!-- ![image49](https://github.com/user-attachments/assets/2ade64e9-9b7c-4774-b9cb-45092794d4bc)
 ![image98png](https://github.com/user-attachments/assets/94b0b300-debc-4e38-a9a6-082984fa7c22)
-![image345](https://github.com/user-attachments/assets/ca29a913-2a3f-489a-b23c-35898243bc7c)
+![image345](https://github.com/user-attachments/assets/ca29a913-2a3f-489a-b23c-35898243bc7c) -->
 
 ## Extension ideas
 

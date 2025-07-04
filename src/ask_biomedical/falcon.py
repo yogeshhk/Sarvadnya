@@ -1,3 +1,27 @@
+# """Module to create falcon pipeline, accept user input, and generate outputs"""
+
+# import streamlit as st
+# from transformers import AutoTokenizer
+# import transformers
+# import torch
+
+
+# model =  "tiiuae/falcon-40b-instruct" #"tiiuae/falcon-7b-instruct"
+# tokenizer = AutoTokenizer.from_pretrained(model)
+
+
+# def create_pipeline():
+    # """Function to create a falcon pipeline"""
+    # pipeline = transformers.pipeline(
+        # "text-generation",
+        # model=model,
+        # tokenizer=tokenizer,
+        # torch_dtype=torch.bfloat16,
+        # trust_remote_code=True,
+        # device_map="auto",
+    # )
+    # return pipeline
+
 import streamlit as st
 import requests
 import os
