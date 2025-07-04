@@ -44,12 +44,14 @@ python graphrag_main.py
 streamlit run app.py
 ```
 
-**Video:**
-https://github.com/user-attachments/assets/40d668f3-35af-4127-9a7c-018186ef5640
+[Demo Video](./demo_video.mp4)
+<!-- https://github.com/user-attachments/assets/40d668f3-35af-4127-9a7c-018186ef5640 -->
 
----
 
-![WhatsApp Image 2025-06-29 at 01 26 33_f364f8d5](https://github.com/user-attachments/assets/8ae95e51-cc32-464d-abb8-d61c3bc5b10f)
+<!-- ---
+![WhatsApp Image 2025-06-29 at 01 26 33_f364f8d5](https://github.com/user-attachments/assets/8ae95e51-cc32-464d-abb8-d61c3bc5b10f) -->
+
+[Flow](./flow.jpg)
 
 ### UI Features:
 
