@@ -1,49 +1,45 @@
-# https://github.com/kylesteckler/generative-ai/blob/main/notebooks/knowledge_based_system.ipynb
-
-from langchain.document_loaders import WikipediaLoader
+from dotenv import load_dotenv
+import os
+from langchain_community.document_loaders import WikipediaLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.embeddings import VertexAIEmbeddings
-from langchain.llms import VertexAI
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import RetrievalQA, ConversationalRetrievalChain
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.chains import RetrievalQA
+from langchain_openai import ChatOpenAI
 
-docs = WikipediaLoader(query="Machine Learning", load_max_docs=10).load()
-docs += WikipediaLoader(query="Deep Learning", load_max_docs=10).load()
-docs += WikipediaLoader(query="Neural Networks", load_max_docs=10).load()
+# Load environment variables from .env file
+load_dotenv()
 
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=800,
-    chunk_overlap=400,
-    length_function=len,
-)
+# Use GROQ API as OpenAI-compatible LLM
+os.environ["OPENAI_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["OPENAI_API_BASE"] = "https://api.groq.com/openai/v1"
 
+# Load Wikipedia topics
+topics = ["Machine Learning", "Deep Learning", "Neural Networks"]
+docs = []
+for topic in topics:
+    docs += WikipediaLoader(query=topic, load_max_docs=10).load()
+
+# Split into chunks
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=400)
 chunks = text_splitter.split_documents(docs)
+print(f" Loaded {len(docs)} documents and split into {len(chunks)} chunks.")
 
-# Look at the first two chunks
-print(chunks[0:2])
-print(f'Number of documents: {len(docs)}')
-print(f'Number of chunks: {len(chunks)}')
+# Use HuggingFace embeddings
+embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-embedding = VertexAIEmbeddings()  # PaLM embedding API
-
-# set persist directory so the vector store is saved to disk
+# Create vector DB and retriever
 db = Chroma.from_documents(chunks, embedding, persist_directory="./vectorstore")
+retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": 2, "fetch_k": 10})  # k=2 for 2 relevant unique results
 
-# vector store
-retriever = db.as_retriever(
-    search_type="similarity",
-    search_kwargs={"k": 5}  # number of nearest neighbors to retrieve
+# Load Groq LLM using ChatOpenAI wrapper
+llm = ChatOpenAI(
+    model="llama3-70b-8192",
+    temperature=0.7,
+    max_tokens=1024
 )
 
-# PaLM API
-# You can also set temperature, top_p, top_k
-llm = VertexAI(
-    model_name="text-bison",
-    max_output_tokens=1024
-)
-
-# q/a chain
+# Create QA chain
 qa = RetrievalQA.from_chain_type(
     llm=llm,
     chain_type="stuff",
@@ -51,34 +47,32 @@ qa = RetrievalQA.from_chain_type(
     return_source_documents=True
 )
 
-
+# Function to ask questions and remove duplicate links
 def ask_question(question: str):
-    response = qa({"query": question})
-    print(f"Response: {response['result']}\n")
+    response = qa.invoke({"query": question})
+    print(f"\n Question: {question}")
+    print(f" Answer: {response['result']}\n")
 
-    citations = {doc.metadata['source'] for doc in response['source_documents']}
-    print(f"Citations: {citations}\n")
+    # Show only 2 unique source links
+    unique_links = []
+    seen = set()
+    for doc in response["source_documents"]:
+        src = doc.metadata.get("source", "Wikipedia")
+        if src not in seen:
+            seen.add(src)
+            unique_links.append(src)
+        if len(unique_links) == 2:
+            break
 
-    # uncomment below to print source chunks used
-    print(f"Source Chunks Used: {response['source_documents']}")
+    print(" Sources:")
+    for link in unique_links:
+        print(f"- {link}")
 
+# Ask questions
+# ask_question("What is a gradient boosted tree?")
+# ask_question("When was the transformer invented?")
+# ask_question("What technology underpins large language models?")
+ask_question("What is multimodal learning?")
+ask_question("What is few-shot and zero-shot learning?")
+ask_question("What is a neural network?")
 
-ask_question("What is a gradient boosted tree?")
-
-ask_question("When was the transformer invented?")
-
-ask_question("What technology underpins large language models?")
-
-# preserve chat history in memory
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
-chat_session = ConversationalRetrievalChain.from_llm(
-    llm=llm,
-    retriever=retriever,
-    memory=memory
-)
-
-chat_session({'question': 'What technology underpins large language models?'})
-
-# With chat history it will understand that "they" refers to transformers
-chat_session({'question': 'When were they invented?'})
