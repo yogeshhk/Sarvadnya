@@ -7,7 +7,7 @@ streamlit-agraph
 pyarrow
 streamlit==1.37.0
 sentence-transformers==2.3.1
-transformers==4.50.0
+transformers==4.52.1
 llama-index==0.12.28
 llama-cpp-python==0.2.72
 networkx==3.1
