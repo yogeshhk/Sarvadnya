@@ -1,9 +1,0 @@
-You are an expert in buildig generative AI apps. Please write an application to create a chatbot on data files having descriptions of mental models written in marathi. Please prepare 5 files: app.py will have UI code in streamlit. rag.py will have a class encapsulating retrieval augmented generation functionality usgin llamaindex. It will index data files in local chroma db, use gemma model via Groq APIs. and after retreival, will have prompt to valdiate the answers. fine-tune.py will have class using unsloth code to fine-tune raw gemma model using LORA using the data files.
-
-UI will call member functions of respective classes.
-
-UI should have drop-down to chose between raw gemma model or fine-tuned gemma model.
-
-In __main__ section of rag.py and fine-tune.py have a few testing code to test respective code within that file only, especially inference tests. Like ask question in Marathi "Sunk cost fallacy ya mental models la marathi t kaay mhanatat ani tyache udaharan dyaa"
-
-write an essential README file with title Ask Vichar-Chitre chatbot, for this GitHub repository. Also write requirements.txt for list of installations to be done.
