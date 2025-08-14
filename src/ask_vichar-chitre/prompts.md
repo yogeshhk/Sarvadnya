@@ -20,7 +20,7 @@ For the attached blogs, please generate about 5 distinct questions and their cor
 You are an expert in evaluating RAG output by different evaluation metrics, especially'LLM as a judge'. Please write file 'rag_evaluation.py' which will import attached 'evaluation_set.csv' which contains questions, correct answers and location of those answers. Write an evluation class. Should load the csv, take argument like LLM model name, which defaulted to gemma like below.
 
 groq_api_key = os.getenv("GROQ_API_KEY")
-LLM_MODEL_AT_GROQ = "gemma2-9b-it"
+LLM_MODEL_AT_GROQ = "llama-3.1-8b-instant"
 EMBEDDING_MODEL_AT_HUGGINGFACE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 Similar to the way RAGChatbot has been used to get answers for gen questions. let the evaluation class get predicted answers from all the questions in the csv, then compare the predicted answers with the correct answers from the csv using known NLP methods such as BLEU, ROUGE, and METEOR and embedding based semantic similarity, plus 'LLM as a judge'. Compare predicted context location with the correct location also. Based on the matching score, calculate the cumulative accuracy.

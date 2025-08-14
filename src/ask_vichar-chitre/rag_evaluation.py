@@ -40,7 +40,7 @@ class RAGEvaluator:
     
     def __init__(self, 
                  csv_file: str = "evaluation_set.csv",
-                 llm_model: str = "gemma2-9b-it",
+                 llm_model: str = "llama-3.1-8b-instant",
                  embedding_model: str = None, # Disabled
                  groq_api_key: str = None):
         """
@@ -416,7 +416,7 @@ if __name__ == "__main__":
     try:
         evaluator = RAGEvaluator(
             csv_file="evaluation_set.csv",
-            llm_model="gemma2-9b-it"
+            llm_model="llama-3.1-8b-instant"
         )
         
         print("✅ RAG Evaluator initialized successfully!")

@@ -19,7 +19,7 @@ Automate QA processes using Agent workflows
 Tech Stack:
 
 1. Groq API
-2. LLM model - gemma2-9b-it
+2. LLM model - llama-3.1-8b-instant
 3. Agent framework - Langchain
 4. UI - Streamlit
 

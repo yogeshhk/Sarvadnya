@@ -22,7 +22,7 @@
 # logger = logging.getLogger(__name__)
 
 # # Model configs
-# LLM_MODEL_AT_GROQ = "gemma2-9b-it"
+# LLM_MODEL_AT_GROQ = "llama-3.1-8b-instant"
 # EMBEDDING_MODEL_AT_HUGGINGFACE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 # # sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 # # → This is a multilingual sentence embedding model, great for retrieving semantically similar text.
@@ -358,7 +358,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Config
-LLM_MODEL_AT_GROQ = "gemma2-9b-it"
+LLM_MODEL_AT_GROQ = "llama-3.1-8b-instant"
 EMBEDDING_MODEL_AT_HUGGINGFACE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 class RAGChatbot:

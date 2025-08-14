@@ -19,7 +19,7 @@ User Query → MiniLM Embedding → FAISS Similarity Search → Top Chunks →
 → Model → Final Answer
 
 **Models:**  
-"gemma2-9b-it", "llama3-8b-8192", "llama3-70b-8192"
+"llama-3.1-8b-instant", "llama3-8b-8192", "llama3-70b-8192"
 
 **Run:** `python -m streamlit run langchain_streamlit_main.py`
 

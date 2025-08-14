@@ -146,7 +146,7 @@ from streamlit_chat import message
 # Load .env
 load_dotenv()
 GROQ_SUPPORTED_MODELS = [
-    "gemma2-9b-it",
+    "llama-3.1-8b-instant",
     "llama3-8b-8192",
     "llama3-70b-8192"
 ]
