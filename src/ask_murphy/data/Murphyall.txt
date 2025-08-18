@@ -1,0 +1,633 @@
+Murphy's laws and corollaries
+
+Jump to An Abridged Collection of Interdisciplinary Laws
+
+MURPHY'S LAWS
+
+  1. Nothing is as easy as it looks.
+  2. Everything takes longer than you think.
+  3. Anything that can go wrong will go wrong.
+  4. If there is a possibility of several things going wrong, the one that
+     will cause the most damage will be the one to go wrong. Corollary: If
+     there is a worse time for something to go wrong, it will happen then.
+  5. If anything simply cannot go wrong, it will anyway.
+  6. If you perceive that there are four possible ways in which a procedure
+     can go wrong, and circumvent these, then a fifth way, unprepared for,
+     will promptly develop.
+  7. Left to themselves, things tend to go from bad to worse.
+  8. If everything seems to be going well, you have obviously overlooked
+     something.
+  9. Nature always sides with the hidden flaw.
+ 10. Mother nature is a bitch.
+ 11. It is impossible to make anything foolproof because fools are so
+     ingenious.
+ 12. Whenever you set out to do something, something else must be done
+     first.
+ 13. Every solution breeds new problems.
+Murphy's Law of Research
+     Enough research will tend to support your theory.
+Murphy's Law of Copiers
+     The legibility of a copy is inversely proportional to its importance.
+Murphy's Law of the Open Road:
+     When there is a very long road upon which there is a one-way bridge
+     placed at random, and there are only two cars on that road, it follows
+     that: (1) the two cars are going in opposite directions, and (2) they
+     will always meet at the bridge.
+Murphy's Law of Thermodynamics
+     Things get worse under pressure.
+The Murphy Philosophy
+     Smile . . . tomorrow will be worse.
+Quantization Revision of Murphy's Laws
+     Everything goes wrong all at once.
+Murphy's Constant
+     Matter will be damaged in direct proportion to its value
+
+Murphy's Corollaries
+
+Left to themselves, things tend to go from bad to worse.
+It is impossible to make anything foolproof because fools are so ingenious
+Law of the Perversity of Nature (Mrs. Murphy's Corollary):
+     You cannot successfully determine beforehand which side of the bread to
+     butter.
+Corollary (Jenning):
+     The chance of the bread falling with the buttered side down is directly
+     proportional to the cost of the carpet.
+
+Commentaries
+
+Hill's Commentaries on Murphy's Laws
+  1. If we lose much by having things go wrong, take all possible care.
+  2. If we have nothing to lose by change, relax.
+  3. If we have everything to gain by change, relax.
+  4. If it doesn't matter, it does not matter.
+O'Toole's Commentary
+     Murphy was an optimist.
+
+NBC's Addendum to Murphy's Law
+
+You never run out of things that can go wrong.
+
+Murphy's Military Laws
+
+  1. Never share a foxhole with anyone braver than you are.
+  2. No battle plan ever survives contact with the enemy.
+  3. Friendly fire ain't.
+  4. The most dangerous thing in the combat zone is an officer with a map.
+  5. The problem with taking the easy way out is that the enemy has already
+     mined it.
+  6. The buddy system is essential to your survival; it gives the enemy
+     somebody else to shoot at.
+  7. The further you are in advance of your own positions, the more likely
+     your artillery will shoot short.
+  8. Incoming fire has the right of way.
+  9. If your advance is going well, you are walking into an ambush.
+ 10. The quartermaster has only two sizes, too large and too small.
+ 11. If you really need an officer in a hurry, take a nap.
+ 12. The only time suppressive fire works is when it is used on abandoned
+     positions.
+ 13. The only thing more accurate than incoming enemy fire is incoming
+     friendly fire.
+ 14. There is nothing more satisfying that having someone take a shot at
+     you, and miss.
+ 15. Don't be conspicuous. In the combat zone, it draws fire. Out of the
+     combat zone, it draws sergeants.
+ 16. If your sergeant can see you, so can the enemy.
+
+Murphy's Technology Laws
+
+  1. You can never tell which way the train went by looking at the track.
+  2. Logic is a systematic method of coming to the wrong conclusion with
+     confidence.
+  3. Whenever a system becomes completely defined, some damn fool discovers
+     something which either abolishes the system or expands it beyond
+     recognition.
+  4. Technology is dominated by those who manage what they do not
+     understand.
+  5. If builders built buildings the way programmers wrote programs, then
+     the first woodpecker that came along would destroy civilization.
+  6. The opulence of the front office decor varies inversely with the
+     fundamental solvency of the firm.
+  7. The attention span of a computer is only as long as it electrical cord.
+  8. An expert is one who knows more and more about less and less until he
+     knows absolutely everything about nothing.
+  9. Tell a man there are 300 billion stars in the universe and he'll
+     believe you. Tell him a bench has wet paint on it and he'll have to
+     touch to be sure.
+ 10. All great discoveries are made by mistake.
+ 11. Always draw your curves, then plot your reading.
+ 12. Nothing ever gets built on schedule or within budget.
+ 13. All's well that ends.
+ 14. A meeting is an event at which the minutes are kept and the hours are
+     lost.
+ 15. The first myth of management is that it exists.
+ 16. A failure will not appear till a unit has passed final inspection.
+ 17. New systems generate new problems.
+ 18. To err is human, but to really foul things up requires a computer.
+ 19. We don't know one millionth of one percent about anything.
+ 20. Any given program, when running, is obsolete.
+ 21. Any sufficiently advanced technology is indistinguishable from magic.
+ 22. A computer makes as many mistakes in two seconds as 20 men working 20
+     years make.
+ 23. Nothing motivates a man more than to see his boss putting in an honest
+     day's work.
+ 24. Some people manage by the book, even though they don't know who wrote
+     the book or even what book.
+ 25. The primary function of the design engineer is to make things difficult
+     for the fabricator and impossible for the serviceman.
+ 26. To spot the expert, pick the one who predicts the job will take the
+     longest and cost the most.
+ 27. After all is said and done, a hell of a lot more is said than done.
+ 28. Any circuit design must contain at least one part which is obsolete,
+     two parts which are unobtainable and three parts which are still under
+     development.
+ 29. A complex system that works is invariably found to have evolved from a
+     simple system that works.
+ 30. If mathematically you end up with the incorrect answer, try multiplying
+     by the page number.
+ 31. Computers are unreliable, but humans are even more unreliable. Any
+     system which depends on human reliability is unreliable.
+ 32. Give all orders verbally. Never write anything down that might go into
+     a "Pearl Harbor File."
+ 33. Under the most rigorously controlled conditions of pressure,
+     temperature, volume, humidity, and other variables the organism will do
+     as it damn well pleases.
+ 34. If you can't understand it, it is intuitively obvious.
+ 35. The more cordial the buyer's secretary, the greater the odds that the
+     competition already has the order.
+ 36. In designing any type of construction, no overall dimension can be
+     totalled correctly after 4:30 p.m. on Friday. The correct total will
+     become self-evident at 8:15 a.m. on Monday.
+ 37. Fill what's empty. Empty what's full. And scratch where it itches.
+ 38. All things are possible except skiing through a revolving door.
+ 39. The only perfect science is hind-sight.
+ 40. Work smarder and not harder and be careful of yor speling.
+ 41. If it's not in the computer, it doesn't exist.
+ 42. If an experiment works, something has gone wrong.
+ 43. When all else fails, read the instructions.
+ 44. If there is a possibility of several things going wrong the one that
+     will cause the most damage will be the one to go wrong.
+ 45. Everything that goes up must come down.
+ 46. Any instrument when dropped will roll into the least accessible corner.
+ 47. Any simple theory will be worded in the most complicated way.
+ 48. Build a system that even a fool can use and only a fool will want to
+     use it.
+ 49. The degree of technical competence is inversely proportional to the
+     level of management.
+
+Murphy's Love Laws
+
+  1. All the good ones are taken.
+  2. If the person isn't taken, there's a reason. (corr. to 1)
+  3. The nicer someone is, the farther away (s)he is from you.
+  4. Brains x Beauty x Availability = Constant.
+  5. The amount of love someone feels for you is inversely proportional to
+     how much you love them.
+  6. Money can't buy love, but it sure gets you a great bargaining position.
+  7. The best things in the world are free --- and worth every penny of it.
+  8. Every kind action has a not-so-kind reaction.
+  9. Nice guys(girls) finish last.
+ 10. If it seems too good to be true, it probably is.
+ 11. Availability is a function of time. The minute you get interested is
+     the minute they find someone else.
+
+Murphy's Laws of sex
+
+  1. The more beautiful the woman is who loves you, the easier it is to
+     leave her with no hard feelings.
+  2. Nothing improves with age.
+  3. No matter how many times you've had it, if it's offered take it,
+     because it'll never be quite the same again.
+  4. Sex has no calories.
+  5. Sex takes up the least amount of time and causes the most amount of
+     trouble.
+  6. There is no remedy for sex but more sex.
+  7. Sex appeal is 50% what you've got and 50% what people think you've got.
+  8. No sex with anyone in the same office.
+  9. Sex is like snow; you never know how many inches you are going to get
+     or how long it is going to last.
+ 10. A man in the house is worth two in the street.
+ 11. If you get them by the balls, their hearts and minds will follow.
+ 12. Virginity can be cured.
+ 13. When a man's wife learns to understand him, she usually stops listening
+     to him.
+ 14. Never sleep with anyone crazier than yourself.
+ 15. The qualities that most attract a woman to a man are usually the same
+     ones she can't stand years later.
+ 16. Sex is dirty only if it's done right.
+ 17. It is always the wrong time of month.
+ 18. The best way to hold a man is in your arms.
+ 19. When the lights are out, all women are beautiful.
+ 20. Sex is hereditary. If your parents never had it, chances are you won't
+     either.
+ 21. Sow your wild oats on Saturday night -- Then on Sunday pray for crop
+     failure.
+ 22. The younger the better.
+ 23. The game of love is never called off on account of darkness.
+ 24. It was not the apple on the tree but the pair on the ground that caused
+     the trouble in the garden.
+ 25. Sex discriminates against the shy and the ugly.
+ 26. Before you find your handsome prince, you've got to kiss a lot of
+     frogs.
+ 27. There may be some things better than sex, and some things worse than
+     sex. But there is nothing exactly like it.
+ 28. Love your neighbor, but don't get caught.
+ 29. Love is a hole in the heart.
+ 30. If the effort that went in research on the female bosom had gone into
+     our space program, we would now be running hot-dog stands on the moon.
+ 31. Love is a matter of chemistry, sex is a matter of physics.
+ 32. Do it only with the best.
+ 33. Sex is a three-letter word which needs some old-fashioned four-letter
+     words to convey its full meaning.
+ 34. One good turn gets most of the blankets.
+ 35. You cannot produce a baby in one month by impregnating nine women.
+ 36. Love is the triumph of imagination over intelligence.
+ 37. It is better to have loved and lost than never to have loved at all.
+ 38. Thou shalt not commit adultery.....unless in the mood.
+ 39. Never lie down with a woman who's got more troubles than you.
+ 40. Abstain from wine, women, and song; mostly song.
+ 41. Never argue with a women when she's tired -- or rested.
+ 42. A woman never forgets the men she could have had; a man, the women he
+     couldn't.
+ 43. What matters is not the length of the wand, but the magic in the stick.
+ 44. It is better to be looked over than overlooked.
+ 45. Never say no.
+ 46. A man can be happy with any woman as long as he doesn't love her.
+ 47. Folks playing leapfrog must complete all jumps.
+ 48. Beauty is skin deep; ugly goes right to the bone.
+ 49. Never stand between a fire hydrant and a dog.
+ 50. A man is only a man, but a good bicycle is a ride.
+ 51. Love comes in spurts.
+ 52. The world does not revolve on an axis.
+ 53. Sex is one of the nine reasons for reincarnation; the other eight are
+     unimportant.
+ 54. Smile, it makes people wonder what you are thinking.
+ 55. Don't do it if you can't keep it up.
+ 56. There is no difference between a wise man and a fool when they fall in
+     love.
+ 57. Never go to bed mad, stay up and fight.
+ 58. Love is the delusion that one woman differs from another.
+ 59. "This won't hurt, I promise."
+
+  ------------------------------------------------------------------------
+
+An Abridged Collection of Interdisciplinary Laws
+
+Last updated August 18, 1979, by Don Woods
+HTLM version : Didier Müller, September 28, 1995
+Thanks to David Coble for the text version
+
+  ------------------------------------------------------------------------
+B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R - S - T -
+U - V - W - Y - Z
+  ------------------------------------------------------------------------
+
+A
+
+Abbott's Admonitions:
+  1. If you have to ask, you're not entitled to know.
+  2. If you don't like the answer, you shouldn't have asked the question.
+Abrams's Advice:
+     When eating an elephant, take one bite at a time.
+Rule of Accuracy:
+     When working toward the solution of a problem, it always helps if you
+     know the answer.
+     Corollary: Provided, of course, that you know there is a problem.
+Acheson's Rule of the Bureaucracy:
+     A memorandum is written not to inform the reader but to protect the
+     writer.
+Acton's Law:
+     Power tends to corrupt; absolute power corrupts absolutely.
+Ade's Law:
+     Anybody can win -- unless there happens to be a second entry.
+Airplane Law:
+     When the plane you are on is late, the plane you want to transfer to is
+     on time.
+Alan's Law of Research
+     The theory is supported as long as the funds are.
+Albrecht's Law:
+     Social innovations tend to the level of minimum tolerable well being.
+Algren's Precepts:
+     Never eat at a place called Mom's. Never play cards with a man named
+     Doc. And never lie down with a woman who's got more troubles than you.
+Allen's Law of Civilization:
+     It is better for civilization to be going down the drain than to be
+     coming up it.
+Agnes Allen's Law:
+     Almost anything is easier to get into than out of.
+Allen's Axiom
+     When all else fails, follow instructions.
+Allen's Distinction
+     The lion and the calf shall lie down together, but the calf won't get
+     much sleep.
+Fred Allen's Motto:
+     I'd rather have a free bottle in front of me than a prefrontal
+     lobotomy.
+Alley's Axiom:
+     Justice always prevails . . . three times out of seven.
+Alligator Allegory:
+     The objective of all dedicated product support employees should be to
+     thoroughly analyze all situations, anticipate all problems prior to
+     their occurrence, have answers for these problems, and move swiftly to
+     solve these problems when called upon. However, when you are up to your
+     ass in alligators, it is difficult to remind yourself that your initial
+     objective was to drain the swamp.
+Allison's Precept
+     The best simple-minded test of expertise in a particular area is the
+     ability to win money in a series of bets on future occurrences in that
+     area.
+Anderson's Law
+     Any system or program, however complicated, if looked at in exactly the
+     right way, will become even more complicated.
+Andrews's Canoeing Postulate:
+     No matter which direction you start it's always against the wind coming
+     back.
+Law of Annoyance:
+     When working on a project, if you put away a tool that you're certain
+     you're finished with, you will need it instantly.
+Anthony's Law of Force:
+     Don't force it, get a larger hammer.
+Anthony's Law of the Workshop:
+     Any tool, when dropped, will roll into the least accessible corner of
+     the workshop.
+     Corollary: On the way to the corner, any dropped tool will first always
+     strike your toes.
+Laws of Applied Confusion:
+  1. The one piece that the plant forgot to ship is the one that supports
+     75% of the balance of the shipment.
+     Corollary: Not only did the plant forget to ship it, 50% of the time
+     they haven't even made it.
+  2. Truck deliveries that normally take one day will take five when you are
+     waiting for the truck.
+  3. After adding two weeks to the schedule for unexpected delays, add two
+     more for the unexpected, unexpected delays.
+  4. In any structure, pick out the one piece that should not be mismarked
+     and expect the plant to cross you up.
+     Corollaries:
+       1. In any group of pieces with the same erection mark on it, one
+          should not have that mark on it.
+       2. It will not be discovered until you try to put it where the mark
+          says it's supposed to go.
+       3. Never argue with the fabricating plant about an error. The
+          inspection prints are all checked off, even to the holes that
+          aren't there.
+Approval Seeker's Law:
+     Those whose approval you seek the most give you the least.
+The Aquinas Axiom:
+     What the gods get away with, the cows don't.
+Army Axiom:
+     Any order that can be misunderstood has been misunderstood.
+Army Law:
+     If it moves, salute it; if it doesn't move, pick it up; if you can't
+     pick it up, paint it.
+Ashley-Perry Statistical Axioms:
+  1. Numbers are tools, not rules.
+  2. Numbers are symbols for things; the number and the thing are not the
+     same.
+  3. Skill in manipulating numbers is a talent, not evidence of divine
+     guidance.
+  4. Like other occult techniques of divination, the statistical method has
+     a private jargon deliberately contrived to obscure its methods from
+     nonpractitioners.
+  5. The product of an arithmetical computation is the answer to an
+     equation; it is not the solution to a problem.
+  6. Arithmetical proofs of theorems that do not have arithmetical bases
+     prove nothing.
+Astrology Law:
+     It's always the wrong time of the month.
+Fourteenth Corollary of Atwood's General Law of Dynamic Negatives:
+     No books are lost by loaning except those you particularly wanted to
+     keep.
+Avery's Rule of Three:
+     Trouble strikes in series of threes, but when working around the house
+     the next job after a series of three is not the fourth job -- it's the
+     start of a brand new series of three.
+
+  ------------------------------------------------------------------------
+
+B
+
+Babcock's Law:
+     If it can be borrowed and it can be broken, you will borrow it and you
+     will break it.
+Baer's Quartet:
+     What's good politics is bad economics; what's bad politics is good
+     economics; what's good economics is bad politics; what's bad economics
+     is good politics.
+Bagdikian's Law of Editor's Speeches:
+     The splendor of an editor's speech and the splendor of his newspaper
+     are inversely related to the distance between the city in which he
+     makes his speech and the city in which he publishes his paper.
+Baker's Byroad:
+     When you are over the hill, you pick up speed.
+Baker's Law:
+     Misery no longer loves company. Nowadays it insists on it.
+Baldy's Law:
+     Some of it plus the rest of it is all of it.
+Barber's Laws of Backpacking
+  1. The integral of the gravitational potential taken around any loop trail
+     you chose to hike always comes out positive.
+  2. Any stone in your boot always migrates against the pressure gradient to
+     exactly the point of most pressure.
+  3. The weight of your pack increases in direct proportion to the amount of
+     food you consume from it. If you run out of food, the pack weight goes
+     on increasing anyway.
+  4. The number of stones in your boot is directly proportional to the
+     number of hours you have been on the trail.
+  5. The difficulty of finding any given trail marker is directly
+     proportional to the importance of the consequences of failing to find
+     it.
+  6. The size of each of the stones in your boot is directly proportional to
+     the number of hours you have been on the trail.
+  7. The remaining distance to your chosen campsite remains constant as
+     twilight approaches.
+  8. The net weight of your boots is proportional to the cube of the number
+     of hours you have been on the trail.
+  9. When you arrive at your chosen campsite, it is full.
+ 10. If you take your boots off, you'll never get them back on again.
+ 11. The local density of mosquitos is inversely proportional to your
+     remaining repellent.
+Barrett's Laws of Driving:
+  1. You can get ANYWHERE in ten minutes if you go fast enough.
+  2. Speed bumps are of negligible effect when the vehicle exceeds triple
+     the desired restraining speed.
+  3. The vehicle in front of you is traveling slower than you are.
+  4. This lane ends in 500 feet.
+Barr's Comment on Domestic Tranquility:
+     On a beautiful day like this it's hard to believe anyone can be unhappy
+     -- but we'll work on it.
+Barth's Distinction
+     There are two types of people: those who divide people into two types,
+     and those who don't.
+Bartz's Law of Hokey Horsepuckery:
+     The more ridiculous a belief system, the higher the probability of its
+     success.
+Baruch's Rule for Determining Old Age:
+     Old age is always fifteen years older than I am.
+Barzun's Laws of Learning
+  1. The simple but difficult arts of paying attention, copying accurately,
+     following an argument, detecting an ambiguity or a false inference,
+     testing guesses by summoning up contrary instances, organizing one's
+     time and one's thought for study -- all these arts -- cannot be taught
+     in the air but only through the difficulties of a defined subject. They
+     cannot be taught in one course or one year, but must be acquired
+     gradually in dozens of connections.
+  2. The analogy to athletics must be pressed until all recognize that in
+     the exercise of Intellect those who lack the muscles, coordination, and
+     will power can claim no place at the training table, let alone on the
+     playing field.
+Forthoffer's Cynical Summary of Barzun's Laws
+  1. That which has not yet been taught directly can never be taught
+     directly.
+  2. If at first you don't succeed, you will never succeed.
+Baxter's First Law:
+     Government intervention in the free market always leads to a lower
+     national standard of living.
+Baxter's Second Law:
+     The adoption of fractional gold reserves in a currency system always
+     leads to depreciation, devaluation, demonetization and, ultimately, to
+     complete destruction of that currency.
+Baxter's Third Law:
+     In a free market good money always drives bad money out of circulation.
+Beardsley's Warning to Lawyers:
+     Beware of and eschew pompous prolixity.
+Beauregard's Law:
+     When you're up to your nose, keep your mouth shut.
+Becker's Law:
+     It is much harder to find a job than to keep one.
+Beifeld's Principle:
+     The probability of a young man meeting a desirable and receptive young
+     female increases by pyramidal progression when he is already in the
+     company of (1) a date, (2) his wife, and (3) a better looking and
+     richer male friend.
+Belle's Constant:
+     The ratio of time involved in work to time available for work is
+     usually about 0.6.
+Benchley's Distinction:
+     There are two types of people: those who divide people into two types,
+     and those who don't.
+Benchley's Law:
+     Anyone can do any amount of work, provided it isn't the work he is
+     supposed to be doing at that moment.
+Berkeley's Laws:
+  1. The world is more complicated than most of our theories make it out to
+     be.
+  2. Ignorance is no excuse.
+  3. Never decide to buy something while listening to the salesman.
+  4. Information which is true meets a great many different tests very well.
+  5. Most problems have either many answers or no answer. Only a few
+     problems have a single answer.
+  6. An answer may be wrong, right, both, or neither. Most answers are
+     partly right and partly wrong.
+  7. A chain of reasoning is no stronger than its weakest link.
+  8. A statement may be true independently of illogical reasoning.
+  9. Most general statements are false, including this one.
+ 10. An exception TESTS a rule; it NEVER PROVES it.
+ 11. The moment you have worked out an answer, start checking it -- it
+     probably isn't right.
+ 12. If there is an opportunity to make a mistake, sooner or later the
+     mistake will be made.
+ 13. Being sure mistakes will occur is a good frame of mind for catching
+     them.
+ 14. Check the answer you have worked out once more -- before you tell it to
+     anybody.
+ 15. Estimating a figure may be enough to catch an error.
+ 16. Figures calculated in a rush are very hot; they should be allowed to
+     cool off a little before being used; thus we will have a reasonable
+     time to think about the figures and catch mistakes.
+ 17. A great many problems do not have accurate answers, but do have
+     approximate answers, from which sensible decisions can be made.
+Berra's Law:
+     You can observe a lot just by watching.
+Berson's Corollary of Inverse Distances:
+     The farther away from the entrance that you have to park, the closer
+     the space vacated by the car that pulls away as you walk up to the
+     door.
+Bicycle Law:
+     All bicycles weigh 50 pounds:
+     A 30-pound bicycle needs a 20-pound lock and chain.
+     A 40-pound bicycle needs a 10-pound lock and chain.
+     A 50-pound bicycle needs no lock or chain.
+First Law of Bicycling:
+     No matter which way you ride it's uphill and against the wind.
+The Billings Phenomenon:
+     The conclusions of most good operations research studies are obvious.
+Billings's Law:
+     Live within your income, even if you have to borrow to do so.
+Blaauw's Law:
+     Established technology tends to persist in spite of new technology.
+Blanchard's Newspaper Obituary Law:
+     If you want your name spelled wrong, die.
+Bok's Law:
+     If you think education is expensive -- try ignorance.
+Boling's Postulate:
+     If you're feeling good, don't worry. You'll get over it.
+Bolton's Law of Ascending Budgets:
+     Under current practices, both expenditures and revenues rise to meet
+     each other, no matter which one may be in excess.
+Bombeck's Rule of Medicine:
+     Never go to a doctor whose office plants have died.
+Bonafede's Revelation:
+     The conventional wisdom is that power is an aphrodisiac. In truth, it's
+     exhausting.
+Boob's Law:
+     You always find something the last place you look.
+Booker's Law:
+     An ounce of application is worth a ton of abstraction.
+Boozer's Revision:
+     A bird in the hand is dead.
+Boren's Laws of the Bureaucracy:
+  1. When in doubt, mumble.
+  2. When in trouble, delegate.
+  3. When in charge, ponder.
+Borkowski's Law:
+     You can't guard against the arbitrary.
+Borstelmann's Rule:
+     If everything seems to be coming your way, you're probably in the wrong
+     lane.
+Boston's Irreversible Law of Clutter:
+     In any household, junk accumulates to fill the space available for its
+     storage.
+Boultbee's Criterion:
+     If the converse of a statement is absurd, the original statement is an
+     insult to the intelligence and should never have been said.
+Boyle's Laws:
+  1. The success of any venture will be helped by prayer, even in the wrong
+     denomination.
+  2. When things are going well, someone will inevitably experiment
+     detrimentally.
+  3. The deficiency will never show itself during the dry runs.
+  4. Information travels more surely to those with a lesser need to know.
+  5. An original idea can never emerge from committee in the original.
+  6. When the product is destined to fail, the delivery system will perform
+     perfectly.
+  7. The crucial memorandum will be snared in the out-basket by the paper
+     clip of the overlying correspondence and go to file.
+  8. Success can be insured only by devising a defense against failure of
+     the contingency plan.
+  9. Performance is directly affected by the perversity of inanimate
+     objects.
+ 10. If not controlled, work will flow to the competent man until he
+     submerges.
+ 11. The lagging activity in a project will invariably be found in the area
+     where the highest overtime rates lie waiting.
+ 12. Talent in staff work or sales will recurringly be interpreted as
+     managerial ability.
+ 13. The "think positive" leader tends to listen to his subordinates'
+     premonitions only during the postmortems.
+ 14. Clearly stated instructions will consistently produce multiple
+     interpretations.
+ 15. On successive charts of the same organization the number of boxes will
+     never decrease.
+Branch's First Law of Crisis:
+     The spirit of public service will rise, and the bureaucracy will
+     multiply itself much faster, in time of grave national concern.
+First Law of Bridge:
+     It's always the partner's fault.
+Brien's First Law:
+     At some time in the life cycle of virtually every organization, its
+     ability to succeed in spite of itself runs out.
+Broder's Law:
+     Anybody that wants the presidency so much that he'll spend two years
+     organizing and campaigning for it is not to be trusted with the office.
+Brontosaurus Principle:
+     Organizations can grow faster than their brains can manage them in rel
