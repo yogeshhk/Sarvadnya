@@ -197,6 +197,8 @@ class MultiModalChunker:
         
         # Parse document
         result = self.converter.convert(file_path)
+        document = result.document # Get the document object for easier access
+        logger.info(f"Successfully parsed document: {file_path}")
         
         all_chunks = []
         doc_metadata = {
@@ -204,69 +206,91 @@ class MultiModalChunker:
             'file_hash': self._get_file_hash(file_path)
         }
         
-        # Process different content types from docling result
-        for page_num, page in enumerate(result.document.pages):
-            page_metadata = {**doc_metadata, 'page': page_num}
-            
-            # Process text content
-            if hasattr(page, 'text') and page.text:
-                text_chunks = self.chunk_text(page.text, {
-                    **page_metadata, 
-                    'content_source': 'page_text'
-                })
-                all_chunks.extend(text_chunks)
-            
-            # Process tables
-            if hasattr(page, 'tables'):
-                for table_idx, table in enumerate(page.tables):
-                    try:
-                        # Convert table to DataFrame
-                        df = self._table_to_dataframe(table)
-                        if not df.empty:
-                            table_chunk = self.chunk_table(df, {
-                                **page_metadata,
-                                'content_source': 'table',
-                                'table_index': table_idx
-                            })
-                            all_chunks.append(table_chunk)
-                    except Exception as e:
-                        logger.warning(f"Could not process table {table_idx}: {e}")
-            
-            # Process images/figures
-            if hasattr(page, 'figures'):
-                for fig_idx, figure in enumerate(page.figures):
-                    try:
-                        if hasattr(figure, 'image_data'):
-                            img_chunk = self.chunk_image(
-                                figure.image_data,
-                                {
-                                    **page_metadata,
-                                    'content_source': 'figure',
-                                    'figure_index': fig_idx
-                                },
-                                getattr(figure, 'caption', None)
-                            )
-                            all_chunks.append(img_chunk)
-                    except Exception as e:
-                        logger.warning(f"Could not process figure {fig_idx}: {e}")
+        # Process the entire document's text content
+        if hasattr(document, 'text') and document.text:
+            text_chunks = self.chunk_text(document.text, {
+                **doc_metadata, 
+                'content_source': 'document_text'
+            })
+            all_chunks.extend(text_chunks)
         
+        # Process all tables from the document
+        if hasattr(document, 'tables'):
+            for table_idx, table in enumerate(document.tables):
+                try:
+                    # Convert table to DataFrame
+                    df = self._table_to_dataframe(table)
+                    if not df.empty:
+                        table_chunk = self.chunk_table(df, {
+                            **doc_metadata,
+                            'content_source': 'table',
+                            'table_index': table_idx
+                        })
+                        all_chunks.append(table_chunk)
+                except Exception as e:
+                    logger.warning(f"Could not process table {table_idx}: {e}")
+        
+        # Process all images/figures from the document
+        if hasattr(document, 'figures'):
+            for fig_idx, figure in enumerate(document.figures):
+                try:
+                    if hasattr(figure, 'image_data') and figure.image_data:
+                        img_chunk = self.chunk_image(
+                            figure.image_data,
+                            {
+                                **doc_metadata,
+                                'content_source': 'figure',
+                                'figure_index': fig_idx
+                            },
+                            getattr(figure, 'caption', None) # Safely get caption if it exists
+                        )
+                        all_chunks.append(img_chunk)
+                except Exception as e:
+                    logger.warning(f"Could not process figure {fig_idx}: {e}")
+                        
+       
         logger.info(f"Generated {len(all_chunks)} chunks")
         return all_chunks
     
     def _table_to_dataframe(self, table) -> pd.DataFrame:
-        """Convert docling table to pandas DataFrame"""
-        # This is a simplified implementation - adjust based on docling's table structure
-        if hasattr(table, 'data'):
-            return pd.DataFrame(table.data)
-        elif hasattr(table, 'rows'):
-            data = []
-            headers = None
-            for row_idx, row in enumerate(table.rows):
-                if row_idx == 0 and hasattr(row, 'is_header') and row.is_header:
-                    headers = [cell.text for cell in row.cells]
-                else:
-                    data.append([cell.text for cell in row.cells])
-            return pd.DataFrame(data, columns=headers)
+        """
+        Convert docling table to pandas DataFrame, ensuring TableCell objects
+        are converted to plain strings for JSON serialization.
+        """
+        def get_cell_text(cell):
+            if hasattr(cell, "text"):   # TableCell or similar
+                return str(cell.text)
+            return str(cell) if cell is not None else ""
+
+        headers = None
+        processed_data = []
+
+        if hasattr(table, 'data') and table.data:
+            if hasattr(table, 'header_rows') and table.header_rows:
+                header_index = table.header_rows[0]
+                if header_index < len(table.data):
+                    headers = [get_cell_text(cell) for cell in table.data[header_index]]
+
+            for i, row in enumerate(table.data):
+                if headers and hasattr(table, 'header_rows') and i in table.header_rows:
+                    continue
+                processed_data.append([get_cell_text(cell) for cell in row])
+
+            return pd.DataFrame(processed_data, columns=headers)
+
+        elif hasattr(table, 'rows') and table.rows:
+            header_rows_indices = [i for i, r in enumerate(table.rows)
+                                if getattr(r, "is_header", False)]
+            if header_rows_indices:
+                headers = [get_cell_text(cell) for cell in table.rows[header_rows_indices[0]].cells]
+
+            for i, row in enumerate(table.rows):
+                if headers and i in header_rows_indices:
+                    continue
+                processed_data.append([get_cell_text(cell) for cell in row.cells])
+
+            return pd.DataFrame(processed_data, columns=headers)
+
         return pd.DataFrame()
     
     def _get_file_hash(self, file_path: str) -> str:
@@ -319,11 +343,13 @@ def load_chunks(input_path: str) -> List[Chunk]:
     return chunks
 
 if __name__ == "__main__":
+    
+    
     # Example usage
     chunker = MultiModalChunker(text_chunk_size=800, text_overlap=150)
     
     # Process a financial document
-    file_path = "./data/wipo_pub_rn2021_18e.pdf"
+    file_path = "./data/Docling Technical Report.pdf" # "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
     chunks = chunker.process_document(file_path)
     
     # Save chunks
