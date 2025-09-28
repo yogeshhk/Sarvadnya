@@ -117,6 +117,8 @@ class MultiModalChunker:
         """Parse document using docling"""
         logger.info(f"Parsing document: {file_path}")
         result = self.converter.convert(file_path)
+        logger.info(f"Successfully parsed document: {file_path}")    
+        logger.info(f"Parsed document: {result.document.export_to_markdown()}")
         return result
     
     def chunk_text(self, text: str, metadata: Dict) -> List[TextChunk]:
@@ -196,9 +198,8 @@ class MultiModalChunker:
         logger.info(f"Processing document: {file_path}")
         
         # Parse document
-        result = self.converter.convert(file_path)
-        document = result.document # Get the document object for easier access
-        logger.info(f"Successfully parsed document: {file_path}")
+        result = self.parse_document(file_path)
+        document = result.document
         
         all_chunks = []
         doc_metadata = {
@@ -349,7 +350,7 @@ if __name__ == "__main__":
     chunker = MultiModalChunker(text_chunk_size=800, text_overlap=150)
     
     # Process a financial document
-    file_path = "./data/Docling Technical Report.pdf" # "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
+    file_path = "./data/SampleReport.pdf" # "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
     chunks = chunker.process_document(file_path)
     
     # Save chunks

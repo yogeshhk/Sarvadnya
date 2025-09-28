@@ -15,7 +15,7 @@ from dataclasses import asdict
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
-import openai
+import groq
 from PIL import Image
 import io
 import base64
@@ -97,9 +97,9 @@ class TableEmbedder(BaseEmbedder):
 class ImageEmbedder(BaseEmbedder):
     """Image embedding using vision-language models"""
     
-    def __init__(self, openai_api_key: Optional[str] = None, text_embedder: Optional[TextEmbedder] = None):
-        if openai_api_key:
-            openai.api_key = openai_api_key
+    def __init__(self, groq_api_key: Optional[str] = None, text_embedder: Optional[TextEmbedder] = None):
+        if groq_api_key:
+            openai.api_key = groq_api_key
             self.use_vision = True
         else:
             self.use_vision = False
@@ -339,7 +339,7 @@ async def main():
     from document_parser import load_chunks
     
     # Load processed chunks
-    chunks = load_chunks("financial_chunks.json")
+    chunks = load_chunks("./results/financial_chunks.json")
     
     # Initialize vector store
     vector_store = MultiModalVectorStore()

@@ -81,7 +81,7 @@ class ConfigManager:
                 "model_name": os.getenv("LLM_MODEL", "gpt-4-turbo-preview"),
                 "temperature": float(os.getenv("LLM_TEMPERATURE", "0.1")),
                 "max_tokens": int(os.getenv("MAX_TOKENS", "4000")),
-                "api_key": os.getenv("OPENAI_API_KEY"),
+                "api_key": os.getenv("GROQ_API_KEY"),
                 "vision_model": os.getenv("VISION_MODEL", "gpt-4-vision-preview")
             },
             "agent": {
@@ -207,7 +207,7 @@ def get_config() -> SystemConfig:
 
 def validate_environment():
     """Validate that all required environment variables are set"""
-    required_vars = ["OPENAI_API_KEY"]
+    required_vars = ["GROQ_API_KEY"]
     missing_vars = [var for var in required_vars if not os.getenv(var)]
     
     if missing_vars:
