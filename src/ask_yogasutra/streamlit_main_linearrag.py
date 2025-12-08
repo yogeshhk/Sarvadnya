@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import os
 import psutil
-from linearRag_backend_main import LinearRAGBackend
+from linearRag_backend import LinearRAGBackend
 
 def initialize_session_state():
     """Initialize session state variables."""

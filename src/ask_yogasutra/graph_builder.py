@@ -2,6 +2,8 @@ import json
 import networkx as nx
 from rdflib import Graph as RDFGraph, Literal, URIRef, Namespace
 from rdflib.plugins.sparql import prepareQuery
+import unittest
+from typing import List, Tuple, Optional
 
 class GraphBuilder:
     def __init__(self, json_file='data/graph.json'):
@@ -181,3 +183,87 @@ class GraphBuilder:
 
     def get_node_positions(self):
         return self.positions
+    
+    def get_node_by_property(self, property_name: str, property_value: str) -> List[str]:
+        """Get nodes that match a specific property value."""
+        matching_nodes = []
+        for node, data in self.graph.nodes(data=True):
+            if property_name in data and data[property_name] == property_value:
+                matching_nodes.append(node)
+        return matching_nodes
+
+    def get_neighbors_with_distance(self, node_id: str, max_distance: int = 2) -> dict:
+        """Get neighbors within a certain distance from the node."""
+        if node_id not in self.graph:
+            return {}
+        return dict(nx.single_source_shortest_path_length(self.graph, node_id, cutoff=max_distance))
+
+
+class TestGraphBuilder(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Load actual graph data once."""
+        cls.json_file = 'graph_small.json'
+        with open(cls.json_file, 'r', encoding='utf-8') as f:
+            cls.test_data = json.load(f)
+    
+    def setUp(self):
+        """Set up test fixtures with real data."""
+        self.builder = GraphBuilder()
+        self.builder.import_data(self.test_data)
+        
+    def test_get_node_properties(self):
+        """Test retrieving node properties from loaded data."""
+        nodes = self.test_data['elements']['nodes']
+        if nodes:
+            node_id = nodes[0]['data']['id']
+            properties = self.builder.get_node_properties(node_id)
+            self.assertIn('id', properties)
+            self.assertEqual(properties['id'], node_id)
+    
+    def test_get_connected_nodes(self):
+        """Test getting connected nodes from real graph."""
+        edges = self.test_data['elements']['edges']
+        if edges:
+            source = edges[0]['data']['source']
+            connected = self.builder.get_connected_nodes(source)
+            self.assertIsInstance(connected, list)
+        
+    def test_get_all_node_ids(self):
+        """Test getting all node IDs."""
+        node_ids = self.builder.get_all_node_ids()
+        expected_count = len(self.test_data['elements']['nodes'])
+        self.assertEqual(len(node_ids), expected_count)
+        
+    def test_get_all_tags(self):
+        """Test getting all unique tags from real data."""
+        tags = self.builder.get_all_tags()
+        self.assertIsInstance(tags, list)
+        
+    def test_sparql_query(self):
+        """Test SPARQL query functionality."""
+        query = """
+        SELECT ?s ?p ?o
+        WHERE {
+            ?s ?p ?o .
+        }
+        LIMIT 5
+        """
+        results = self.builder.sparql_query(query)
+        self.assertIsNotNone(results)
+        
+def run_tests():
+    """Run all graph builder tests."""
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestGraphBuilder)
+    runner = unittest.TextTestRunner(verbosity=2)
+    result = runner.run(suite)
+    return result.wasSuccessful()
+
+# Update __main__ section
+if __name__ == "__main__":
+    print("Running GraphBuilder tests...")
+    success = run_tests()
+    if success:
+        print("\n✓ All tests passed!")
+    else:
+        print("\n✗ Some tests failed!")

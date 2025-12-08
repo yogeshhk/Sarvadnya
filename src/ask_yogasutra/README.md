@@ -26,12 +26,25 @@ Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. 
     ```bash
     pip install -r requirements.txt
     ```
+3. Get Groq API Key:
+    - Sign up at https://console.groq.com/
+    - Generate an API key
+    - Add it to your Environment settins
 
-3. Download the required model:
+<!-- 3. Download the required model:
     ```bash
     # Download llama-2-7b-chat.Q4_K_M.gguf and place it in the project root
     wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf
-    ```
+    ``` -->
+
+## Supported Models
+
+This project uses Groq API with the following open-source models:
+- `llama3-70b-8192` (default, most capable)
+- `llama3-8b-8192` (faster, good for simple queries)
+- `mixtral-8x7b-32768` (good balance)
+
+To change the model, update `GROQ_MODEL_NAME` in the backend files.
 
 ## Implementation Guide
 
