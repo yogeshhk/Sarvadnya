@@ -159,10 +159,6 @@ print(response)
        )
    ```
 
-## Contributions
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) to get started.
-
 ## Troubleshooting
 
 ### Common Issues
