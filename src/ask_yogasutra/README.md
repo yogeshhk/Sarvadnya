@@ -40,9 +40,9 @@ Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. 
 ## Supported Models
 
 This project uses Groq API with the following open-source models:
-- `llama3-70b-8192` (default, most capable)
-- `llama3-8b-8192` (faster, good for simple queries)
-- `mixtral-8x7b-32768` (good balance)
+- `llama-3.3-70b-versatile` (default, most capable)
+- `llama-3.1-8b-instant` (faster, good for simple queries)
+- `mistral-saba-24b` (good balance)
 
 To change the model, update `GROQ_MODEL_NAME` in the backend files.
 

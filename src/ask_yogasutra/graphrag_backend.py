@@ -13,8 +13,8 @@ from llama_index.core.node_parser import SentenceSplitter
 # from llama_index.llms.llama_cpp import LlamaCPP
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.schema import TextNode
-from llama_index.core.response.schema import Response
-from llama_index.graph_stores.simple import SimpleGraphStore
+from llama_index.core import Response
+from llama_index.core.graph_stores import SimpleGraphStore
 from llama_index.llms.groq import Groq
 import os
 import unittest
@@ -40,7 +40,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 # LLAMA_MODEL_PATH = "llama-2-7b-chat.Q4_K_M.gguf"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL_NAME = "llama3-70b-8192"  # or "llama3-8b-8192", "mixtral-8x7b-32768"
+GROQ_MODEL_NAME = "llama-3.1-8b-instant" #"llama-3.1-8b-instant" or "mistral-saba-24b", "llama-3.3-70b-versatile"
 
 class CitationQueryEngine:
     def __init__(self, base_query_engine):
