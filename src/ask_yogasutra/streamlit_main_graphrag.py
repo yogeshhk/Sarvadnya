@@ -73,13 +73,13 @@ def main():
         - Explain the Sanskrit text and word analysis of sutra 1.2
         """)
         
-        st.header("Model Information")
+        st.header("Status Information")
         if st.session_state.backend.query_engine is not None:
             st.success("✓ Models loaded and ready")
             if st.session_state.backend.graph_store is not None:
                 st.success("✓ Knowledge graph active")
         else:
-            st.info("⋯ Waiting for file upload")
+            st.info("⋯ Waiting for Knowledge Base to upload")
 
     uploaded_file = st.file_uploader("Choose a JSON file", type="json")
 
