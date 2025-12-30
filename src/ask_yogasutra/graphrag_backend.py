@@ -16,6 +16,8 @@ from llama_index.core.schema import TextNode
 from llama_index.core import Response
 from llama_index.core.graph_stores import SimpleGraphStore
 from llama_index.llms.groq import Groq
+from llama_index.core.chat_engine.types import ChatMode
+from llama_index.core.base.llms.types import ChatMessage
 import os
 import unittest
 import tempfile
@@ -41,6 +43,7 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 # LLAMA_MODEL_PATH = "llama-2-7b-chat.Q4_K_M.gguf"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL_NAME = "llama-3.1-8b-instant" #"llama-3.1-8b-instant" or "mistral-saba-24b", "llama-3.3-70b-versatile"
+CONVERSATION_MODE = True
 
 class CitationQueryEngine:
     def __init__(self, base_query_engine):
@@ -58,6 +61,24 @@ class CitationQueryEngine:
         formatted_response = f"{response.response}\n\nReferences: {', '.join(sorted(referenced_ids))}"
         new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
         return new_response
+
+class CitationConversationEngine:
+    def __init__(self, base_conversation_engine):
+        self.base_conversation_engine = base_conversation_engine
+
+    def query(self, query: str, msgs: List[ChatMessage]) -> Response:
+        response = self.base_conversation_engine.chat(query, msgs)
+        source_nodes = response.source_nodes if hasattr(response, 'source_nodes') else []
+        
+        referenced_ids = set()
+        for node in source_nodes:
+            if hasattr(node, 'metadata') and 'id' in node.metadata:
+                referenced_ids.add(node.metadata['id'])
+        
+        formatted_response = f"{response.response}"
+        new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
+        return new_response
+
 
 def extract_text_from_node(node_data: Dict[str, Any]) -> tuple[str, Dict[str, Any]]:
     """Extract only the specified fields from node data."""
@@ -84,6 +105,7 @@ class GraphRAGBackend:
     def __init__(self):
         self.query_engine = None
         self.graph_store = None
+        self.conversation_engine = None
 
     # def check_model_path(self):
     #     """Check if the model file exists and return the full path."""
@@ -197,7 +219,11 @@ class GraphRAGBackend:
                 response_mode="compact",
                 verbose=True
             )
+            base_conversation_engine = index.as_chat_engine(
+                chat_mode= ChatMode.CONDENSE_PLUS_CONTEXT
+            )
             self.query_engine = CitationQueryEngine(base_query_engine)
+            self.conversation_engine = CitationConversationEngine(base_conversation_engine)
             
             return True
             
@@ -211,6 +237,17 @@ class GraphRAGBackend:
         
         try:
             response = self.query_engine.query(query)
+            return response.response
+        except Exception as e:
+            raise Exception(f"Error processing query: {str(e)}")
+        
+    def process_conversation(self, query: str, msgs: List[ChatMessage]) -> str:
+        """Process a query using the query engine."""
+        if self.conversation_engine is None:
+            raise Exception("Knowledge base not initialized. Please setup the knowledge base first.")
+        
+        try:
+            response = self.conversation_engine.query(query, msgs)
             return response.response
         except Exception as e:
             raise Exception(f"Error processing query: {str(e)}")
