@@ -2,7 +2,8 @@ import streamlit as st
 import json
 import os
 import psutil
-from graphrag_backend import GraphRAGBackend
+from graphrag_backend import CONVERSATION_MODE, GraphRAGBackend
+from llama_index.core.base.llms.types import ChatMessage, MessageRole
 
 def initialize_session_state():
     """Initialize session state variables."""
@@ -17,10 +18,42 @@ def get_memory_usage():
     return process.memory_info().rss / 1024 / 1024
 
 def display_chat_messages():
-    """Display chat messages in the Streamlit interface."""
+    """Display chat messages handling Dicts, Objects, and Enums."""
+    
+    if "messages" not in st.session_state:
+        return
+
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        role = ""
+        content = ""
+
+        # --- CASE 1: Message is a Dictionary ---
+        if isinstance(message, dict):
+            role = message["role"]
+            content = message["content"]
+
+        # --- CASE 2: Message is a LlamaIndex Object ---
+        else:
+            # 1. Get content
+            content = message.content
+            
+            # 2. Handle the Enum Role
+            # Check if role is an Enum (has a .value attribute)
+            if hasattr(message.role, 'value'):
+                role = message.role.value  # Converts MessageRole.USER -> "user"
+            else:
+                # Fallback if it happens to be a string already
+                role = str(message.role)
+
+        # --- VALIDATION: Ensure Streamlit compatibility ---
+        # LlamaIndex might use "chatbot" or "system", map them if necessary.
+        # Streamlit only has icons for "user" and "assistant".
+        if role == "chatbot":
+            role = "assistant"
+            
+        # Render
+        with st.chat_message(role):
+            st.markdown(content)
 
 def main():
     st.title("Yoga Sutras Graph RAG Chatbot")
@@ -80,7 +113,7 @@ def main():
     display_chat_messages()
 
     if prompt := st.chat_input("What would you like to know about the Yoga Sutras?"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append(ChatMessage(role= MessageRole.USER, content= prompt)) if CONVERSATION_MODE else st.session_state.messages.append({"role": "user", "content": prompt}) 
         
         with st.chat_message("user"):
             st.markdown(prompt)
@@ -88,9 +121,10 @@ def main():
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 try:
-                    response = st.session_state.backend.process_query(prompt)
+                    response = st.session_state.backend.process_conversation(prompt, st.session_state.messages) if CONVERSATION_MODE else st.session_state.backend.process_query(prompt)
                     st.markdown(response)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    st.session_state.messages.append(ChatMessage(role= MessageRole.ASSISTANT, content= response)) if CONVERSATION_MODE else st.session_state.messages.append({"role": "assistant", "content": response})
+                    print("prompt: ",st.session_state.messages)
                 except Exception as e:
                     st.error(f"Error processing query: {str(e)}")
         
