@@ -17,20 +17,63 @@ Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. 
 
 ## Installation and Setup
 
-1. Clone the repository:
+### Prerequisites
+
+- Python 3.8 or higher
+- Git
+- Groq API account for LLM access
+
+### Installation Steps
+
+1. **Clone the repository:**
     ```bash
     git clone https://github.com/yourusername/ask-yogasutra.git
     cd ask-yogasutra
     ```
 
-2. Install dependencies:
+2. **Create a virtual environment (recommended):**
+    ```bash
+    # Create virtual environment
+    python -m venv venv
+
+    # Activate virtual environment
+    # On macOS/Linux:
+    source venv/bin/activate
+    # On Windows:
+    # venv\Scripts\activate
+    ```
+
+3. **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
-3. Get Groq API Key:
+
+4. **Set up Groq API Key:**
     - Sign up at https://console.groq.com/
-    - Generate an API key
-    - Add it to your Environment settins
+    - Generate an API key from your dashboard
+    - Set the environment variable:
+    ```bash
+    # On macOS/Linux:
+    export GROQ_API_KEY="your-api-key-here"
+
+    # On Windows:
+    set GROQ_API_KEY="your-api-key-here"
+
+    # Or add to your shell profile (.bashrc, .zshrc, etc.):
+    echo 'export GROQ_API_KEY="your-api-key-here"' >> ~/.bashrc
+    ```
+
+5. **Verify installation:**
+    ```bash
+    # Check Python version
+    python --version
+
+    # Verify key dependencies
+    python -c "import streamlit, llama_index, groq; print('All dependencies installed successfully!')"
+
+    # Verify API key is set
+    python -c "import os; print('GROQ_API_KEY is set!' if os.getenv('GROQ_API_KEY') else 'GROQ_API_KEY not found!')"
+    ```
 
 <!-- 3. Download the required model:
     ```bash
@@ -59,9 +102,9 @@ The graph visualization component is implemented using Streamlit and includes th
    - Supports RDF integration for semantic queries
    - Provides JSON import/export functionality
 
-2. **Visualization Interface (`streamlit_main_viz.py`)**:
+2. **Visualization Interface (`utils/streamlit_main_visualization.py`)**:
    ```python
-   streamlit run streamlit_main_visualization.py
+   streamlit run utils/streamlit_main_visualization.py
    ```
    Features:
    - Interactive graph visualization using Streamlit-Agraph
@@ -76,19 +119,20 @@ The graph visualization component is implemented using Streamlit and includes th
    - Graph layout controls
    - Export capabilities
 
-### Phase 2: GraphRAG Chatbot
+### Phase 2: GraphRAG Chatbot & Benchmark Testing
 
-The chatbot implementation combines graph-based retrieval with language model generation:
+The chatbot implementation combines graph-based retrieval with language model generation, now enhanced with comprehensive benchmark testing capabilities:
 
 1. **Backend Setup (`graphrag_backend.py`)**:
    - Uses LlamaIndex for knowledge graph creation
    - Implements citation-aware query engine
    - Handles document processing and embedding
    - Automatic index persistence and loading
+   - Configurable ChatMode for different conversation styles
 
 2. **Chatbot Interface (`streamlit_main_graphrag.py`)**:
    ```python
-   streamlit run streamlit_main_graphrag.py
+   streamlit run graphrag/streamlit_main_graphrag.py
    ```
    Features:
    - Chat interface with message history
@@ -97,10 +141,29 @@ The chatbot implementation combines graph-based retrieval with language model ge
    - Memory usage monitoring
    - Index persistence management
 
-3. **Configuration Requirements**:
+3. **Benchmark Testing Suite (`test_framework.py`, `run_benchmark.py`)**:
+   ```bash
+   # Run single configuration
+   python run_benchmark.py --config baseline_fast
+
+   # Run all configurations with comparison
+   python run_benchmark.py --all
+
+   # List available configurations
+   python run_benchmark.py --list-configs
+   ```
+   Features:
+   - 23 comprehensive test cases across 4 categories
+   - 14 configurable test scenarios
+   - Multiple ChatMode testing (condense_plus_context, context, condense_question)
+   - Cached index utilization options
+   - Automated evaluation metrics (keyword match, sutra reference accuracy, semantic similarity)
+
+4. **Configuration Requirements**:
    - LlamaCPP model setup
    - Embedding model configuration
    - Graph store initialization
+   - ChatMode configuration for conversational testing
 
 ### Phase 3: Index Persistence
 
@@ -238,8 +301,8 @@ print(response)
 3. **Index Persistence**:
    - **Index won't load**: Check `models/` directory permissions and ensure metadata.json exists
    - **Using stale data**: Use "Force rebuild index" checkbox in UI or `force_rebuild=True` in API
-   - **Errors after updates**: Delete `models/` folder and rebuild, or use `python manage_indices.py clear all`
-   - **Out of disk space**: Check storage with `python manage_indices.py size` and clear unused indices
+   - **Errors after updates**: Delete `models/` folder and rebuild, or use `python utils/manage_indices.py clear all`
+   - **Out of disk space**: Check storage with `python utils/manage_indices.py size` and clear unused indices
    - **Storage location**: Indices stored in `models/linearrag/` and `models/graphrag/`
    - **API errors**: Ensure `persist()` is called with positional argument: `storage_context.persist(persist_dir)`
 
@@ -249,20 +312,20 @@ The project includes a management tool for persisted indices:
 
 ```bash
 # List all persisted indices with metadata
-python manage_indices.py list
+python utils/manage_indices.py list
 
 # Show detailed information about indices
-python manage_indices.py info linearrag
-python manage_indices.py info graphrag
-python manage_indices.py info all
+python utils/manage_indices.py info linearrag
+python utils/manage_indices.py info graphrag
+python utils/manage_indices.py info all
 
 # Check storage usage
-python manage_indices.py size
+python utils/manage_indices.py size
 
 # Clear indices (with confirmation)
-python manage_indices.py clear linearrag
-python manage_indices.py clear graphrag
-python manage_indices.py clear all
+python utils/manage_indices.py clear linearrag
+python utils/manage_indices.py clear graphrag
+python utils/manage_indices.py clear all
 ```
 
 Or manually remove directories:
@@ -329,24 +392,116 @@ The test suite verifies:
 - Force rebuild functionality
 - Performance improvements
 
+### Benchmark Testing Suite
+
+The enhanced benchmark testing framework provides comprehensive evaluation capabilities:
+
+#### Quick Start
+
+```bash
+# Run single configuration
+python run_benchmark.py --config baseline_fast
+
+# Run all configurations with comparison report
+python run_benchmark.py --all --verbose
+
+# List available configurations
+python run_benchmark.py --list-configs
+```
+
+#### Test Configurations
+
+The framework includes 14 predefined configurations testing different aspects:
+
+**Core Configurations:**
+- `baseline_fast`: Fast model with cached indexes
+- `baseline_quality`: Higher quality model with more tokens
+- `query_mode`: Non-conversational mode
+
+**ChatMode Testing:**
+- `condense_plus_context`: Default conversation mode (condenses conversation + context)
+- `context_chat_mode`: Direct context retrieval
+- `condense_question_mode`: Standalone question generation
+
+**Advanced Testing:**
+- `tree_summarize`: Tree summarize response mode
+- `refine_mode`: Iterative refinement responses
+- `better_embeddings`: Enhanced semantic understanding
+- `larger_chunks`: Different chunking strategies
+- `full_graph`: Complete dataset testing
+
+**Backend Comparison:**
+- `linearrag_baseline`: Linear RAG for comparison
+- `high_precision`: Optimal settings combination
+
+#### Configuration Fields
+
+Each test configuration supports:
+
+```json
+{
+  "conversation_mode": true,           // Enable conversation context
+  "chat_mode": "condense_plus_context", // ChatMode when conversation_mode=true
+  "use_cached_index": true,            // Use persisted indexes
+  "backend_type": "graphrag",          // "graphrag" or "linearrag"
+  "response_mode": "compact",          // Query response mode
+  "graph_file": "data/graph_small.json" // Dataset to use
+}
+```
+
+#### ChatMode Options
+
+When `conversation_mode` is enabled, different ChatMode options provide various conversation handling strategies:
+
+- **`condense_plus_context`**: Condenses conversation history into standalone question, then retrieves context
+- **`context`**: Direct context retrieval from knowledge base without conversation condensing
+- **`condense_question`**: Generates standalone question from conversation for precise querying
+- **`simple`**: Basic chat responses without retrieval augmentation
+
+#### Cached Index Utilization
+
+The `use_cached_index` option controls whether to leverage persisted indexes:
+
+- **`true`** (default): Load existing indexes for faster testing
+- **`false`**: Force index rebuild for fresh evaluation
+
+#### Benchmark Dataset
+
+The test suite includes 23 comprehensive test cases across 4 categories:
+
+- **Atomic queries** (10): Basic definition and fact-checking questions
+- **Multi-hop queries** (5): Questions requiring multiple reasoning steps
+- **Conversational queries** (4): Follow-up questions with context
+- **Complex queries** (4): Multi-part analytical questions
+
+#### Evaluation Metrics
+
+Three comprehensive evaluation metrics provide thorough assessment:
+
+1. **Keyword Match Score**: Percentage of expected keywords found in responses
+2. **Sutra Reference Score**: F1 score for accurate sutra citations
+3. **Semantic Similarity Score**: Cosine similarity between expected and actual response embeddings
+
+Overall pass/fail determined by average score ≥0.6 threshold.
+
 ## Management Tools
 
 ### Index Management CLI
 
-The project includes `manage_indices.py` for managing persisted indices:
+The project includes `utils/manage_indices.py` for managing persisted indices:
 
 ```bash
 # List all indices with status and metadata
-python manage_indices.py list
+python utils/manage_indices.py list
 
 # Show detailed file information
-python manage_indices.py info [linearrag|graphrag|all]
+python utils/manage_indices.py info [linearrag|graphrag|all]
 
 # Display storage usage
-python manage_indices.py size
+python utils/manage_indices.py size
 
 # Clear indices (with confirmation)
-python manage_indices.py clear [linearrag|graphrag|all]
+python utils/manage_indices.py clear [linearrag|graphrag|all]
 ```
 
 ### Example Output
@@ -437,17 +592,27 @@ class GraphRAGBackend:
 ### Common Commands
 
 ```bash
-# Run Streamlit apps
-streamlit run streamlit_main_linearrag.py
-streamlit run streamlit_main_graphrag.py
+# Run Streamlit applications
+streamlit run utils/streamlit_main_visualization.py      # Graph visualization interface
+streamlit run graphrag/streamlit_main_graphrag.py        # GraphRAG chatbot
+streamlit run linearrag/streamlit_main_linearrag.py      # LinearRAG chatbot
 
-# Manage indices
-python manage_indices.py list
-python manage_indices.py size
+# Manage persisted indices
+python utils/manage_indices.py list                      # List all indices
+python utils/manage_indices.py info all                 # Show detailed info
+python utils/manage_indices.py size                     # Show storage usage
+python utils/manage_indices.py clear graphrag           # Clear GraphRAG indices
 
 # Run tests
-python test_persistence.py
-python example_persistence.py
+python tests/test_persistence.py                         # Run persistence tests
+python tests/test_framework.py                           # Run framework tests
+
+# Benchmark Testing Suite
+python tests/run_benchmark.py --list-configs             # List all configurations
+python tests/run_benchmark.py --config baseline_fast     # Run single config
+python tests/run_benchmark.py --all                     # Run all configs with comparison
+python tests/run_benchmark.py --config context_chat_mode # Test different ChatMode
+python tests/run_benchmark.py --config no_cache_rebuild  # Force fresh index rebuild
 ```
 
 ### Key Features

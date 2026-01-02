@@ -1,0 +1,282 @@
+{
+  "test_cases": [
+    {
+      "id": "atomic_001",
+      "category": "atomic",
+      "language": "english",
+      "question": "What is the definition of yoga?",
+      "expected_answer_keywords": ["yoga", "stilling", "mind", "modifications", "citta", "vritti", "nirodha"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "easy",
+      "description": "Basic atomic query testing the core definition of yoga from sutra I.2"
+    },
+    {
+      "id": "atomic_002",
+      "category": "atomic",
+      "language": "english",
+      "question": "What does the word 'atha' mean in the first sutra?",
+      "expected_answer_keywords": ["now", "then", "beginning", "exposition", "yoga"],
+      "expected_sutra_references": ["I.1"],
+      "difficulty": "easy",
+      "description": "Testing understanding of Sanskrit word analysis"
+    },
+    {
+      "id": "atomic_003",
+      "category": "atomic",
+      "language": "english",
+      "question": "What is citta vritti nirodha?",
+      "expected_answer_keywords": ["yoga", "mind", "modifications", "restraint", "stilling", "mental", "processes"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "easy",
+      "description": "Direct query about the key concept from sutra I.2"
+    },
+    {
+      "id": "atomic_004",
+      "category": "atomic",
+      "language": "sanskrit",
+      "question": "योगः किम्?",
+      "expected_answer_keywords": ["चित्तवृत्तिनिरोधः", "citta", "vritti", "nirodha"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "medium",
+      "description": "Sanskrit query asking 'What is yoga?'"
+    },
+    {
+      "id": "multi_hop_001",
+      "category": "multi_hop",
+      "language": "english",
+      "question": "How does the first sutra relate to the definition of yoga in the second sutra?",
+      "expected_answer_keywords": ["atha", "beginning", "exposition", "yoga", "citta", "vritti", "nirodha", "teachings"],
+      "expected_sutra_references": ["I.1", "I.2"],
+      "difficulty": "medium",
+      "description": "Multi-hop query connecting the opening sutra with yoga definition"
+    },
+    {
+      "id": "multi_hop_002",
+      "category": "multi_hop",
+      "language": "english",
+      "question": "What do Vyasa's commentaries say about the relationship between the first two sutras?",
+      "expected_answer_keywords": ["Vyasa", "commentary", "atha", "yoga", "concentration", "samadhi", "mind", "modifications"],
+      "expected_sutra_references": ["I.1", "I.2"],
+      "difficulty": "hard",
+      "description": "Complex multi-hop query requiring commentary analysis"
+    },
+    {
+      "id": "multi_hop_003",
+      "category": "multi_hop",
+      "language": "english",
+      "question": "How do different English translations interpret the definition of yoga?",
+      "expected_answer_keywords": ["Bryant", "Leggett", "Vivekananda", "Hariharananda", "stilling", "inhibition", "restraining", "suppression"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "medium",
+      "description": "Comparing different translation interpretations"
+    },
+    {
+      "id": "conversational_001",
+      "category": "conversational",
+      "language": "english",
+      "question": "Can you explain that in simpler terms?",
+      "conversation_context": [
+        {
+          "role": "user",
+          "content": "What is the definition of yoga?"
+        },
+        {
+          "role": "assistant",
+          "content": "According to sutra I.2, yoga is the stilling of the changing states of the mind (citta-vṛtti-nirodhaḥ)."
+        }
+      ],
+      "expected_answer_keywords": ["simpler", "mind", "control", "stop", "thoughts", "fluctuations", "calm", "focus"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "medium",
+      "description": "Follow-up conversational query asking for simpler explanation"
+    },
+    {
+      "id": "conversational_002",
+      "category": "conversational",
+      "language": "english",
+      "question": "What does Vyasa say about this concept?",
+      "conversation_context": [
+        {
+          "role": "user",
+          "content": "What is citta vritti nirodha?"
+        },
+        {
+          "role": "assistant",
+          "content": "Yoga is the restraint of the modifications of the mind."
+        }
+      ],
+      "expected_answer_keywords": ["Vyasa", "commentary", "mind", "prakhyāpravṛtti", "sthiti", "śīla", "three", "gunas"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "hard",
+      "description": "Conversational query asking for Vyasa's perspective after discussing a concept"
+    },
+    {
+      "id": "complex_001",
+      "category": "complex",
+      "language": "english",
+      "question": "Explain the relationship between the opening sutra and the definition of yoga, including the word-for-word analysis and Vyasa's commentary",
+      "expected_answer_keywords": ["atha", "yoga", "anuśāsanam", "citta", "vṛtti", "nirodha", "Vyasa", "concentration", "samādhi", "mental", "modifications"],
+      "expected_sutra_references": ["I.1", "I.2"],
+      "difficulty": "hard",
+      "description": "Complex multi-part question requiring comprehensive analysis"
+    },
+    {
+      "id": "complex_002",
+      "category": "complex",
+      "language": "english",
+      "question": "Compare and contrast how Bryant, Leggett, and Vivekananda translate the concept of yoga, and explain what citta-vritti-nirodha means in the context of Patanjali's system",
+      "expected_answer_keywords": ["Bryant", "Leggett", "Vivekananda", "stilling", "inhibition", "restraining", "mind", "modifications", "mental", "processes", "Patanjali"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "hard",
+      "description": "Complex analytical question comparing translations and explaining concepts"
+    },
+    {
+      "id": "complex_003",
+      "category": "complex",
+      "language": "english",
+      "question": "Based on the Sanskrit text and word analysis, explain how the first sutra sets up the framework for understanding yoga as presented in the second sutra",
+      "expected_answer_keywords": ["atha", "yogānuśāsanam", "now", "exposition", "teaching", "citta-vṛtti-nirodha", "framework", "Sanskrit"],
+      "expected_sutra_references": ["I.1", "I.2"],
+      "difficulty": "hard",
+      "description": "Complex analytical question connecting Sanskrit analysis with conceptual framework"
+    },
+    {
+      "id": "atomic_005",
+      "category": "atomic",
+      "language": "english",
+      "question": "What are the key components of yoga according to the second sutra?",
+      "expected_answer_keywords": ["citta", "vritti", "nirodha", "mind", "modifications", "restraint"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "easy",
+      "description": "Testing understanding of the key terms in the yoga definition"
+    },
+    {
+      "id": "atomic_006",
+      "category": "atomic",
+      "language": "english",
+      "question": "What does 'anuśāsanam' mean in the first sutra?",
+      "expected_answer_keywords": ["revised", "text", "explanation", "teaching", "discipline"],
+      "expected_sutra_references": ["I.1"],
+      "difficulty": "medium",
+      "description": "Testing knowledge of specific Sanskrit term analysis"
+    },
+    {
+      "id": "multi_hop_004",
+      "category": "multi_hop",
+      "language": "english",
+      "question": "How do the commentaries of Vyasa and Vacaspati differ in their interpretation of citta-vritti-nirodha?",
+      "expected_answer_keywords": ["Vyasa", "Vacaspati", "commentary", "interpretation", "citta", "vritti", "nirodha", "mind", "modifications"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "hard",
+      "description": "Comparing different commentator interpretations"
+    },
+    {
+      "id": "conversational_003",
+      "category": "conversational",
+      "language": "english",
+      "question": "Can you give me examples of what these mental modifications might be?",
+      "conversation_context": [
+        {
+          "role": "user",
+          "content": "What does citta vritti nirodha mean?"
+        },
+        {
+          "role": "assistant",
+          "content": "Citta-vritti-nirodha refers to the restraint or stilling of the modifications/fluctuations of the mind."
+        }
+      ],
+      "expected_answer_keywords": ["thoughts", "emotions", "sensations", "memories", "impressions", "mental", "fluctuations", "modifications"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "medium",
+      "description": "Conversational follow-up asking for practical examples"
+    },
+    {
+      "id": "atomic_007",
+      "category": "atomic",
+      "language": "sanskrit",
+      "question": "अथ शब्दस्य अर्थः कः?",
+      "expected_answer_keywords": ["अधिकारार्थ", "now", "beginning", "then"],
+      "expected_sutra_references": ["I.1"],
+      "difficulty": "medium",
+      "description": "Sanskrit query asking 'What is the meaning of the word atha?'"
+    },
+    {
+      "id": "atomic_008",
+      "category": "atomic",
+      "language": "english",
+      "question": "What does Vyasa say about samadhi?",
+      "expected_answer_keywords": ["Vyasa", "samadhi", "concentration", "meditation", "yoga"],
+      "expected_sutra_references": ["I.1"],
+      "difficulty": "medium",
+      "description": "Testing knowledge of Vyasa's commentary on samadhi"
+    },
+    {
+      "id": "multi_hop_005",
+      "category": "multi_hop",
+      "language": "english",
+      "question": "How does the concept of yoga as mind control relate to the traditional understanding of meditation?",
+      "expected_answer_keywords": ["yoga", "meditation", "mind", "control", "concentration", "samadhi", "citta", "vritti", "nirodha"],
+      "expected_sutra_references": ["I.1", "I.2"],
+      "difficulty": "medium",
+      "description": "Connecting Patanjali's yoga definition with broader meditation concepts"
+    },
+    {
+      "id": "complex_004",
+      "category": "complex",
+      "language": "english",
+      "question": "Analyze the Sanskrit grammar and etymology of 'citta-vṛtti-nirodhaḥ' and explain how this compound word encapsulates Patanjali's entire philosophical system",
+      "expected_answer_keywords": ["Sanskrit", "grammar", "etymology", "citta", "vṛtti", "nirodha", "compound", "word", "Patanjali", "philosophical", "system"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "hard",
+      "description": "Advanced linguistic and philosophical analysis"
+    },
+    {
+      "id": "conversational_004",
+      "category": "conversational",
+      "language": "english",
+      "question": "That makes sense. Now can you tell me more about the different types of mental modifications mentioned in later sutras?",
+      "conversation_context": [
+        {
+          "role": "user",
+          "content": "What is yoga according to Patanjali?"
+        },
+        {
+          "role": "assistant",
+          "content": "Yoga is citta-vritti-nirodhaḥ - the stilling of the modifications of the mind."
+        },
+        {
+          "role": "user",
+          "content": "What are some examples of these modifications?"
+        },
+        {
+          "role": "assistant",
+          "content": "The sutras mention various types of vrittis including pramana (right knowledge), viparyaya (misconception), vikalpa (imagination), nidra (sleep), and smriti (memory)."
+        }
+      ],
+      "expected_answer_keywords": ["pramana", "viparyaya", "vikalpa", "nidra", "smriti", "right", "knowledge", "misconception", "imagination", "sleep", "memory"],
+      "expected_sutra_references": ["I.6"],
+      "difficulty": "hard",
+      "description": "Advanced conversational query building on previous context"
+    },
+    {
+      "id": "atomic_009",
+      "category": "atomic",
+      "language": "english",
+      "question": "What is the significance of the word 'atha' in Indian philosophical texts?",
+      "expected_answer_keywords": ["atha", "now", "beginning", "auspicious", "tradition", "philosophical", "texts"],
+      "expected_sutra_references": ["I.1"],
+      "difficulty": "medium",
+      "description": "Testing understanding of traditional Sanskrit text conventions"
+    },
+    {
+      "id": "atomic_010",
+      "category": "atomic",
+      "language": "english",
+      "question": "How does Hariharananda translate the definition of yoga?",
+      "expected_answer_keywords": ["Hariharananda", "suppression", "modifications", "mind"],
+      "expected_sutra_references": ["I.2"],
+      "difficulty": "easy",
+      "description": "Testing knowledge of specific translator's interpretation"
+    }
+  ]
+}

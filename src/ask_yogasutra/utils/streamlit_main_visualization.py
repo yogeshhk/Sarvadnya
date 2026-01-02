@@ -1,7 +1,7 @@
 import streamlit as st
 import networkx as nx
 import json
-from graph_builder import GraphBuilder
+from graphrag.graph_builder import GraphBuilder
 from streamlit_agraph import agraph, Node, Edge, Config
 from rdflib import URIRef, Literal
 import colorsys

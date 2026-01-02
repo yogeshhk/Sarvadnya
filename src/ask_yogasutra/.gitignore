@@ -29,3 +29,4 @@ Thumbs.db
 # Test data (keep small test files)
 data/graph.json
 data/graph_orig.json
+test_results/
