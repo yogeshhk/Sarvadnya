@@ -4,22 +4,12 @@ import json
 import hashlib
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-# from llama_index import (
-#     ServiceContext,
-#     VectorStoreIndex,
-#     Document,
-#     StorageContext
-# )
-# from llama_index.llms import LlamaCPP
-# from llama_index.embeddings import HuggingFaceEmbedding
-# from llama_index.schema import TextNode
-# from llama_index.response.schema import Response
 
 from llama_index.core import (
     ServiceContext,
-    VectorStoreIndex,
-    Document,
     StorageContext,
+    KnowledgeGraphIndex,
+    Document,
     Settings,
     load_index_from_storage
 )
@@ -27,10 +17,28 @@ from llama_index.core.node_parser import SentenceSplitter
 # from llama_index.llms.llama_cpp import LlamaCPP
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.schema import TextNode
-from llama_index.core.response.schema import Response
-import unittest
+from llama_index.core import Response
+from llama_index.core.graph_stores import SimpleGraphStore
 from llama_index.llms.groq import Groq
+from llama_index.core.chat_engine.types import ChatMode
+from typing import Optional
+from llama_index.core.base.llms.types import ChatMessage
 import os
+import unittest
+import tempfile
+
+# from llama_index import (
+#     ServiceContext,
+#     StorageContext,
+#     KnowledgeGraphIndex,
+#     VectorStoreIndex,
+# )
+# from llama_index.llms import LlamaCPP
+# from llama_index.storage.storage_context import StorageContext
+# from llama_index.graph_stores import SimpleGraphStore
+# from llama_index.embeddings import HuggingFaceEmbedding
+# from llama_index.schema import TextNode, Document
+# from llama_index.response.schema import Response
 
 # Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -39,7 +47,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 # LLAMA_MODEL_PATH = "llama-2-7b-chat.Q4_K_M.gguf"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL_NAME = "llama3-70b-8192"
+GROQ_MODEL_NAME = "llama-3.1-8b-instant" #"llama-3.1-8b-instant" or "mistral-saba-24b", "llama-3.3-70b-versatile"
+CONVERSATION_MODE = True
 
 # Persistence configuration
 PERSIST_BASE_DIR = "models"
@@ -61,8 +70,26 @@ class CitationQueryEngine:
         new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
         return new_response
 
+class CitationConversationEngine:
+    def __init__(self, base_conversation_engine):
+        self.base_conversation_engine = base_conversation_engine
+
+    def query(self, query: str, msgs: List[ChatMessage]) -> Response:
+        response = self.base_conversation_engine.chat(query, msgs)
+        source_nodes = response.source_nodes if hasattr(response, 'source_nodes') else []
+        
+        referenced_ids = set()
+        for node in source_nodes:
+            if hasattr(node, 'metadata') and 'id' in node.metadata:
+                referenced_ids.add(node.metadata['id'])
+        
+        formatted_response = f"{response.response}"
+        new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
+        return new_response
+
+
 def extract_text_from_node(node_data: Dict[str, Any]) -> tuple[str, Dict[str, Any]]:
-    """Extract text and metadata from node data."""
+    """Extract only the specified fields from node data."""
     relevant_fields = [
         'Sanskrit_Text',
         'Word_for_Word_Analysis',
@@ -82,14 +109,16 @@ def extract_text_from_node(node_data: Dict[str, Any]) -> tuple[str, Dict[str, An
     
     return " ".join(text_parts), essential_metadata
 
-class LinearRAGBackend:
-    def __init__(self, persist_base_dir: str = PERSIST_BASE_DIR):
+class GraphRAGBackend:
+    def __init__(self, persist_base_dir: str = PERSIST_BASE_DIR, chat_mode: str = "condense_plus_context"):
         self.query_engine = None
-        self.storage_context = None
+        self.graph_store = None
+        self.conversation_engine = None
         self.persist_base_dir = persist_base_dir
         self.data_source = None
         self.persist_dir = None
         self.index = None
+        self.chat_mode = chat_mode
 
     # def check_model_path(self):
     #     """Check if the model file exists and return the full path."""
@@ -152,26 +181,31 @@ class LinearRAGBackend:
                 max_tokens=512
             )
             embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL_NAME)
-
+            
             # Configure Settings
             Settings.llm = llm
             Settings.embed_model = embed_model
             Settings.chunk_size = 512
             Settings.chunk_overlap = 20
-
-            # Load storage context from disk
+            
+            # Load storage context from disk (graph store is included)
             storage_context = StorageContext.from_defaults(persist_dir=self.persist_dir)
-
+            
             # Load index
             index = load_index_from_storage(storage_context)
-
-            self.storage_context = storage_context
+            
+            # Get graph store from storage context
+            self.graph_store = storage_context.graph_store
             self.index = index
             base_query_engine = index.as_query_engine(
                 response_mode="compact",
                 verbose=True
             )
+            base_conversation_engine = index.as_chat_engine(
+                chat_mode=self._get_chat_mode()
+            )
             self.query_engine = CitationQueryEngine(base_query_engine)
+            self.conversation_engine = CitationConversationEngine(base_conversation_engine)
 
             print(f"Index loaded from {self.persist_dir} (data source: {self.data_source})")
             return True
@@ -190,6 +224,19 @@ class LinearRAGBackend:
         # Ensure it's not empty
         return sanitized if sanitized else "default"
 
+    def _get_chat_mode(self) -> ChatMode:
+        """Convert string chat_mode to ChatMode enum."""
+        mode_map = {
+            "simple": ChatMode.SIMPLE,
+            "condense_question": ChatMode.CONDENSE_QUESTION,
+            "context": ChatMode.CONTEXT,
+            "condense_plus_context": ChatMode.CONDENSE_PLUS_CONTEXT,
+            "react": ChatMode.REACT,
+            "openai": ChatMode.OPENAI,
+            "best": ChatMode.BEST
+        }
+        return mode_map.get(self.chat_mode, ChatMode.CONDENSE_PLUS_CONTEXT)
+
     def setup_knowledge_base(self, json_data: Dict[str, Any], progress_callback=None, force_rebuild: bool = False, data_source: str = None):
         """Set up the knowledge base with the provided JSON data.
 
@@ -204,7 +251,7 @@ class LinearRAGBackend:
             self.data_source = data_source or "default"
             # Sanitize data source name for directory name
             safe_data_source = self._sanitize_filename(self.data_source)
-            self.persist_dir = f"{self.persist_base_dir}/linearrag_{safe_data_source}"
+            self.persist_dir = f"{self.persist_base_dir}/graphrag_{safe_data_source}"
 
             # Check if we can load from disk
             if not force_rebuild and not self._should_rebuild_index(json_data):
@@ -212,9 +259,16 @@ class LinearRAGBackend:
                 return self._load_persisted_index()
 
             print(f"Building new index...")
-            # model_path = self.check_model_path()
+            graph_store = SimpleGraphStore()
+            storage_context = StorageContext.from_defaults(graph_store=graph_store)
+            llm = Groq(
+                model=GROQ_MODEL_NAME,
+                api_key=GROQ_API_KEY,
+                temperature=0.1,
+                max_tokens=512
+            )
             
-            # # Initialize LLM
+            # model_path = self.check_model_path()
             # llm = LlamaCPP(
             #     model_path=model_path,
             #     model_kwargs={
@@ -229,17 +283,9 @@ class LinearRAGBackend:
             #     generate_kwargs={},
             #     verbose=True
             # )
-            llm = Groq(
-                model=GROQ_MODEL_NAME,
-                api_key=GROQ_API_KEY,
-                temperature=0.1,
-                max_tokens=512
-            )
             
-            # Initialize embedding model
             embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL_NAME)
             
-            # # Create service context
             # service_context = ServiceContext.from_defaults(
             #     llm=llm,
             #     embed_model=embed_model,
@@ -247,17 +293,22 @@ class LinearRAGBackend:
             #     chunk_overlap=20
             # )
             
-            # Use Settings instead of ServiceContext
+            # Use Settings instead of ServiceContext (new in v0.10+)
             Settings.llm = llm
             Settings.embed_model = embed_model
             Settings.chunk_size = 512
             Settings.chunk_overlap = 20
             
-            # Process nodes
+            # Use SentenceSplitter for text splitting
+            text_splitter = SentenceSplitter(chunk_size=512, chunk_overlap=20)            
+                    
             elements = json_data.get('elements', {})
             nodes = elements.get('nodes', [])
+            edges = elements.get('edges', [])
             
             documents = []
+            node_lookup = {}
+            
             batch_size = 20
             total_nodes = len(nodes)
             
@@ -269,42 +320,65 @@ class LinearRAGBackend:
                 batch_nodes = nodes[batch_start:batch_end]
                 for node in batch_nodes:
                     node_data = node.get('data', {})
-                    node_text, essential_metadata = extract_text_from_node(node_data)
+                    node_id = node_data.get('id')
                     
-                    if node_text.strip():
-                        doc = Document(
-                            text=node_text,
-                            metadata=essential_metadata
-                        )
-                        documents.append(doc)
+                    if node_id:
+                        node_text, essential_metadata = extract_text_from_node(node_data)
+                        if node_text.strip():
+                            doc = Document(
+                                text=node_text,
+                                metadata=essential_metadata
+                            )
+                            documents.append(doc)
+                            node_lookup[node_id] = doc
             
-            # Create vector store index
-            storage_context = StorageContext.from_defaults()
-            index = VectorStoreIndex.from_documents(
+            # Process edges
+            for edge in edges:
+                edge_data = edge.get('data', {})
+                source = edge_data.get('source')
+                target = edge_data.get('target')
+                
+                if source and target and source in node_lookup and target in node_lookup:
+                    relation = edge_data.get('relation', 'connected_to')
+                    source_doc = node_lookup[source]
+                    source_doc.metadata['relationships'] = source_doc.metadata.get('relationships', [])
+                    source_doc.metadata['relationships'].append({
+                        'target': target,
+                        'relation': relation
+                    })
+            
+            index = KnowledgeGraphIndex.from_documents(
                 documents=documents,
                 storage_context=storage_context,
                 # service_context=service_context,
+                max_triplets_per_chunk=5,
+                include_embeddings=True,
                 show_progress=True
             )
             
-            # Persist the index
+            # Persist the index and graph store
             Path(self.persist_dir).mkdir(parents=True, exist_ok=True)
             # Persist storage context - use positional argument
+            # This will also persist the graph store as it's part of storage_context
             index.storage_context.persist(self.persist_dir)
             
             # Save metadata
             data_hash = self._compute_data_hash(json_data)
             self._save_metadata(data_hash)
             
-            print(f"Index persisted to {self.persist_dir} (data source: {self.data_source})")
+            print(f"Index and graph store persisted to {self.persist_dir} (data source: {self.data_source})")
             
-            self.storage_context = storage_context
+            self.graph_store = graph_store
             self.index = index
             base_query_engine = index.as_query_engine(
                 response_mode="compact",
                 verbose=True
             )
+            base_conversation_engine = index.as_chat_engine(
+                chat_mode= ChatMode.CONDENSE_PLUS_CONTEXT
+            )
             self.query_engine = CitationQueryEngine(base_query_engine)
+            self.conversation_engine = CitationConversationEngine(base_conversation_engine)
             
             return True
             
@@ -322,14 +396,26 @@ class LinearRAGBackend:
         except Exception as e:
             raise Exception(f"Error processing query: {str(e)}")
         
-class TestLinearRAGBackend(unittest.TestCase):
+    def process_conversation(self, query: str, msgs: List[ChatMessage]) -> str:
+        """Process a query using the query engine."""
+        if self.conversation_engine is None:
+            raise Exception("Knowledge base not initialized. Please setup the knowledge base first.")
+        
+        try:
+            response = self.conversation_engine.query(query, msgs)
+            return response.response
+        except Exception as e:
+            raise Exception(f"Error processing query: {str(e)}")
+        
+class TestGraphRAGBackend(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load actual graph data from file."""
-        cls.json_file = 'graph_small.json'
+        cls.json_file = 'graph_small.json'  # or 'data/graph.json'
         with open(cls.json_file, 'r', encoding='utf-8') as f:
             cls.test_data = json.load(f)
         
+        # Only initialize if GROQ_API_KEY is available
         if not GROQ_API_KEY:
             raise unittest.SkipTest("GROQ_API_KEY not set")
     
@@ -342,54 +428,46 @@ class TestLinearRAGBackend(unittest.TestCase):
         self.assertGreater(len(text), 0)
         self.assertIn("id", metadata)
     
-    def test_backend_initialization(self):
-        """Test backend initialization."""
-        backend = LinearRAGBackend()
-        self.assertIsNone(backend.query_engine)
-        self.assertIsNone(backend.storage_context)
-    
     def test_setup_knowledge_base(self):
         """Test knowledge base setup with real data."""
-        backend = LinearRAGBackend()
+        backend = GraphRAGBackend()
         success = backend.setup_knowledge_base(self.test_data)
         self.assertTrue(success)
         self.assertIsNotNone(backend.query_engine)
+        self.assertIsNotNone(backend.graph_store)
     
-    def test_process_query_with_citations(self):
-        """Test query processing returns citations."""
-        backend = LinearRAGBackend()
+    def test_process_simple_query(self):
+        """Test processing a simple query."""
+        backend = GraphRAGBackend()
         backend.setup_knowledge_base(self.test_data)
         
-        query = "Explain the first sutra"
+        query = "What is the definition of yoga?"
         response = backend.process_query(query)
         
         self.assertIsInstance(response, str)
+        self.assertGreater(len(response), 0)
         self.assertIn("References:", response)
     
-    def test_multiple_queries(self):
-        """Test processing multiple queries sequentially."""
-        backend = LinearRAGBackend()
+    def test_process_commentary_query(self):
+        """Test query about Vyasa commentary."""
+        backend = GraphRAGBackend()
         backend.setup_knowledge_base(self.test_data)
         
-        queries = [
-            "What is yoga?",
-            "What is citta vritti nirodha?"
-        ]
+        query = "What does Vyasa commentary say?"
+        response = backend.process_query(query)
         
-        for query in queries:
-            response = backend.process_query(query)
-            self.assertIsInstance(response, str)
-            self.assertGreater(len(response), 0)
+        self.assertIsInstance(response, str)
+        self.assertGreater(len(response), 0)
 
 def run_tests():
-    """Run all LinearRAG backend tests."""
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestLinearRAGBackend)
+    """Run all GraphRAG backend tests."""
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestGraphRAGBackend)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return result.wasSuccessful()
 
 if __name__ == "__main__":
-    print("Running Linear RAG Backend tests...")
+    print("Running GraphRAG Backend tests...")
     success = run_tests()
     if success:
         print("\n✓ All tests passed!")

@@ -18,9 +18,9 @@ def run_all_tests():
     
     # Import test modules
     try:
-        from graph_builder import TestGraphBuilder
-        from graphrag_backend import TestGraphRAGBackend
-        from linearrag_backend import TestLinearRAGBackend
+        from graphrag.graph_builder import TestGraphBuilder
+        from graphrag.graphrag_backend import TestGraphRAGBackend
+        from linearrag.linearrag_backend import TestLinearRAGBackend
         
         suite.addTests(loader.loadTestsFromTestCase(TestGraphBuilder))
         suite.addTests(loader.loadTestsFromTestCase(TestGraphRAGBackend))

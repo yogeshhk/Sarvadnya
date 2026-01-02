@@ -76,15 +76,16 @@ The graph visualization component is implemented using Streamlit and includes th
    - Graph layout controls
    - Export capabilities
 
-### Phase 2: GraphRAG Chatbot
+### Phase 2: GraphRAG Chatbot & Benchmark Testing
 
-The chatbot implementation combines graph-based retrieval with language model generation:
+The chatbot implementation combines graph-based retrieval with language model generation, now enhanced with comprehensive benchmark testing capabilities:
 
 1. **Backend Setup (`graphrag_backend.py`)**:
    - Uses LlamaIndex for knowledge graph creation
    - Implements citation-aware query engine
    - Handles document processing and embedding
    - Automatic index persistence and loading
+   - Configurable ChatMode for different conversation styles
 
 2. **Chatbot Interface (`streamlit_main_graphrag.py`)**:
    ```python
@@ -97,10 +98,29 @@ The chatbot implementation combines graph-based retrieval with language model ge
    - Memory usage monitoring
    - Index persistence management
 
-3. **Configuration Requirements**:
+3. **Benchmark Testing Suite (`test_framework.py`, `run_benchmark.py`)**:
+   ```bash
+   # Run single configuration
+   python run_benchmark.py --config baseline_fast
+
+   # Run all configurations with comparison
+   python run_benchmark.py --all
+
+   # List available configurations
+   python run_benchmark.py --list-configs
+   ```
+   Features:
+   - 23 comprehensive test cases across 4 categories
+   - 14 configurable test scenarios
+   - Multiple ChatMode testing (condense_plus_context, context, condense_question)
+   - Cached index utilization options
+   - Automated evaluation metrics (keyword match, sutra reference accuracy, semantic similarity)
+
+4. **Configuration Requirements**:
    - LlamaCPP model setup
    - Embedding model configuration
    - Graph store initialization
+   - ChatMode configuration for conversational testing
 
 ### Phase 3: Index Persistence
 
@@ -329,6 +349,98 @@ The test suite verifies:
 - Force rebuild functionality
 - Performance improvements
 
+### Benchmark Testing Suite
+
+The enhanced benchmark testing framework provides comprehensive evaluation capabilities:
+
+#### Quick Start
+
+```bash
+# Run single configuration
+python run_benchmark.py --config baseline_fast
+
+# Run all configurations with comparison report
+python run_benchmark.py --all --verbose
+
+# List available configurations
+python run_benchmark.py --list-configs
+```
+
+#### Test Configurations
+
+The framework includes 14 predefined configurations testing different aspects:
+
+**Core Configurations:**
+- `baseline_fast`: Fast model with cached indexes
+- `baseline_quality`: Higher quality model with more tokens
+- `query_mode`: Non-conversational mode
+
+**ChatMode Testing:**
+- `condense_plus_context`: Default conversation mode (condenses conversation + context)
+- `context_chat_mode`: Direct context retrieval
+- `condense_question_mode`: Standalone question generation
+
+**Advanced Testing:**
+- `tree_summarize`: Tree summarize response mode
+- `refine_mode`: Iterative refinement responses
+- `better_embeddings`: Enhanced semantic understanding
+- `larger_chunks`: Different chunking strategies
+- `full_graph`: Complete dataset testing
+
+**Backend Comparison:**
+- `linearrag_baseline`: Linear RAG for comparison
+- `high_precision`: Optimal settings combination
+
+#### Configuration Fields
+
+Each test configuration supports:
+
+```json
+{
+  "conversation_mode": true,           // Enable conversation context
+  "chat_mode": "condense_plus_context", // ChatMode when conversation_mode=true
+  "use_cached_index": true,            // Use persisted indexes
+  "backend_type": "graphrag",          // "graphrag" or "linearrag"
+  "response_mode": "compact",          // Query response mode
+  "graph_file": "data/graph_small.json" // Dataset to use
+}
+```
+
+#### ChatMode Options
+
+When `conversation_mode` is enabled, different ChatMode options provide various conversation handling strategies:
+
+- **`condense_plus_context`**: Condenses conversation history into standalone question, then retrieves context
+- **`context`**: Direct context retrieval from knowledge base without conversation condensing
+- **`condense_question`**: Generates standalone question from conversation for precise querying
+- **`simple`**: Basic chat responses without retrieval augmentation
+
+#### Cached Index Utilization
+
+The `use_cached_index` option controls whether to leverage persisted indexes:
+
+- **`true`** (default): Load existing indexes for faster testing
+- **`false`**: Force index rebuild for fresh evaluation
+
+#### Benchmark Dataset
+
+The test suite includes 23 comprehensive test cases across 4 categories:
+
+- **Atomic queries** (10): Basic definition and fact-checking questions
+- **Multi-hop queries** (5): Questions requiring multiple reasoning steps
+- **Conversational queries** (4): Follow-up questions with context
+- **Complex queries** (4): Multi-part analytical questions
+
+#### Evaluation Metrics
+
+Three comprehensive evaluation metrics provide thorough assessment:
+
+1. **Keyword Match Score**: Percentage of expected keywords found in responses
+2. **Sutra Reference Score**: F1 score for accurate sutra citations
+3. **Semantic Similarity Score**: Cosine similarity between expected and actual response embeddings
+
+Overall pass/fail determined by average score ≥0.6 threshold.
+
 ## Management Tools
 
 ### Index Management CLI
@@ -448,6 +560,13 @@ python manage_indices.py size
 # Run tests
 python test_persistence.py
 python example_persistence.py
+
+# Benchmark Testing Suite
+python run_benchmark.py --list-configs                    # List all configurations
+python run_benchmark.py --config baseline_fast           # Run single config
+python run_benchmark.py --all                           # Run all configs with comparison
+python run_benchmark.py --config context_chat_mode      # Test different ChatMode
+python run_benchmark.py --config no_cache_rebuild       # Force fresh index rebuild
 ```
 
 ### Key Features
