@@ -411,7 +411,14 @@ class TestGraphRAGBackend(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load actual graph data from file."""
-        cls.json_file = 'graph_small.json'  # or 'data/graph.json'
+        # cls.json_file = 'data/graph_small.json'  # or 'data/graph.json'
+        # 1. Get the directory where THIS script is located
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # 2. Go up to 'ask_yogasutra' then into 'data'
+        # Adjust the number of '..' based on how deep your script is
+        cls.json_file = os.path.join(current_dir, '..', 'data', 'graph_small.json')
+    
         with open(cls.json_file, 'r', encoding='utf-8') as f:
             cls.test_data = json.load(f)
         

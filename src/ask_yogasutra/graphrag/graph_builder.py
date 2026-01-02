@@ -203,7 +203,7 @@ class TestGraphBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load actual graph data once."""
-        cls.json_file = 'graph_small.json'
+        cls.json_file = 'data/graph_small.json'
         with open(cls.json_file, 'r', encoding='utf-8') as f:
             cls.test_data = json.load(f)
     
