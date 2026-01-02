@@ -17,20 +17,63 @@ Graph RAG is the next big thing, IKIGAI, with Sanskrit it's Specific Knowledge. 
 
 ## Installation and Setup
 
-1. Clone the repository:
+### Prerequisites
+
+- Python 3.8 or higher
+- Git
+- Groq API account for LLM access
+
+### Installation Steps
+
+1. **Clone the repository:**
     ```bash
     git clone https://github.com/yourusername/ask-yogasutra.git
     cd ask-yogasutra
     ```
 
-2. Install dependencies:
+2. **Create a virtual environment (recommended):**
+    ```bash
+    # Create virtual environment
+    python -m venv venv
+
+    # Activate virtual environment
+    # On macOS/Linux:
+    source venv/bin/activate
+    # On Windows:
+    # venv\Scripts\activate
+    ```
+
+3. **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
-3. Get Groq API Key:
+
+4. **Set up Groq API Key:**
     - Sign up at https://console.groq.com/
-    - Generate an API key
-    - Add it to your Environment settins
+    - Generate an API key from your dashboard
+    - Set the environment variable:
+    ```bash
+    # On macOS/Linux:
+    export GROQ_API_KEY="your-api-key-here"
+
+    # On Windows:
+    set GROQ_API_KEY="your-api-key-here"
+
+    # Or add to your shell profile (.bashrc, .zshrc, etc.):
+    echo 'export GROQ_API_KEY="your-api-key-here"' >> ~/.bashrc
+    ```
+
+5. **Verify installation:**
+    ```bash
+    # Check Python version
+    python --version
+
+    # Verify key dependencies
+    python -c "import streamlit, llama_index, groq; print('All dependencies installed successfully!')"
+
+    # Verify API key is set
+    python -c "import os; print('GROQ_API_KEY is set!' if os.getenv('GROQ_API_KEY') else 'GROQ_API_KEY not found!')"
+    ```
 
 <!-- 3. Download the required model:
     ```bash
@@ -59,9 +102,9 @@ The graph visualization component is implemented using Streamlit and includes th
    - Supports RDF integration for semantic queries
    - Provides JSON import/export functionality
 
-2. **Visualization Interface (`streamlit_main_viz.py`)**:
+2. **Visualization Interface (`utils/streamlit_main_visualization.py`)**:
    ```python
-   streamlit run streamlit_main_visualization.py
+   streamlit run utils/streamlit_main_visualization.py
    ```
    Features:
    - Interactive graph visualization using Streamlit-Agraph
@@ -89,7 +132,7 @@ The chatbot implementation combines graph-based retrieval with language model ge
 
 2. **Chatbot Interface (`streamlit_main_graphrag.py`)**:
    ```python
-   streamlit run streamlit_main_graphrag.py
+   streamlit run graphrag/streamlit_main_graphrag.py
    ```
    Features:
    - Chat interface with message history
@@ -258,8 +301,8 @@ print(response)
 3. **Index Persistence**:
    - **Index won't load**: Check `models/` directory permissions and ensure metadata.json exists
    - **Using stale data**: Use "Force rebuild index" checkbox in UI or `force_rebuild=True` in API
-   - **Errors after updates**: Delete `models/` folder and rebuild, or use `python manage_indices.py clear all`
-   - **Out of disk space**: Check storage with `python manage_indices.py size` and clear unused indices
+   - **Errors after updates**: Delete `models/` folder and rebuild, or use `python utils/manage_indices.py clear all`
+   - **Out of disk space**: Check storage with `python utils/manage_indices.py size` and clear unused indices
    - **Storage location**: Indices stored in `models/linearrag/` and `models/graphrag/`
    - **API errors**: Ensure `persist()` is called with positional argument: `storage_context.persist(persist_dir)`
 
@@ -269,20 +312,20 @@ The project includes a management tool for persisted indices:
 
 ```bash
 # List all persisted indices with metadata
-python manage_indices.py list
+python utils/manage_indices.py list
 
 # Show detailed information about indices
-python manage_indices.py info linearrag
-python manage_indices.py info graphrag
-python manage_indices.py info all
+python utils/manage_indices.py info linearrag
+python utils/manage_indices.py info graphrag
+python utils/manage_indices.py info all
 
 # Check storage usage
-python manage_indices.py size
+python utils/manage_indices.py size
 
 # Clear indices (with confirmation)
-python manage_indices.py clear linearrag
-python manage_indices.py clear graphrag
-python manage_indices.py clear all
+python utils/manage_indices.py clear linearrag
+python utils/manage_indices.py clear graphrag
+python utils/manage_indices.py clear all
 ```
 
 Or manually remove directories:
@@ -445,20 +488,20 @@ Overall pass/fail determined by average score ≥0.6 threshold.
 
 ### Index Management CLI
 
-The project includes `manage_indices.py` for managing persisted indices:
+The project includes `utils/manage_indices.py` for managing persisted indices:
 
 ```bash
 # List all indices with status and metadata
-python manage_indices.py list
+python utils/manage_indices.py list
 
 # Show detailed file information
-python manage_indices.py info [linearrag|graphrag|all]
+python utils/manage_indices.py info [linearrag|graphrag|all]
 
 # Display storage usage
-python manage_indices.py size
+python utils/manage_indices.py size
 
 # Clear indices (with confirmation)
-python manage_indices.py clear [linearrag|graphrag|all]
+python utils/manage_indices.py clear [linearrag|graphrag|all]
 ```
 
 ### Example Output
@@ -549,24 +592,27 @@ class GraphRAGBackend:
 ### Common Commands
 
 ```bash
-# Run Streamlit apps
-streamlit run streamlit_main_linearrag.py
-streamlit run streamlit_main_graphrag.py
+# Run Streamlit applications
+streamlit run utils/streamlit_main_visualization.py      # Graph visualization interface
+streamlit run graphrag/streamlit_main_graphrag.py        # GraphRAG chatbot
+streamlit run linearrag/streamlit_main_linearrag.py      # LinearRAG chatbot
 
-# Manage indices
-python manage_indices.py list
-python manage_indices.py size
+# Manage persisted indices
+python utils/manage_indices.py list                      # List all indices
+python utils/manage_indices.py info all                 # Show detailed info
+python utils/manage_indices.py size                     # Show storage usage
+python utils/manage_indices.py clear graphrag           # Clear GraphRAG indices
 
 # Run tests
-python test_persistence.py
-python example_persistence.py
+python tests/test_persistence.py                         # Run persistence tests
+python tests/test_framework.py                           # Run framework tests
 
 # Benchmark Testing Suite
-python run_benchmark.py --list-configs                    # List all configurations
-python run_benchmark.py --config baseline_fast           # Run single config
-python run_benchmark.py --all                           # Run all configs with comparison
-python run_benchmark.py --config context_chat_mode      # Test different ChatMode
-python run_benchmark.py --config no_cache_rebuild       # Force fresh index rebuild
+python tests/run_benchmark.py --list-configs             # List all configurations
+python tests/run_benchmark.py --config baseline_fast     # Run single config
+python tests/run_benchmark.py --all                     # Run all configs with comparison
+python tests/run_benchmark.py --config context_chat_mode # Test different ChatMode
+python tests/run_benchmark.py --config no_cache_rebuild  # Force fresh index rebuild
 ```
 
 ### Key Features
