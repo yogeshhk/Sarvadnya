@@ -18,6 +18,6 @@ groq==0.9.0
 griffe==0.48.0
 
 # Benchmark testing dependencies
-scikit-learn==1.3.0
+scikit-learn==1.5.0
 numpy==1.24.3
 
