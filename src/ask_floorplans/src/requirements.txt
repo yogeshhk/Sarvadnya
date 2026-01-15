@@ -6,8 +6,8 @@ pydantic==2.5.0
 openai==1.6.1
 anthropic==0.18.1
 sentence-transformers==2.2.2
-transformers==4.36.0
-torch==2.1.0
+transformers>=4.53.0
+torch>=2.8.0
 
 # Vector databases
 faiss-cpu==1.7.4
@@ -47,11 +47,11 @@ pytest-cov==4.1.0
 pytest-asyncio==0.21.1
 
 # Code quality
-black==23.12.1
+black>=24.3.0
 flake8==6.1.0
 mypy==1.7.1
 
 # Utilities
-requests==2.31.0
+requests>=2.32.4
 tqdm==4.66.1
 colorlog==6.8.0
