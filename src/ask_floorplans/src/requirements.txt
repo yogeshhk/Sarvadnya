@@ -1,0 +1,57 @@
+# Core dependencies
+python-dotenv==1.0.0
+pydantic==2.5.0
+
+# AI and embeddings
+openai==1.6.1
+anthropic==0.18.1
+sentence-transformers==2.2.2
+transformers==4.36.0
+torch==2.1.0
+
+# Vector databases
+faiss-cpu==1.7.4
+pinecone-client==3.0.0
+chromadb==0.4.22
+
+# Graph database (optional)
+neo4j==5.15.0
+
+# Data processing
+numpy==1.24.3
+pandas==2.1.3
+scikit-learn==1.3.2
+
+# File format handling
+ezdxf==1.1.3
+svgwrite==1.4.3
+cairosvg==2.7.1
+Pillow==10.1.0
+
+# JSON and schema validation
+jsonschema==4.20.0
+pyyaml==6.0.1
+
+# Graph processing
+networkx==3.2.1
+matplotlib==3.8.2
+
+# Web framework (for API)
+fastapi==0.108.0
+uvicorn==0.25.0
+pydantic-settings==2.1.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+
+# Code quality
+black==23.12.1
+flake8==6.1.0
+mypy==1.7.1
+
+# Utilities
+requests==2.31.0
+tqdm==4.66.1
+colorlog==6.8.0
