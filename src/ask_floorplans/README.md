@@ -2,6 +2,74 @@
 
 A comprehensive system for semantic storage, retrieval, and AI-powered manipulation of architectural floor plans using RAG (Retrieval-Augmented Generation) and natural language interfaces.
 
+## The Problem Statement
+
+### Current Challenges in Architectural Floor Plan Management
+
+**1. Inefficient Storage and Retrieval**
+- Floor plans are stored as static files (PDFs, images, DXF) without semantic metadata
+- Searching for specific floor plans requires manual browsing through folders
+- No ability to query plans using natural language (e.g., "Find all 2-bedroom apartments under 1000 sq ft")
+- Information about room relationships, adjacencies, and spatial constraints is lost in visual representations
+
+**2. Lack of Intelligent Search**
+- Architects and designers cannot search across their floor plan libraries semantically
+- Retrieval is limited to filename-based searches or manual inspection
+- No way to filter by architectural constraints (room count, area, features, adjacencies)
+- Similar design patterns cannot be discovered automatically
+
+**3. Tedious Manual Design Process**
+- Creating floor plans from client requirements is time-consuming
+- Translating natural language briefs ("3-bedroom apartment with ensuite master") into layouts requires significant manual effort
+- Modifications require CAD expertise and manual redrawing
+- No AI assistance for generating initial layouts or variations
+
+**4. Disconnected Data Formats**
+- Display formats (SVG, images) are separate from semantic metadata
+- CAD formats (DXF, IFC) are complex and not easily queryable
+- No standardized JSON schema for floor plan metadata
+- Difficult to integrate with modern AI/ML tools
+
+**5. Limited Accessibility**
+- Non-technical users (clients, real estate agents) cannot easily interact with floor plan data
+- Requires specialized CAD software to make even simple modifications
+- No conversational interface for exploring or modifying designs
+
+## The Solution
+
+An AI-powered floor plan management system that:
+✅ **Stores floor plans with rich semantic metadata** using a standardized JSON schema based on IFC standards
+✅ **Enables natural language retrieval** using RAG (Retrieval-Augmented Generation) and vector embeddings
+✅ **Provides an AI copilot** that generates and modifies floor plans from English commands
+✅ **Bridges the gap** between display formats and semantic data through graph-based relationships
+✅ **Democratizes floor plan interaction** by removing the need for CAD expertise
+
+## Target Users
+- **Architects & Designers**: Faster iteration, AI-assisted generation, semantic search across project libraries
+- **Real Estate Developers**: Quick retrieval of floor plans matching client requirements
+- **Construction Companies**: Automated code compliance checking, constraint validation
+- **PropTech Startups**: Building blocks for intelligent property search and recommendation systems
+- **Research Community**: Platform for advancing architectural AI, spatial reasoning, and generative design
+
+## Expected Impact
+
+- **10x faster** floor plan retrieval through natural language search
+- **5x reduction** in time from client brief to initial layout concepts
+- **Democratized access** to architectural design tools for non-CAD users
+- **Standardized semantic representation** enabling AI/ML innovation in architecture
+- **Open-source foundation** for next-generation architectural software
+
+## Success Metrics
+
+- Successfully index and retrieve 1000+ floor plans with >90% accuracy
+- Generate architecturally valid floor plans from natural language in <30 seconds
+- Enable non-technical users to modify floor plans through conversational commands
+- Achieve community adoption with 100+ GitHub stars and 10+ contributors
+- Publish research findings on architectural AI applications
+
+
+**This project addresses a fundamental gap in how architectural data is stored, searched, and manipulated in the age of AI.**
+
 ## 🏗️ System Overview
 
 This system implements a three-layer architecture for managing floor plans with AI capabilities:
