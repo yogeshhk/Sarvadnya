@@ -1,0 +1,82 @@
+{
+  "apartment_101": {
+    "name": "Studio Apartment - Downtown",
+    "total_area": 45.0,
+    "level": 1,
+    "bedroom_count": 0,
+    "bathroom_count": 1,
+    "total_rooms": 3
+  },
+  "plan_2br_1": {
+    "name": "2BR Modern Apartment",
+    "total_area": 85.0,
+    "level": 0,
+    "bedroom_count": 2,
+    "bathroom_count": 1,
+    "total_rooms": 5
+  },
+  "plan_3br_1": {
+    "name": "3BR Family Home",
+    "total_area": 120.0,
+    "level": 0,
+    "bedroom_count": 3,
+    "bathroom_count": 2,
+    "total_rooms": 7
+  },
+  "plan_1771299324": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 25.2,
+    "level": 0,
+    "bedroom_count": 1,
+    "bathroom_count": 1,
+    "total_rooms": 3
+  },
+  "plan_1771299325": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 109.2,
+    "level": 0,
+    "bedroom_count": 4,
+    "bathroom_count": 3,
+    "total_rooms": 9
+  },
+  "plan_1771299330": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 76.96,
+    "level": 0,
+    "bedroom_count": 2,
+    "bathroom_count": 2,
+    "total_rooms": 6
+  },
+  "luxury_1": {
+    "name": "Luxury Penthouse",
+    "total_area": 200.0,
+    "level": 10,
+    "bedroom_count": 3,
+    "bathroom_count": 0,
+    "total_rooms": 3
+  },
+  "plan_1771299342": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 56.4,
+    "level": 0,
+    "bedroom_count": 2,
+    "bathroom_count": 1,
+    "total_rooms": 5
+  },
+  "plan_1771299343": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 73.2,
+    "level": 0,
+    "bedroom_count": 3,
+    "bathroom_count": 2,
+    "total_rooms": 7
+  },
+  "plan_1771299344": {
+    "name": "AI Generated Floor Plan",
+    "total_area": 56.4,
+    "level": 0,
+    "bedroom_count": 2,
+    "bathroom_count": 1,
+    "total_rooms": 5
+  }
+}

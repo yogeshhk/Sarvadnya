@@ -8,7 +8,7 @@ import json
 import re
 from typing import List, Dict, Optional, Tuple
 from dotenv import load_dotenv
-import openai
+from groq import Groq
 
 load_dotenv()
 
@@ -17,12 +17,12 @@ class QueryParser:
     """Parse natural language queries into structured constraints"""
     
     def __init__(self, api_key: Optional[str] = None):
-        """Initialize query parser with OpenAI API"""
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
+        """Initialize query parser with Groq API"""
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
         if not self.api_key:
-            raise ValueError("OpenAI API key not found")
+            raise ValueError("Groq API key not found")
         
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.client = Groq(api_key=self.api_key)
     
     def parse_query(self, query: str) -> Dict:
         """
@@ -34,7 +34,7 @@ class QueryParser:
         Returns:
             Dict with 'query_text', 'filters', and 'constraints'
         """
-        # Use GPT to extract constraints
+        # Use Groq to extract constraints
         system_prompt = """You are a query parser for architectural floor plan searches.
 Extract structured information from natural language queries.
 
@@ -59,7 +59,7 @@ Response: {
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": query}
@@ -141,12 +141,12 @@ class RAGEngine:
         
         Args:
             vector_search: FloorPlanVectorSearch instance
-            api_key: OpenAI API key
+            api_key: Groq API key
         """
         self.vector_search = vector_search
         self.query_parser = QueryParser(api_key)
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
+        self.client = Groq(api_key=self.api_key)
     
     def search(
         self, 
@@ -243,7 +243,7 @@ class RAGEngine:
         # Retrieve relevant floor plans
         search_results = self.search(query, k=k, return_context=True)
         
-        # Generate answer using GPT
+        # Generate answer using Groq
         system_prompt = """You are an architectural assistant helping users find floor plans.
 Based on the retrieved floor plans, provide a helpful answer to the user's query.
 Be specific and reference the floor plans by name."""
@@ -257,7 +257,7 @@ Please provide a helpful answer based on these floor plans."""
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}

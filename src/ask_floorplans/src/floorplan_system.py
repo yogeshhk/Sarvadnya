@@ -10,10 +10,10 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 # Import custom modules
-from src.storage.vector_store import FloorPlanVectorSearch
-from src.retrieval.rag_engine import RAGEngine, HybridSearch
-from src.generation.copilot import ArchitecturalCopilot
-from src.schemas.floor_plan_schema import FloorPlan
+from vector_store import FloorPlanVectorSearch
+from rag_engine import RAGEngine, HybridSearch
+from copilot import ArchitecturalCopilot
+from floor_plan_schema import FloorPlan
 
 load_dotenv()
 
@@ -38,9 +38,9 @@ class FloorPlanSystem:
         Args:
             vector_store_type: 'faiss' or 'pinecone'
             index_name: Name of the vector index
-            api_key: OpenAI API key (or set OPENAI_API_KEY env var)
+            api_key: Groq API key (or set GROQ_API_KEY env var)
         """
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
         
         # Initialize components
         self.vector_search = FloorPlanVectorSearch(
@@ -355,7 +355,7 @@ class FloorPlanSystem:
 
 # Example usage
 if __name__ == "__main__":
-    from src.schemas.floor_plan_schema import EXAMPLE_FLOOR_PLAN
+    from floor_plan_schema import EXAMPLE_FLOOR_PLAN
     
     print("=" * 70)
     print("FLOOR PLAN MANAGEMENT SYSTEM - DEMO")

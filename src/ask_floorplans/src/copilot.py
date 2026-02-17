@@ -8,7 +8,7 @@ import json
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 from dotenv import load_dotenv
-import openai
+from groq import Groq
 
 load_dotenv()
 
@@ -18,8 +18,8 @@ class ConstraintExtractor:
     
     def __init__(self, api_key: Optional[str] = None):
         """Initialize constraint extractor"""
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
+        self.client = Groq(api_key=self.api_key)
     
     def extract_constraints(self, description: str) -> Dict:
         """
@@ -67,7 +67,7 @@ Output: {
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": description}
@@ -149,8 +149,8 @@ class FloorPlanGenerator:
     
     def __init__(self, api_key: Optional[str] = None):
         """Initialize floor plan generator"""
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
+        self.client = Groq(api_key=self.api_key)
         self.constraint_extractor = ConstraintExtractor(api_key)
     
     def generate(
@@ -350,8 +350,8 @@ class FloorPlanModifier:
     
     def __init__(self, api_key: Optional[str] = None):
         """Initialize floor plan modifier"""
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.api_key = api_key or os.getenv('GROQ_API_KEY')
+        self.client = Groq(api_key=self.api_key)
     
     def modify(
         self, 
@@ -404,7 +404,7 @@ Example commands:
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {
                         "role": "system", 
