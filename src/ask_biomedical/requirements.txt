@@ -9,7 +9,7 @@
 # openai==0.27.7
 # sacremoses==0.0.53
 # xformers==0.0.20
-streamlit==1.45.1
+streamlit==1.54.0
 streamlit-chat==0.0.2.2
 
 transformers>=4.40.0
