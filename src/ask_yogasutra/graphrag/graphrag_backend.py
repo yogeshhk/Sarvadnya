@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from llama_index.core import (
-    ServiceContext,
     StorageContext,
     KnowledgeGraphIndex,
     Document,
@@ -14,100 +13,26 @@ from llama_index.core import (
     load_index_from_storage
 )
 from llama_index.core.node_parser import SentenceSplitter
-# from llama_index.llms.llama_cpp import LlamaCPP
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.schema import TextNode
 from llama_index.core import Response
 from llama_index.core.graph_stores import SimpleGraphStore
 from llama_index.llms.groq import Groq
 from llama_index.core.chat_engine.types import ChatMode
-from typing import Optional
 from llama_index.core.base.llms.types import ChatMessage
-import os
 import unittest
 import tempfile
+import sys
 
-# from llama_index import (
-#     ServiceContext,
-#     StorageContext,
-#     KnowledgeGraphIndex,
-#     VectorStoreIndex,
-# )
-# from llama_index.llms import LlamaCPP
-# from llama_index.storage.storage_context import StorageContext
-# from llama_index.graph_stores import SimpleGraphStore
-# from llama_index.embeddings import HuggingFaceEmbedding
-# from llama_index.schema import TextNode, Document
-# from llama_index.response.schema import Response
+# Shared utilities (citation engines, config constants)
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils.citation import CitationQueryEngine, CitationConversationEngine, extract_text_from_node
+from config import EMBEDDING_MODEL_NAME, GROQ_API_KEY, GROQ_MODEL_NAME, PERSIST_BASE_DIR
 
 # Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Model configuration
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-# LLAMA_MODEL_PATH = "llama-2-7b-chat.Q4_K_M.gguf"
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL_NAME = "llama-3.1-8b-instant" #"llama-3.1-8b-instant" or "mistral-saba-24b", "llama-3.3-70b-versatile"
 CONVERSATION_MODE = True
-
-# Persistence configuration
-PERSIST_BASE_DIR = "models"
-
-class CitationQueryEngine:
-    def __init__(self, base_query_engine):
-        self.base_query_engine = base_query_engine
-
-    def query(self, query_str: str) -> Response:
-        response = self.base_query_engine.query(query_str)
-        source_nodes = response.source_nodes if hasattr(response, 'source_nodes') else []
-        
-        referenced_ids = set()
-        for node in source_nodes:
-            if hasattr(node, 'metadata') and 'id' in node.metadata:
-                referenced_ids.add(node.metadata['id'])
-        
-        formatted_response = f"{response.response}\n\nReferences: {', '.join(sorted(referenced_ids))}"
-        new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
-        return new_response
-
-class CitationConversationEngine:
-    def __init__(self, base_conversation_engine):
-        self.base_conversation_engine = base_conversation_engine
-
-    def query(self, query: str, msgs: List[ChatMessage]) -> Response:
-        response = self.base_conversation_engine.chat(query, msgs)
-        source_nodes = response.source_nodes if hasattr(response, 'source_nodes') else []
-        
-        referenced_ids = set()
-        for node in source_nodes:
-            if hasattr(node, 'metadata') and 'id' in node.metadata:
-                referenced_ids.add(node.metadata['id'])
-        
-        formatted_response = f"{response.response}"
-        new_response = Response(response=formatted_response, source_nodes=response.source_nodes)
-        return new_response
-
-
-def extract_text_from_node(node_data: Dict[str, Any]) -> tuple[str, Dict[str, Any]]:
-    """Extract only the specified fields from node data."""
-    relevant_fields = [
-        'Sanskrit_Text',
-        'Word_for_Word_Analysis',
-        'Vyasa_commentary'
-    ]
-    
-    text_parts = []
-    essential_metadata = {
-        'id': node_data.get('id'),
-        'sutra_number': node_data.get('sutra_number', ''),
-        'chapter': node_data.get('chapter', '')
-    }
-    
-    for field in relevant_fields:
-        if field in node_data and node_data[field]:
-            text_parts.append(f"{field}: {node_data[field]}")
-    
-    return " ".join(text_parts), essential_metadata
 
 class GraphRAGBackend:
     def __init__(self, persist_base_dir: str = PERSIST_BASE_DIR, chat_mode: str = "condense_plus_context"):
@@ -267,33 +192,10 @@ class GraphRAGBackend:
                 temperature=0.1,
                 max_tokens=512
             )
-            
-            # model_path = self.check_model_path()
-            # llm = LlamaCPP(
-            #     model_path=model_path,
-            #     model_kwargs={
-            #         "n_ctx": 2048,
-            #         "n_batch": 256,
-            #         "n_threads": 4,
-            #         "n_gpu_layers": 1
-            #     },
-            #     temperature=0.1,
-            #     max_new_tokens=512,
-            #     context_window=2048,
-            #     generate_kwargs={},
-            #     verbose=True
-            # )
-            
             embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL_NAME)
-            
-            # service_context = ServiceContext.from_defaults(
-            #     llm=llm,
-            #     embed_model=embed_model,
-            #     chunk_size=512,
-            #     chunk_overlap=20
-            # )
-            
-            # Use Settings instead of ServiceContext (new in v0.10+)
+
+            # Settings is the LlamaIndex v0.10+ replacement for the deprecated ServiceContext.
+            # Setting these globals configures all indices created in this process.
             Settings.llm = llm
             Settings.embed_model = embed_model
             Settings.chunk_size = 512
@@ -350,7 +252,6 @@ class GraphRAGBackend:
             index = KnowledgeGraphIndex.from_documents(
                 documents=documents,
                 storage_context=storage_context,
-                # service_context=service_context,
                 max_triplets_per_chunk=5,
                 include_embeddings=True,
                 show_progress=True

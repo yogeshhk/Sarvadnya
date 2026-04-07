@@ -1,4 +1,5 @@
 import os
+import logging
 import nltk
 import pandas as pd
 import numpy as np
@@ -6,6 +7,8 @@ from nltk.stem.lancaster import LancasterStemmer
 from sklearn.model_selection import train_test_split as tts
 from sklearn.preprocessing import LabelEncoder as LE
 from sklearn.svm import SVC
+
+logger = logging.getLogger(__name__)
 
 from vectorizers.factory import get_vectoriser
 
@@ -75,7 +78,7 @@ class FaqEngine:
             return self.data['Answer'][question_index]
 
         except Exception as e:
-            print(e)
+            logger.exception("Query failed for input: %r", usr)
             return f"Could not follow your question [{usr}], Try again."
 
 

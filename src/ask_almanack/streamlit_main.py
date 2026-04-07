@@ -44,9 +44,12 @@ def load_vectorstore():
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         
         # Load FAISS vectorstore
+        # allow_dangerous_deserialization=True is safe here because the FAISS
+        # index is generated locally by ingest.py and never received from
+        # an untrusted source. Remove this flag if loading externally-supplied indices.
         store = FAISS.load_local(
-            VECTORSTORE_DIR, 
-            embeddings, 
+            VECTORSTORE_DIR,
+            embeddings,
             allow_dangerous_deserialization=True
         )
         
@@ -65,8 +68,12 @@ store = load_vectorstore()
 if store is not None:
     # Load Groq LLM
     try:
+        groq_api_key = os.getenv("GROQ_API_KEY")
+        if not groq_api_key:
+            st.error("GROQ_API_KEY environment variable is not set. Please export it before running.")
+            st.stop()
         llm = ChatGroq(
-            api_key=os.getenv("GROQ_API_KEY", "your_groq_api_key_here"),  # Use environment variable
+            api_key=groq_api_key,
             model_name="llama3-70b-8192"
         )
         

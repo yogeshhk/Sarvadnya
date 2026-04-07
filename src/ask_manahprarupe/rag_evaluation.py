@@ -15,8 +15,8 @@ try:
     nltk.download('wordnet', quiet=True)
     nltk.download('punkt', quiet=True)
     nltk.download('omw-1.4', quiet=True)
-except:
-    print("⚠️ METEOR score might not work properly. Install nltk properly.")
+except ImportError:
+    print("⚠️ METEOR score unavailable — install nltk: pip install nltk")
 
 # Embedding similarity
 from sentence_transformers import SentenceTransformer
@@ -106,9 +106,9 @@ class RAGEvaluator:
             score = sentence_bleu(reference_tokens, predicted_tokens, 
                                 smoothing_function=self.bleu_smoothing)
             return score
-        except:
+        except Exception:
             return 0.0
-    
+
     def calculate_rouge_scores(self, predicted: str, reference: str) -> Dict[str, float]:
         """Calculate ROUGE scores (ROUGE-1, ROUGE-2, ROUGE-L)"""
         try:
@@ -118,31 +118,26 @@ class RAGEvaluator:
                 'rouge2': scores['rouge2'].fmeasure,
                 'rougeL': scores['rougeL'].fmeasure
             }
-        except:
+        except Exception:
             return {'rouge1': 0.0, 'rouge2': 0.0, 'rougeL': 0.0}
-    
+
     def calculate_meteor_score(self, predicted: str, reference: str) -> float:
         """Calculate METEOR score"""
         try:
-            # Tokenize
             predicted_tokens = predicted.split()
             reference_tokens = reference.split()
-            
             score = meteor_score([reference_tokens], predicted_tokens)
             return score
-        except:
+        except Exception:
             return 0.0
-    
+
     def calculate_semantic_similarity(self, predicted: str, reference: str) -> float:
         """Calculate semantic similarity using sentence embeddings - DISABLED"""
         try:
-            # Get embeddings
             embeddings = self.embedding_model.encode([predicted, reference])
-            
-            # Calculate cosine similarity
             similarity = cosine_similarity([embeddings[0]], [embeddings[1]])[0][0]
-            return max(0.0, similarity)  # Ensure non-negative
-        except:
+            return max(0.0, similarity)
+        except Exception:
             return 0.0
     
     def llm_as_judge(self, question: str, predicted: str, reference: str) -> Dict[str, Any]:
@@ -220,8 +215,8 @@ Respond in JSON format:
             # For more sophisticated matching, you could use fuzzy string matching
             # or check semantic similarity between context and expected content
             return 0.0
-            
-        except:
+
+        except Exception:
             return 0.0
     
     def evaluate_single_sample(self, question: str, predicted_answer: str, 

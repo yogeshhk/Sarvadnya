@@ -19,12 +19,10 @@ openai>=1.0.0
 # Structured output parsing
 pydantic>=2.0.0
 
-# SQL and database
-sqlite3  # Built-in with Python
+# SQL and database (sqlite3 and asyncio are Python stdlib — no pip install needed)
 sqlparse>=0.4.0
 
 # Async support
-asyncio  # Built-in with Python
 aiofiles>=0.8.0
 
 # Utility libraries

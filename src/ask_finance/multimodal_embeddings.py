@@ -168,7 +168,8 @@ class MultiModalVectorStore:
                 name=collection_name,
                 metadata={"hnsw:space": "cosine"}
             )
-        except:
+        except Exception:
+            # Collection already exists — get it instead of creating a new one
             self.collection = self.client.get_collection(name=collection_name)
         
         # Initialize embedders
