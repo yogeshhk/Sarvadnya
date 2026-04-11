@@ -10,6 +10,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain.schema import SystemMessage, HumanMessage, AIMessage
+from sentence_transformers import CrossEncoder
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,6 +50,14 @@ def load_llm():
     return ChatGroq(api_key=groq_api_key, model_name="llama3-70b-8192")
 
 
+@st.cache_resource
+def load_reranker():
+    # Lightweight cross-encoder (~22 MB). Scores each (query, passage) pair directly,
+    # unlike bi-encoders which embed query and passage independently. More accurate for
+    # short candidate sets at the cost of being too slow for full-corpus search.
+    return CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def build_retrieval_query(user_message: str, history: list) -> str:
@@ -65,6 +74,24 @@ def build_retrieval_query(user_message: str, history: list) -> str:
         for m in recent
     )
     return f"{history_text}\nUser: {user_message}"
+
+
+def rerank(query: str, docs: list, reranker: CrossEncoder, top_k: int = 3) -> list:
+    """Score every (query, passage) pair with a cross-encoder and return the top_k docs.
+
+    FAISS returns candidates by vector similarity; the cross-encoder rescores them with
+    full attention over both the query and passage together, which is much more precise
+    but only feasible on a small candidate set (here: 10 → 3).
+
+    The original user question is used here, not the history-augmented retrieval query,
+    because the cross-encoder measures relevance to what the user actually asked.
+    """
+    if not docs:
+        return docs
+    pairs = [(query, doc.page_content) for doc in docs]
+    scores = reranker.predict(pairs)
+    ranked = sorted(zip(scores, docs), key=lambda x: x[0], reverse=True)
+    return [doc for _, doc in ranked[:top_k]]
 
 
 def format_context(docs) -> str:
@@ -159,7 +186,10 @@ if llm is None:
     st.error("GROQ_API_KEY environment variable is not set. Please export it before running.")
     st.stop()
 
-retriever = store.as_retriever(search_kwargs={"k": 3})
+reranker = load_reranker()
+
+# Fetch 10 candidates; the cross-encoder will rerank them down to 3.
+retriever = store.as_retriever(search_kwargs={"k": 10})
 
 # ── Session state ─────────────────────────────────────────────────────────────
 
@@ -184,9 +214,14 @@ if prompt := st.chat_input("Ask a question about Indian history..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Retrieve docs using history-augmented query for coreference resolution
+    # Step 1 — FAISS retrieval: history-augmented query resolves coreferences
     retrieval_query = build_retrieval_query(prompt, st.session_state.messages)
-    docs = retriever.get_relevant_documents(retrieval_query)
+    candidates = retriever.get_relevant_documents(retrieval_query)
+
+    # Step 2 — Cross-encoder reranking: score each (question, passage) pair directly.
+    # Uses the original prompt (not the history-augmented version) so the scorer
+    # measures relevance to what the user actually asked.
+    docs = rerank(prompt, candidates, reranker, top_k=3)
     context = format_context(docs)
     citation_cards = extract_citation_meta(docs)
 

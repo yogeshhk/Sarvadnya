@@ -6,4 +6,5 @@ langchain
 langchain-community
 langchain-huggingface
 langchain-groq
+langchain-experimental
 python-dotenv
