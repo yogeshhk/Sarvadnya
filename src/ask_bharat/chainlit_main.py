@@ -4,34 +4,31 @@ load_dotenv()
 
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.prompts import PromptTemplate
-from langchain.schema import Document
 import chainlit as cl
 import ollama
 
 DB_FAISS_PATH = "vectorstore/db_faiss"
 
-custom_prompt_template = """Use the following context to answer the question. Be helpful and concise.
-If unsure, just say you don't know.
+SYSTEM_PROMPT = (
+    "You are a helpful assistant knowledgeable about Indian history and culture. "
+    "Use the provided context to answer questions. If the answer is not in the context, say you don't know. "
+    "Be concise and helpful. Use the conversation history to resolve pronouns and follow-up references."
+)
 
-Context:
-{context}
+def build_retrieval_query(message: str, chat_history: list) -> str:
+    """Augment the retrieval query with recent history so coreferences resolve correctly.
 
-Question:
-{question}
-
-Answer:
-"""
-
-def set_custom_prompt():
-    return PromptTemplate(template=custom_prompt_template, input_variables=["context", "question"])
-
-def ollama_call(prompt: str) -> str:
-    response = ollama.chat(
-        model="llama2",
-        messages=[{"role": "user", "content": prompt}]
+    E.g. 'What are their locations?' becomes searchable when the previous exchange
+    about 'archaeological sites' is prepended.
+    """
+    if not chat_history:
+        return message
+    # Include the last human+assistant exchange (up to 2 messages)
+    recent = chat_history[-2:]
+    history_text = "\n".join(
+        f"{m['role'].capitalize()}: {m['content']}" for m in recent
     )
-    return response['message']['content']
+    return f"{history_text}\nUser: {message}"
 
 def init_vectorstore():
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -43,22 +40,39 @@ def init_vectorstore():
 async def start():
     retriever = init_vectorstore().as_retriever(search_kwargs={"k": 3})
     cl.user_session.set("retriever", retriever)
-    await cl.Message(content=" Hi! Ask me anything from your uploaded data.").send()
+    cl.user_session.set("chat_history", [])
+    await cl.Message(content="Hi! Ask me anything about Indian history and culture.").send()
 
 @cl.on_message
 async def main(message: cl.Message):
     retriever = cl.user_session.get("retriever")
+    chat_history: list = cl.user_session.get("chat_history")
 
-    docs = retriever.get_relevant_documents(message.content)
+    # Use history-augmented query so follow-up/coreference queries retrieve the right docs
+    retrieval_query = build_retrieval_query(message.content, chat_history)
+    docs = retriever.get_relevant_documents(retrieval_query)
     context = "\n\n".join(doc.page_content for doc in docs)
 
-    prompt_template = set_custom_prompt()
-    final_prompt = prompt_template.format(context=context, question=message.content)
+    # Build conversational message list: system (with context) + history + current turn
+    messages = (
+        [{"role": "system", "content": f"{SYSTEM_PROMPT}\n\nContext:\n{context}"}]
+        + chat_history
+        + [{"role": "user", "content": message.content}]
+    )
 
-    answer = ollama_call(final_prompt)
+    response = ollama.chat(model="llama2", messages=messages)
+    answer = response["message"]["content"]
+
+    # Persist the new exchange so subsequent turns can reference it
+    chat_history.append({"role": "user", "content": message.content})
+    chat_history.append({"role": "assistant", "content": answer})
+    cl.user_session.set("chat_history", chat_history)
 
     if docs:
-        sources = "\n".join(f" {doc.metadata.get('source', 'Unknown')} (pg {doc.metadata.get('page', '?')})" for doc in docs)
+        sources = "\n".join(
+            f" {doc.metadata.get('source', 'Unknown')} (pg {doc.metadata.get('page', '?')})"
+            for doc in docs
+        )
         answer += f"\n\nSources:\n{sources}"
 
     await cl.Message(content=answer).send()

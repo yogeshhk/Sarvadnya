@@ -1,6 +1,9 @@
 sentence-transformers
 pypdf
 faiss-cpu
-chainlit
+streamlit
 langchain
-ctransformers
+langchain-community
+langchain-huggingface
+langchain-groq
+python-dotenv
