@@ -36,6 +36,10 @@ pyyaml==6.0.1
 networkx==3.2.1
 matplotlib==3.8.2
 
+# Web UI
+streamlit>=1.32.0
+plotly>=5.18.0
+
 # Web framework (for API)
 fastapi==0.108.0
 uvicorn==0.25.0

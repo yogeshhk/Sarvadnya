@@ -2,14 +2,19 @@
 
 (Based on [this repo](https://github.com/AIAnytime/Llama2-Medical-Chatbot/blob/main/README.md))
 
-Ask Bharat is an interactive chatbot designed to answer questions related to Ancient Indian history. It uses LangChain + FAISS + Ollama for backend processing and a sleek Chainlit UI to deliver contextual answers, complete with hyperlinked document sources and an optional chatbot avatar.
+Ask Bharat is an interactive chatbot designed to answer questions related to Ancient Indian history. It supports two UIs — a **Streamlit** app (recommended) and a **Chainlit** app — backed by LangChain + FAISS + Groq LLaMA3.
 
 ## Features
 
-- Semantic search over PDFs (Ancient India history, threads, documents)
-- Local LLM via **Ollama** (e.g., `llama2`)
-- Clean **Markdown responses** in Chainlit UI
-- Modular architecture: retriever + prompt + LLM
+- Semantic search over PDFs (Ancient India history documents)
+- **Streamlit UI** with full conversational memory (multi-turn history)
+- **Groq LLaMA3-70b** for fast, high-quality answers (no local GPU needed)
+- **Cross-encoder reranking** (`ms-marco-MiniLM-L-6-v2`): FAISS retrieves 10 candidates, reranker selects top 3 by relevance
+- **Clickable citation links** (`[1]`, `[2]`, …) anchored to styled reference cards
+- **PDF download buttons** on each reference card (opens source PDF at cited page)
+- History-augmented retrieval query to resolve pronouns/coreferences across turns
+- Chainlit UI also available (Ollama/llama2, local LLM)
+- Modular architecture: retriever + reranker + prompt + LLM
 
 ## Prerequisites
 
@@ -62,7 +67,15 @@ Load the required LLM (e.g., llama2):
 ollama run llama2
 ```
 
-## Run the Chatbot (Chainlit)
+## Run the Chatbot
+
+Streamlit UI (recommended — Groq + reranking + citations):
+
+```bash
+streamlit run streamlit_main.py --server.fileWatcherType none
+```
+
+Chainlit UI (Ollama / local LLM):
 
 ```bash
 chainlit run chainlit_main.py

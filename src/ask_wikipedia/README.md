@@ -1,22 +1,22 @@
 # Wikipedia Bot
 
-QnA bot on Wikipedia using LangChain and Palm
+QnA bot on Wikipedia using LangChain, HuggingFace embeddings, ChromaDB, and Groq LLaMA3.
 
-- Loads your API keys (like GROQ_API_KEY) from a .env file into environment variables.
-- Uses **LangChain’s** **WikipediaLoader** to download summaries for selected topics.
-- You get a list of Document objects.
-- Wikipedia articles are long. You break them into smaller overlapping chunks so the model can handle them.
-- Converts each chunk into a **vector** (numeric representation of meaning).
-- Uses a free model **"llama3-70b-8192"** for this.
-- Stores the chunk embeddings using **ChromaDB** so that you can later do fast semantic search.
-- When a question is asked, it retrieves the **top 2 most relevant chunks**.
-- Uses Groq’s hosted LLaMA3 model via OpenAI-compatible API.
-- It will generate answers based on retrieved context.
+## Features
 
-### Commands:
+- Loads `GROQ_API_KEY` from a `.env` file.
+- Uses **LangChain’s WikipediaLoader** to fetch articles for configurable topics.
+- Chunks articles with `RecursiveCharacterTextSplitter` (800 tokens, 400 overlap).
+- Embeds chunks with **HuggingFace** `sentence-transformers/all-MiniLM-L6-v2`.
+- Persists embeddings in **ChromaDB** for fast semantic search across runs.
+- Retrieves top candidates using **MMR** (Maximal Marginal Relevance) to reduce redundancy.
+- Answers questions with **Groq’s LLaMA3-70b** via `langchain-groq`.
+- Prints up to 2 unique Wikipedia source links per answer.
+
+## Installation
 
 ```bash
-pip install langchain langchain-community langchain-openai chromadb wikipedia huggingface-hub sentence-transformers python-dotenv
+pip install -r requirements.txt
 ```
 
 `.env`
@@ -25,11 +25,11 @@ pip install langchain langchain-community langchain-openai chromadb wikipedia hu
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-Run
+## Run
 
 ```bash
 python main_driver.py
 ```
 
-Reference
+## Reference
 https://python.langchain.com/docs/integrations/document_loaders/wikipedia/

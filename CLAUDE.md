@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 src/
 ├── ask_almanack/       # Naval Ravikant's Almanack chatbot (FAISS + Groq/LLaMA3)
-├── ask_bharat/         # RAG on historical Indian content (chainlit UI)
+├── ask_bharat/         # RAG on historical Indian content (Streamlit + Chainlit, Groq, reranking, citations)
 ├── ask_biomedical/     # BioGPT / Falcon on medical text
 ├── ask_career_transition/  # Career transition guidance chatbot
 ├── ask_dataframe/      # Natural language queries on tabular/CSV data
@@ -29,7 +29,7 @@ src/
 ├── ask_paulgraham/     # Paul Graham essays chatbot
 ├── ask_suntzu/         # Art of War chatbot
 ├── ask_text2star/      # Text to star schema
-├── ask_wikipedia/      # Wikipedia QnA bot
+├── ask_wikipedia/      # Wikipedia QnA bot (Groq/LLaMA3 + HuggingFace embeddings + ChromaDB + MMR)
 ├── ask_yhk/            # Personal AMA testbed for different LLMs
 ├── ask_yogasutra/      # Patanjali Yogasutra with GraphRAG + LinearRAG + benchmarks
 models/                 # Local LLM model files (lmstudio-community, Qwen, etc.)
@@ -63,13 +63,15 @@ python cmd_main.py
 
 ### RAG Pipeline (most projects follow this)
 1. **Ingest**: Load text/PDF files → chunk → embed (HuggingFace `all-MiniLM-L6-v2`) → store in FAISS vectorstore
-2. **Query**: Load FAISS vectorstore → retrieve similar chunks → pass to LLM → return answer
+2. **Query**: Load FAISS vectorstore → retrieve candidates → (optional) cross-encoder rerank → pass to LLM → return answer
+
+Advanced projects (ask_bharat) add a **reranking** step between retrieval and generation using a `CrossEncoder` from `sentence-transformers`.
 
 ### LLM Providers Used
-- **Groq API** (`GROQ_API_KEY`): LLaMA3-70b, Mistral — used in ask_almanack, ask_yogasutra
+- **Groq API** (`GROQ_API_KEY`): LLaMA3-70b, Mistral — used in ask_almanack, ask_bharat, ask_wikipedia, ask_yogasutra
 - **OpenAI API** (`OPENAI_API_KEY`): Used in ask_finance, ask_floorplans
 - **HuggingFace** (local/free): BioGPT, Falcon, sentence-transformers
-- **Google VertexAI / PaLM**: Used in ask_gst, ask_wikipedia
+- **Google VertexAI / PaLM**: Used in ask_gst
 
 ### Environment Variables
 Set API keys as environment variables before running:
@@ -79,6 +81,28 @@ export OPENAI_API_KEY="your-key"
 ```
 
 Projects typically read keys via `os.getenv()`.
+
+## ask_bharat — Most Feature-Rich RAG UI
+
+Has both a Streamlit UI (full-featured) and a Chainlit UI (Ollama/local):
+```bash
+cd src/ask_bharat
+
+# Build FAISS vectorstore from PDFs
+python ingest.py
+
+# Streamlit UI — Groq + reranking + citations (recommended)
+streamlit run streamlit_main.py --server.fileWatcherType none
+
+# Chainlit UI — Ollama/llama2 (local LLM)
+chainlit run chainlit_main.py
+```
+
+Key features of the Streamlit UI:
+- **Conversational memory**: full multi-turn history sent to the LLM
+- **Cross-encoder reranking**: FAISS retrieves 10 candidates → `ms-marco-MiniLM-L-6-v2` reranks → top 3 used
+- **Hyperlinked citations**: LLM emits `[1]`, `[2]` markers; rendered as anchor links to reference cards
+- **PDF download buttons**: each reference card has a download button for the source PDF
 
 ## ask_yogasutra — Most Feature-Complete Project
 
@@ -128,6 +152,7 @@ python fine_tune_mt5.py
 | UI | Streamlit, Chainlit |
 | LLM Orchestration | LangChain, LlamaIndex |
 | Embeddings | HuggingFace sentence-transformers (`all-MiniLM-L6-v2`) |
+| Reranking | sentence-transformers `CrossEncoder` (`ms-marco-MiniLM-L-6-v2`) |
 | Vector Store | FAISS (local), ChromaDB, Pinecone |
 | Graph Store | NetworkX, Neo4j (optional) |
 | Fine-tuning | PEFT/LoRA, Unsloth, HuggingFace Transformers |
