@@ -1,6 +1,7 @@
 # Usage: streamlit run streamlit_main.py --server.fileWatcherType none
 
 import os
+import re
 import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
@@ -14,17 +15,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DB_FAISS_PATH = os.path.join(os.path.dirname(__file__), "vectorstore", "db_faiss")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 SYSTEM_PROMPT = (
     "You are a helpful assistant knowledgeable about Indian history and culture. "
-    "Use the provided context to answer questions. If the answer is not in the context, say you don't know. "
+    "Use the provided numbered context passages to answer questions. "
+    "Cite sources inline using [1], [2], etc. immediately after each claim they support. "
+    "If the answer is not in the context, say you don't know. "
     "Be concise and helpful. Use the conversation history to resolve pronouns and follow-up references."
 )
 
-st.set_page_config(page_title="Ask Bharat", page_icon="🇮🇳")
+st.set_page_config(page_title="Ask Bharat", page_icon="🇮🇳", layout="wide")
 st.title("Ask Bharat 🇮🇳")
 st.markdown("Ask anything about Indian history and culture. Powered by Groq & LLaMA3.")
 
+
+# ── Resource loading ──────────────────────────────────────────────────────────
 
 @st.cache_resource
 def load_vectorstore():
@@ -43,11 +49,13 @@ def load_llm():
     return ChatGroq(api_key=groq_api_key, model_name="llama3-70b-8192")
 
 
-def build_retrieval_query(user_message: str, history: list) -> str:
-    """Prepend the last exchange to the query so coreferences resolve during FAISS search.
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
-    E.g. 'What are their locations?' becomes searchable when the previous exchange
-    about 'archaeological sites' is included.
+def build_retrieval_query(user_message: str, history: list) -> str:
+    """Prepend the last exchange so coreferences resolve during FAISS search.
+
+    E.g. 'What are their locations?' retrieves the right docs when the previous
+    exchange about 'archaeological sites' is included in the query.
     """
     if not history:
         return user_message
@@ -57,6 +65,86 @@ def build_retrieval_query(user_message: str, history: list) -> str:
         for m in recent
     )
     return f"{history_text}\nUser: {user_message}"
+
+
+def format_context(docs) -> str:
+    """Return numbered context passages so the LLM can emit [N] citation markers."""
+    return "\n\n".join(f"[{i}] {doc.page_content}" for i, doc in enumerate(docs, 1))
+
+
+def extract_citation_meta(docs) -> list[dict]:
+    """Pull the metadata needed to render citation cards from retrieved docs."""
+    cards = []
+    for i, doc in enumerate(docs, 1):
+        src = doc.metadata.get("source", "")
+        pdf_path = src if os.path.isabs(src) else os.path.join(DATA_DIR, os.path.basename(src))
+        cards.append({
+            "num": i,
+            "src_name": os.path.basename(src) if src else "Unknown source",
+            "page": doc.metadata.get("page", "?"),
+            "excerpt": doc.page_content[:350].strip() + ("…" if len(doc.page_content) > 350 else ""),
+            "pdf_path": pdf_path,
+        })
+    return cards
+
+
+def linkify_citations(text: str) -> str:
+    """Replace [N] markers with styled HTML superscript anchor links."""
+    return re.sub(
+        r'\[(\d+)\]',
+        r'<sup><a href="#cite-\1" style="text-decoration:none; color:#f4845f;">[\1]</a></sup>',
+        text,
+    )
+
+
+def render_answer(content: str):
+    st.markdown(linkify_citations(content), unsafe_allow_html=True)
+
+
+def render_citations(cards: list[dict]):
+    if not cards:
+        return
+    st.markdown(
+        '<hr style="border:none; border-top:1px solid #333; margin:16px 0 10px 0;">',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<p style="color:#888; font-size:0.8em; margin:0 0 8px 0; '
+        'letter-spacing:0.08em; text-transform:uppercase;">References</p>',
+        unsafe_allow_html=True,
+    )
+    for c in cards:
+        col_text, col_btn = st.columns([0.88, 0.12])
+        with col_text:
+            st.markdown(
+                f'<div id="cite-{c["num"]}" style="'
+                "background:#1a1d2e; border-left:3px solid #f4845f; "
+                "padding:10px 14px; border-radius:0 6px 6px 0; margin-bottom:8px;"
+                '">'
+                f'<span style="color:#f4845f; font-weight:700; font-size:0.95em;">[{c["num"]}]</span>'
+                f' <span style="color:#aaa; font-size:0.82em;">'
+                f'{c["src_name"]} — page {c["page"]}'
+                "</span>"
+                f'<p style="color:#ccc; font-size:0.88em; margin:6px 0 0 0; '
+                'line-height:1.5; font-style:italic;">'
+                f'{c["excerpt"]}'
+                "</p>"
+                "</div>",
+                unsafe_allow_html=True,
+            )
+        with col_btn:
+            # Download button opens the source PDF; tooltip reminds user of the page
+            if os.path.exists(c["pdf_path"]):
+                with open(c["pdf_path"], "rb") as f:
+                    st.download_button(
+                        label=f"📄 p.{c['page']}",
+                        data=f.read(),
+                        file_name=c["src_name"],
+                        mime="application/pdf",
+                        key=f"dl_cite_{c['num']}_{id(c)}",
+                        help=f"Download {c['src_name']} and open at page {c['page']}",
+                        use_container_width=True,
+                    )
 
 
 # ── Startup checks ────────────────────────────────────────────────────────────
@@ -75,28 +163,34 @@ retriever = store.as_retriever(search_kwargs={"k": 3})
 
 # ── Session state ─────────────────────────────────────────────────────────────
 
+# Each message: {"role": "user"|"assistant", "content": str, "citations": list|None}
 if "messages" not in st.session_state:
-    st.session_state.messages = []  # list of {"role": "user"|"assistant", "content": str}
+    st.session_state.messages = []
 
 # ── Render existing conversation ──────────────────────────────────────────────
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+        if msg["role"] == "assistant":
+            render_answer(msg["content"])
+            if msg.get("citations"):
+                render_citations(msg["citations"])
+        else:
+            st.markdown(msg["content"])
 
 # ── Handle new user input ─────────────────────────────────────────────────────
 
 if prompt := st.chat_input("Ask a question about Indian history..."):
-    # Show user message immediately
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Retrieve relevant docs using history-augmented query
+    # Retrieve docs using history-augmented query for coreference resolution
     retrieval_query = build_retrieval_query(prompt, st.session_state.messages)
     docs = retriever.get_relevant_documents(retrieval_query)
-    context = "\n\n".join(doc.page_content for doc in docs)
+    context = format_context(docs)
+    citation_cards = extract_citation_meta(docs)
 
-    # Build LangChain message list: system (with context) + full history + current turn
+    # Build LangChain message list: system (with numbered context) + history + current turn
     lc_messages = [SystemMessage(content=f"{SYSTEM_PROMPT}\n\nContext:\n{context}")]
     for msg in st.session_state.messages:
         if msg["role"] == "user":
@@ -110,17 +204,9 @@ if prompt := st.chat_input("Ask a question about Indian history..."):
             response = llm.invoke(lc_messages)
             answer = response.content
 
-        st.markdown(answer)
+        render_answer(answer)
+        render_citations(citation_cards)
 
-        if docs:
-            with st.expander("Sources"):
-                for doc in docs:
-                    src = doc.metadata.get("source", "Unknown")
-                    pg = doc.metadata.get("page", "?")
-                    st.markdown(f"**{src}** — page {pg}")
-                    st.text(doc.page_content[:400] + ("..." if len(doc.page_content) > 400 else ""))
-                    st.markdown("---")
-
-    # Persist exchange in session state
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+    # Persist exchange — store citation metadata so history replays can show them
+    st.session_state.messages.append({"role": "user", "content": prompt, "citations": None})
+    st.session_state.messages.append({"role": "assistant", "content": answer, "citations": citation_cards})
