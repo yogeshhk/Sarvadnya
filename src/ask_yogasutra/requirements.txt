@@ -5,7 +5,7 @@ matplotlib==3.8.2
 pyvis==0.3.2
 streamlit-agraph==0.0.45
 pyarrow==14.0.2
-streamlit==1.37.0
+streamlit==1.54.0
 sentence-transformers==3.0.1
 transformers==4.53.0
 llama-index-core==0.10.57
