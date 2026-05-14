@@ -134,9 +134,12 @@ class TestSectionExtractor:
 class TestArxivFetcher:
     @patch("src.parsers.arxiv_fetcher.arxiv.Client")
     def test_fetch_metadata_success(self, mock_client_cls):
+        alice, bob = MagicMock(), MagicMock()
+        alice.name, bob.name = "Alice", "Bob"
+
         paper = MagicMock()
         paper.title = "Quantum Error Correction"
-        paper.authors = [MagicMock(name="Alice"), MagicMock(name="Bob")]
+        paper.authors = [alice, bob]
         paper.summary = "We demonstrate quantum error correction."
         paper.entry_id = "https://arxiv.org/abs/2301.12345"
         paper.pdf_url = "https://arxiv.org/pdf/2301.12345"

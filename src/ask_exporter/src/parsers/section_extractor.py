@@ -21,11 +21,12 @@ _STOP_PATTERNS = [
 ]
 
 
-def extract_relevant_sections(text: str, max_chars: int = 8000) -> str:
+def extract_relevant_sections(text: str | None, max_chars: int = 8000) -> str:
     """
     Return concatenated Methods/Materials/Setup sections.
     Falls back to the first max_chars of the text if no sections are detected.
     """
+    text = text or ""
     lines = text.split("\n")
     blocks: list[list[str]] = []
     current: list[str] = []

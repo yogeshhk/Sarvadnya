@@ -2,11 +2,19 @@
 End-to-end pipeline tests via the headless runner (src.pipeline.run_pipeline).
 All external I/O — LLM calls, HTTP requests, ArXiv API, PDF parsing — is mocked.
 
-This is the primary integration test surface: tests exercise the public
-run_pipeline() / run_from_config() API rather than wiring the graph manually.
+Mocking strategy:
+  - BOM extraction  → patch src.agents.nodes.extract_bom  (imported name in nodes)
+  - PDF parsing     → patch src.agents.nodes.parse_pdf_bytes / parse_pdf_file
+  - ArXiv fetch     → patch src.agents.nodes.fetch_paper_metadata / download_paper_pdf
+  - Export check LLM→ patch src.agents.nodes.ChatPromptTemplate + ChatGroq
+  - Scrapers        → patch src.agents.nodes.*Scraper classes
+
+Patching at the nodes.py import boundary avoids real network/API calls
+regardless of how the underlying module is implemented.
 """
 
 import json
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -161,28 +169,16 @@ class TestPDFMode:
     @patch("src.agents.nodes.USBISScraper")
     @patch("src.agents.nodes.ChatGroq")
     @patch("src.agents.nodes.ChatPromptTemplate")
-    @patch("src.parsers.pdf_parser.fitz.open")
+    @patch("src.agents.nodes.extract_bom", return_value=_BOM_DICT)
+    @patch("src.agents.nodes.parse_pdf_bytes",
+           return_value="Experimental Setup\nDilution refrigerator used at 10 mK.")
     def test_pdf_mode_extracts_bom_then_checks(
-        self, mock_fitz, mock_prompt_cls, mock_groq, mock_us, mock_de, mock_eu
+        self, mock_parse_pdf, mock_extract_bom,
+        mock_prompt_cls, mock_groq, mock_us, mock_de, mock_eu
     ):
-        # PDF returns text with an experimental setup section
-        mock_doc = MagicMock()
-        mock_doc.__len__ = lambda self: 1
-        mock_doc.__getitem__ = lambda self, i: MagicMock(
-            get_text=lambda mode: "Experimental Setup\nDilution refrigerator used at 10 mK."
-        )
-        mock_fitz.return_value = mock_doc
-
         _apply_empty_scrapers([mock_us, mock_de, mock_eu])
-
-        # Alternate: first call = BOM extraction, subsequent = export check
-        call_count = {"n": 0}
-        def alternating_chain(_llm):
-            call_count["n"] += 1
-            return _chain_returning(_BOM_DICT if call_count["n"] == 1 else _EXPORT_RESULT)
-
         mock_prompt_cls.from_template.return_value = MagicMock(
-            __or__=MagicMock(side_effect=alternating_chain)
+            __or__=MagicMock(return_value=_chain_returning(_EXPORT_RESULT))
         )
 
         report = run_pipeline("pdf", "paper.pdf", pdf_bytes=b"%PDF-1.4 fake content")
@@ -192,16 +188,29 @@ class TestPDFMode:
         assert len(report["export_control_results"]) == 1
 
     def test_pdf_mode_without_bytes_records_error(self):
+        # No pdf_bytes → pdf_parser sets error and empty paper_text.
+        # Pipeline should not raise; error is surfaced in report.
         report = run_pipeline("pdf", "paper.pdf", pdf_bytes=None)
-        # Should not crash; error is surfaced in the report
         assert report is not None
-        # Either no results or an error key present
         assert "export_control_results" in report
 
 
 # ---------------------------------------------------------------------------
 # 3. ArXiv mode
 # ---------------------------------------------------------------------------
+
+_ARXIV_METADATA = {
+    "arxiv_id": "2301.00001",
+    "title": "Ion Trap Quantum Computing",
+    "authors": ["Alice", "Bob"],
+    "abstract": "Ion trap experiment setup.",
+    "url": "https://arxiv.org/abs/2301.00001",
+    "pdf_url": "https://arxiv.org/pdf/2301.00001",
+    "published": "2023-01-01",
+    "categories": ["quant-ph"],
+}
+
+
 class TestArxivMode:
 
     @patch("src.agents.nodes.EURegulationScraper")
@@ -209,65 +218,33 @@ class TestArxivMode:
     @patch("src.agents.nodes.USBISScraper")
     @patch("src.agents.nodes.ChatGroq")
     @patch("src.agents.nodes.ChatPromptTemplate")
-    @patch("src.parsers.pdf_parser.fitz.open")
-    @patch("src.parsers.arxiv_fetcher.arxiv.Client")
-    @patch("src.parsers.arxiv_fetcher.Path")
+    @patch("src.agents.nodes.extract_bom", return_value=_BOM_DICT)
+    @patch("src.agents.nodes.parse_pdf_file",
+           return_value="Experimental Setup\nIon trap chip cooled to 4 K.")
+    @patch("src.agents.nodes.download_paper_pdf",
+           return_value=Path("data/papers/2301.00001.pdf"))
+    @patch("src.agents.nodes.fetch_paper_metadata", return_value=_ARXIV_METADATA)
     def test_arxiv_mode_fetches_paper_and_checks(
-        self, mock_path_cls, mock_arxiv_client, mock_fitz,
+        self, mock_fetch, mock_download, mock_parse, mock_extract_bom,
         mock_prompt_cls, mock_groq, mock_us, mock_de, mock_eu
     ):
-        # Path.exists() → False so download is attempted
-        mock_path_instance = MagicMock()
-        mock_path_instance.exists.return_value = False
-        mock_path_instance.__str__ = lambda self: "data/papers/2301.00001.pdf"
-        mock_path_instance.__truediv__ = lambda self, other: mock_path_instance
-        mock_path_cls.return_value = mock_path_instance
-
-        # ArXiv paper
-        paper = MagicMock()
-        paper.title = "Ion Trap Quantum Computing"
-        paper.authors = [MagicMock(name="Alice")]
-        paper.summary = "Ion trap experiment setup."
-        paper.entry_id = "https://arxiv.org/abs/2301.00001"
-        paper.pdf_url = "https://arxiv.org/pdf/2301.00001"
-        paper.published = MagicMock(isoformat=lambda: "2023-01-01")
-        paper.categories = ["quant-ph"]
-        paper.get_short_id = MagicMock(return_value="2301.00001")
-        paper.download_pdf = MagicMock()
-
-        mock_client = MagicMock()
-        mock_client.results.return_value = iter([paper])
-        mock_arxiv_client.return_value = mock_client
-
-        # PDF parse
-        mock_doc = MagicMock()
-        mock_doc.__len__ = lambda self: 1
-        mock_doc.__getitem__ = lambda self, i: MagicMock(
-            get_text=lambda mode: "Experimental Setup\nIon trap chip cooled to 4 K."
-        )
-        mock_fitz.return_value = mock_doc
-
         _apply_empty_scrapers([mock_us, mock_de, mock_eu])
-
-        call_count = {"n": 0}
-        def alternating_chain(_llm):
-            call_count["n"] += 1
-            return _chain_returning(_BOM_DICT if call_count["n"] == 1 else _EXPORT_RESULT)
-
         mock_prompt_cls.from_template.return_value = MagicMock(
-            __or__=MagicMock(side_effect=alternating_chain)
+            __or__=MagicMock(return_value=_chain_returning(_EXPORT_RESULT))
         )
 
         report = run_pipeline("arxiv", "2301.00001")
 
         assert report["paper_info"]["title"] == "Ion Trap Quantum Computing"
         assert report["bom"] is not None
-        assert len(report["export_control_results"]) >= 0  # may be 0 if BOM hardware empty
+        assert len(report["bom"]["hardware"]) == 1
+        assert len(report["export_control_results"]) == 1
 
     def test_invalid_arxiv_id_records_error(self):
+        # extract_arxiv_id returns None → paper_fetcher sets error + paper_text="".
+        # section_extractor sees "" → returns "". Pipeline completes without raising.
         report = run_pipeline("arxiv", "not-a-valid-id")
         assert report is not None
-        # Pipeline should surface error gracefully, not raise
         assert "export_control_results" in report
 
 
@@ -309,6 +286,8 @@ class TestRunFromConfig:
         assert len(report["items_checked"]) == 2
 
     def test_run_from_config_arxiv_mode_reads_arxiv_id(self):
+        # Confirms run_from_config picks up arxiv_id from headless config section.
+        # An invalid arxiv_id now fails gracefully (paper_fetcher sets error + paper_text="").
         test_config = {
             "llm": {"model": "llama3-70b-8192", "temperature": 0.1, "max_tokens": 4096},
             "scrapers": {"rate_limit": 100, "timeout": 5, "retry_attempts": 1,
@@ -321,12 +300,12 @@ class TestRunFromConfig:
                          }},
             "headless": {
                 "input_type": "arxiv",
-                "arxiv_id": "not-a-valid-id",   # will fail gracefully
+                "arxiv_id": "not-a-valid-id",
             },
         }
-        # Should not raise even when arxiv_id is invalid
         report = run_from_config(test_config)
         assert isinstance(report, dict)
+        assert report["input_type"] == "arxiv"
 
 
 # ---------------------------------------------------------------------------

@@ -82,7 +82,7 @@ def paper_fetcher(state: AgentState) -> AgentState:
         return {**state, "paper_metadata": metadata, "paper_text": text}
     except Exception as exc:
         logger.error("paper_fetcher error: %s", exc)
-        return {**state, "error": str(exc)}
+        return {**state, "paper_text": "", "error": str(exc)}
 
 
 # ---------------------------------------------------------------------------
@@ -91,7 +91,7 @@ def paper_fetcher(state: AgentState) -> AgentState:
 def pdf_parser(state: AgentState) -> AgentState:
     pdf_bytes = state.get("pdf_bytes")
     if not pdf_bytes:
-        return {**state, "error": "No PDF bytes in state"}
+        return {**state, "paper_text": "", "error": "No PDF bytes in state"}
     try:
         text = parse_pdf_bytes(pdf_bytes)
         return {**state, "paper_text": text}
