@@ -1,0 +1,46 @@
+# Core
+pyyaml>=6.0.1
+
+# LLM Framework (bumped to match repo standard — langchain 0.3.x)
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-groq>=0.2.0
+langgraph>=0.2.0
+
+# Web Scraping (requests + BS4 only — Scrapy/Selenium not needed for PoC)
+beautifulsoup4>=4.12.3
+requests>=2.31.0
+lxml>=5.1.0
+
+# ArXiv Integration
+arxiv>=2.1.0
+
+# PDF Processing
+PyMuPDF>=1.23.26
+pdfplumber>=0.11.0
+pypdf>=4.1.0
+
+# Vector Store & Embeddings
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+
+# Database
+sqlalchemy>=2.0.29
+
+# UI
+streamlit>=1.35.0
+
+# Data / Validation
+pandas>=2.2.1
+numpy>=1.26.4
+pydantic>=2.6.4
+tenacity>=8.2.3
+
+# Testing
+pytest>=8.1.1
+pytest-asyncio>=0.23.6
+pytest-mock>=3.14.0
+
+# Development
+black>=24.3.0
+flake8>=7.0.0

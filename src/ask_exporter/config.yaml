@@ -1,0 +1,163 @@
+# Ask Exporter — Unified Configuration
+# Covers: paper BOM extraction + export control checking
+
+application:
+  name: "Ask Exporter"
+  version: "0.2.0"
+  phase: "PoC"
+  debug: true
+
+# LLM Configuration
+llm:
+  provider: "groq"
+  model: "llama3-70b-8192"
+  temperature: 0.1
+  max_tokens: 4096
+  streaming: true
+
+# Embedding Configuration
+embeddings:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  dimension: 384
+  normalize: true
+
+# Vector Store — two named collections
+vectorstore:
+  type: "chromadb"
+  path: "data/chroma_db"
+  export_collection: "export_control_docs"
+  paper_collection: "paper_chunks"
+  distance_metric: "cosine"
+  chunk_size: 800
+  chunk_overlap: 80
+  top_k: 5
+
+# Database
+database:
+  type: "sqlite"
+  path: "data/export_control.db"
+
+# Cache
+cache:
+  enabled: true
+  directory: "data/cache"
+  expiry_hours: 24
+  max_size_mb: 500
+
+# ArXiv
+arxiv:
+  max_results: 10
+  rate_limit: 3          # requests per second (ArXiv policy)
+  timeout: 30
+  retry_attempts: 3
+  retry_delay: 5
+  default_category: "quant-ph"
+  allowed_categories:
+    - "quant-ph"
+    - "cond-mat"
+    - "physics.optics"
+    - "physics.atom-ph"
+    - "physics.app-ph"
+
+# PDF Processing
+pdf:
+  max_pages: 100
+  max_file_size_mb: 50
+  extract_tables: true
+
+# BOM Extraction
+bom_extraction:
+  min_confidence: 0.6
+  export_check_hardware_only: true   # confirmed: hardware/equipment by default
+  hardware_subcategories:
+    - lasers
+    - detectors
+    - optics
+    - cryogenics
+    - electronics
+    - quantum_devices
+    - vacuum_systems
+    - measurement_instruments
+  software_subcategories:
+    - quantum_frameworks
+    - simulation_tools
+    - analysis_software
+    - control_systems
+    - data_acquisition
+  material_subcategories:
+    - chemicals
+    - substrates
+    - gases
+    - consumables
+    - fabrication_materials
+
+# Scrapers
+scrapers:
+  rate_limit: 2          # requests per second
+  timeout: 30
+  retry_attempts: 3
+  retry_delay: 5
+  user_agent: "Mozilla/5.0 (compatible; ExportControlBot/1.0)"
+  respect_robots_txt: true
+
+  countries:
+    us:
+      enabled: true
+      name: "United States"
+      source: "Bureau of Industry and Security (BIS)"
+      base_url: "https://www.bis.doc.gov"
+      endpoints:
+        ccl: "/index.php/regulations/commerce-control-list-ccl"
+        entity_list: "/index.php/policy-guidance/lists-of-parties-of-concern/entity-list"
+
+    germany:
+      enabled: true
+      name: "Germany"
+      source: "Federal Office for Economic Affairs and Export Control (BAFA)"
+      base_url: "https://www.bafa.de"
+      endpoints:
+        main: "/EN/Foreign_Trade/Export_Control/export_control_node.html"
+
+    eu:
+      enabled: true
+      name: "European Union"
+      source: "EU Dual-Use Regulation"
+      base_url: "https://policy.trade.ec.europa.eu"
+      endpoints:
+        main: "/development-and-sustainability/sustainable-trade/export-control-dual-use-items_en"
+
+# Agent (LangGraph)
+agent:
+  max_iterations: 15
+  recursion_limit: 30
+
+# Target country for restriction checks
+target:
+  country: "India"
+  iso_code: "IN"
+
+# Streamlit UI
+ui:
+  title: "Ask Exporter"
+  subtitle: "Export Control Checker + Research BOM Generator"
+  layout: "wide"
+
+# Headless / CLI defaults (used by cmd_main.py and tests)
+headless:
+  input_type: "direct_items"   # direct_items | arxiv | pdf
+  # Default item list used when input_type is direct_items
+  raw_input: |
+    Dilution refrigerator
+    Superconducting qubit chip
+    Ti:Sapphire laser 780 nm
+    Cryogenic probe station
+  # Default ArXiv ID used when input_type is arxiv
+  arxiv_id: "2301.07715"
+  output_format: "json"         # json | pretty
+  output_file: null             # null = stdout; or a file path e.g. "data/report.json"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  console: true
