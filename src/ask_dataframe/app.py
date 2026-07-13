@@ -1,4 +1,6 @@
 # Ref: https://github.com/bhavaniravi/rasa-site-bot
+import logging
+
 from flask import Flask
 from flask import render_template,jsonify,request
 from dfengine import DfEngine
@@ -25,7 +27,7 @@ def chat():
         response_text = get_response(user_message)
         return jsonify({"status":"success","response":response_text})
     except Exception as e:
-        print(e)
+        logging.error(e)
         return jsonify({"status":"success","response":"Sorry I am not trained to do that yet..."})
 
 

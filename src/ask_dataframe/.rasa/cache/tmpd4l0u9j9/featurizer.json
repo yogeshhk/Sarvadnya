@@ -1,6 +1,0 @@
-{
-  "type": "MaxHistoryTrackerFeaturizer",
-  "state_featurizer": null,
-  "remove_duplicates": true,
-  "max_history": null
-}

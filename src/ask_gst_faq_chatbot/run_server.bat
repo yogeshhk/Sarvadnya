@@ -1,1 +1,0 @@
-python -m rasa_nlu.server -c config.json -e luis

@@ -1,0 +1,8 @@
+# This script imports GPTSimpleVectorIndex/GPTListIndex, class names from the
+# very early (mid-2023) llama_index API, before the GPT-prefixed classes were
+# renamed (e.g. to VectorStoreIndex) and long before the 0.10 package split.
+# The exact last-compatible patch version could not be confirmed with high
+# confidence — if this pin doesn't resolve, try nearby 0.4.x/0.5.x/0.6.x
+# releases from around April-May 2023.
+langchain==0.0.353
+llama-index==0.5.6

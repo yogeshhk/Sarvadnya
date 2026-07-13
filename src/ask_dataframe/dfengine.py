@@ -51,7 +51,7 @@ class DfEngine:
             try:
                 value = self.df.loc[self.df[self.primarycolumnname] == row, col].values[0]
                 return str(value).replace(";", ",")
-            except:
+            except (KeyError, IndexError):
                 return f"Sorry, I couldn't find data for {row} and {col}."
         return "Please specify both the country and the field you're asking about."
 

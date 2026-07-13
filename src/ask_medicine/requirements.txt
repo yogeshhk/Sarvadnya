@@ -1,0 +1,15 @@
+# Matches https://github.com/AIAnytime/Llama2-Medical-Chatbot, which this project is based on
+pypdf>=3.0.0
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-core>=0.2.0
+langchain-text-splitters>=0.2.0
+torch
+accelerate
+bitsandbytes
+ctransformers
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0
+chainlit>=1.0.0
+huggingface-hub>=0.14.0
+pydantic>=2.0.0,<3.0.0

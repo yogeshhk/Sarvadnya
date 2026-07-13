@@ -1,0 +1,14 @@
+# This script uses the pre-refactor (2023-era) LangChain and LlamaIndex APIs:
+# top-level `langchain.llms` / `langchain.vectorstores` / `langchain.embeddings`,
+# and monolithic `llama_index` (before the 0.10 split into llama-index-core +
+# integration packages). Both libraries went through several breaking renames
+# since then, so these are best-effort pins matching that import style — adjust
+# if `pip install` or imports fail.
+langchain==0.0.353
+llama-index==0.9.48
+transformers>=4.35.0
+torch>=2.0.0
+chromadb>=0.4.0
+gpt4all>=2.0.0
+huggingface_hub>=0.19.0
+google-cloud-aiplatform>=1.38.0

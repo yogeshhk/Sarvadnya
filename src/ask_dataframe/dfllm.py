@@ -44,7 +44,7 @@ class DfLLM:
             # assistant_response = self.pandas_ai_oa.run(self.df, prompt=usr)
             # print("Open Assistant response : " + assistant_response)
         except Exception as e:
-            print(e)
+            logging.error(e)
             return "Could not follow your question [" + usr + "], Try again"
 
 

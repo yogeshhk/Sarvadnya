@@ -1,6 +1,0 @@
-{
-  "pipeline": "spacy_sklearn",
-  "path" : "models/",
-  "data" : "data/gstfaq-data.json",
-  "num_threads":10
-}

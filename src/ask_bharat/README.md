@@ -2,7 +2,7 @@
 
 (Based on [this repo](https://github.com/AIAnytime/Llama2-Medical-Chatbot/blob/main/README.md))
 
-Ask Bharat is an interactive chatbot designed to answer questions related to Ancient Indian history. It supports two UIs — a **Streamlit** app (recommended) and a **Chainlit** app — backed by LangChain + FAISS + Groq LLaMA3.
+Ask Bharat is an interactive chatbot designed to answer questions related to Ancient Indian history. It supports two UIs - a **Streamlit** app (recommended) and a **Chainlit** app - backed by LangChain + FAISS + Groq LLaMA3.
 
 ## Features
 
@@ -69,7 +69,7 @@ ollama run llama2
 
 ## Run the Chatbot
 
-Streamlit UI (recommended — Groq + reranking + citations):
+Streamlit UI (recommended - Groq + reranking + citations):
 
 ```bash
 streamlit run streamlit_main.py --server.fileWatcherType none
@@ -136,7 +136,7 @@ Select the region and confirm deployment
 1. Fork the repo and create a new branch
 2. Add your improvements or fixes
 3. Make sure code is tested and documented
-4. Submit a pull request — all contributions are welcome!
+4. Submit a pull request. All contributions are welcome!
 
 ## License
 

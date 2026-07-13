@@ -1,0 +1,5 @@
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+colorama>=0.4.6

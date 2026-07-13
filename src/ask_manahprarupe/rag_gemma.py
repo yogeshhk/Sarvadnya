@@ -443,7 +443,7 @@ class RAGChatbot:
 
             try:
                 chroma_collection = chroma_client.get_collection(self.collection_name)
-            except:
+            except Exception:
                 chroma_collection = chroma_client.create_collection(self.collection_name)
 
             self.vector_store = ChromaVectorStore(chroma_collection=chroma_collection)

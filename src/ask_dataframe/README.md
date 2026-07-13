@@ -36,7 +36,7 @@
 | `endpoints.yml`       | Rasa action server config                |
 | `credentials.yml`     | Channel config (e.g., REST)              |
 
-> `dfengine.py` is deprecated in Rasa 3.x setup — logic is migrated to `actions.py`
+> `dfengine.py` is deprecated in Rasa 3.x setup; logic is migrated to `actions.py`
 
 **Note**
 Old Rasa .md/.json and new .yml format.

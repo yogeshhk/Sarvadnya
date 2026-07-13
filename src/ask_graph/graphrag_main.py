@@ -112,7 +112,7 @@ class GraphRAG:
             try:
                 entities = json.loads(response_text)
                 return entities if isinstance(entities, list) else []
-            except:
+            except (json.JSONDecodeError, TypeError):
                 return re.findall(r'[\"\']([^\"\']+)[\"\']', response_text) or [query]
         except Exception as e:
             print(f"❌ Error in query conversion: {e}")

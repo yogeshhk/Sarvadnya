@@ -9,9 +9,9 @@ Thank you for contributing to Sarvadnya! This is a collection of independent RAG
 3. Include a `requirements.txt` with pinned or minimum-version dependencies.
    - Do **not** list stdlib modules (`os`, `json`, `sqlite3`, `asyncio`, etc.) in `requirements.txt`.
 4. Follow the standard pipeline pattern where applicable:
-   - `ingest.py` — loads data, embeds, and saves vectorstore
-   - `streamlit_main.py` (or `chainlit_main.py`) — UI
-   - `config.py` — constants (model names, paths, API key reads)
+   - `ingest.py`: loads data, embeds, and saves vectorstore
+   - `streamlit_main.py` (or `chainlit_main.py`): UI
+   - `config.py`: constants (model names, paths, API key reads)
 
 ## Code Style
 
@@ -35,6 +35,6 @@ Remove deprecated Rasa engine from ask_dataframe
 
 - One logical change per PR.
 - Run the project you modified manually end-to-end before opening the PR.
-- If the maintainer requests changes, push to the same branch — do not open a new PR.
+- If the maintainer requests changes, push to the same branch; do not open a new PR.
 
 Thank you for your contributions!

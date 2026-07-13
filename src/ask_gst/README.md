@@ -4,7 +4,7 @@ Goods and Services Tax (GST) in India is complex, and it’s hard for users to f
 
 ### GST FAQs Chatbot using RAG + LLaMA 3 + Groq
 
-RAG (Retrieval-Augmented Generation) based chatbot that answers Indian GST-related queries using a multi-format knowledge base — structured (CSV) and unstructured (HTML) files.
+RAG (Retrieval-Augmented Generation) based chatbot that answers Indian GST-related queries using a multi-format knowledge base: structured (CSV) and unstructured (HTML) files.
 
 - Knowledge Base Creation (R): build_QnA_chain() loads GST FAQs from .csv and .html
 - Documents are chunked → embedded using MiniLM → indexed using FAISS

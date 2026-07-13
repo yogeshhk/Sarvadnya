@@ -6,10 +6,10 @@ A multi-modal Retrieval Augmented Generation (RAG) system for financial document
 
 | Component | Status |
 |-----------|--------|
-| `document_parser.py` | Complete — parses PDFs into typed chunks via Docling |
-| `multimodal_embeddings.py` | Complete — text/table/image embedders, ChromaDB + SQLite storage |
-| `config_manager.py` | Complete — env-based config dataclasses |
-| `agentic_rag_system.py` | Complete — LangGraph workflow with analyze→route→retrieve→generate nodes |
+| `document_parser.py` | Complete: parses PDFs into typed chunks via Docling |
+| `multimodal_embeddings.py` | Complete: text/table/image embedders, ChromaDB + SQLite storage |
+| `config_manager.py` | Complete: env-based config dataclasses |
+| `agentic_rag_system.py` | Complete: LangGraph workflow with analyze→route→retrieve→generate nodes |
 
 All four components are now functional end-to-end.
 

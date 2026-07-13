@@ -1,0 +1,11 @@
+langchain==0.3.30
+langchain-community>=0.3.0
+langchain-groq>=0.2.0
+llama-index-core>=0.10.0
+llama-index-embeddings-langchain>=0.1.0
+llama-cpp-python>=0.2.0
+faiss-cpu>=1.7.4
+streamlit>=1.30.0
+streamlit-chat>=0.1.1
+rich>=13.0.0
+python-dotenv>=1.0.0

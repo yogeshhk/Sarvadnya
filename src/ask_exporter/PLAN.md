@@ -1,8 +1,8 @@
-# ask_exporter — Unified Implementation Plan
+# ask_exporter: Unified Implementation Plan
 
 ## Confirmed Decisions
 - Export control check: **hardware/equipment only** by default; software/materials opt-in
-- Tests: **always mock** HTTP + LLM — no live network calls in test suite
+- Tests: **always mock** HTTP + LLM; no live network calls in test suite
 - Dependencies: bumped to **langchain 0.3.x / langgraph 0.2.x** (consistent with rest of repo)
 
 ## What This System Does
@@ -135,7 +135,7 @@ Main:
   [Analyze Button]
   ---
   (paper modes) Paper metadata
-  (paper modes) BOM table — expandable by category (hardware / software / materials)
+  (paper modes) BOM table, expandable by category (hardware / software / materials)
   Export Control Results table:
     Item | US | Germany | EU | Risk | Recommendation
     (color: red=high, yellow=medium, green=clear)
@@ -144,7 +144,7 @@ Main:
 
 ## Implementation Order (code file by file)
 
-### Phase 1 — Foundation
+### Phase 1: Foundation
 1. `requirements.txt` (merged + bumped)
 2. `config.yaml` (merged)
 3. `.env.example` (merged)
@@ -152,7 +152,7 @@ Main:
 5. `src/utils/validators.py`
 6. `src/utils/parsers.py`
 
-### Phase 2 — Paper Pipeline
+### Phase 2: Paper Pipeline
 7. `src/parsers/__init__.py`
 8. `src/parsers/arxiv_fetcher.py`
 9. `src/parsers/pdf_parser.py`
@@ -160,43 +160,43 @@ Main:
 11. `src/extractors/__init__.py`
 12. `src/extractors/bom.py`
 
-### Phase 3 — Export Control Pipeline
+### Phase 3: Export Control Pipeline
 13. `src/scrapers/base.py`
 14. `src/scrapers/us_bis.py`
 15. `src/scrapers/germany_bafa.py`
 16. `src/scrapers/eu_regulation.py`
 
-### Phase 4 — Knowledge Layer
+### Phase 4: Knowledge Layer
 17. `src/knowledge/schemas.py`
 18. `src/knowledge/cache.py`
 19. `src/knowledge/database.py`
 20. `src/knowledge/vectorstore.py`
 
-### Phase 5 — Agent
+### Phase 5: Agent
 21. `src/agents/state.py`
 22. `src/agents/tools.py`
 23. `src/agents/nodes.py`
 24. `src/agents/graph.py`
 
-### Phase 6 — UI
+### Phase 6: UI
 25. `src/ui/streamlit_app.py`
 
-### Phase 7 — Tests
+### Phase 7: Tests
 26. `tests/test_scrapers.py`
 27. `tests/test_parsers.py`
 28. `tests/test_extractors.py`
 29. `tests/test_pipeline.py`
 
-### Phase 8 — Cleanup
+### Phase 8: Cleanup
 30. Delete `src/ask_papers/` entirely
 31. Update `CLAUDE.md` to remove ask_papers section
 
 ## Status
-- [x] Phase 1 — Foundation
-- [x] Phase 2 — Paper Pipeline
-- [x] Phase 3 — Export Control Pipeline
-- [x] Phase 4 — Knowledge Layer
-- [x] Phase 5 — Agent
-- [x] Phase 6 — UI
-- [x] Phase 7 — Tests
-- [x] Phase 8 — Cleanup — ask_papers deleted, CLAUDE.md updated
+- [x] Phase 1: Foundation
+- [x] Phase 2: Paper Pipeline
+- [x] Phase 3: Export Control Pipeline
+- [x] Phase 4: Knowledge Layer
+- [x] Phase 5: Agent
+- [x] Phase 6: UI
+- [x] Phase 7: Tests
+- [x] Phase 8: Cleanup - ask_papers deleted, CLAUDE.md updated

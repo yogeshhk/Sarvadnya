@@ -33,7 +33,7 @@ python cmd_main.py
 
 ### 4. Launch UI
 ```bash
-# From src/ask_exporter/ — either command works:
+# From src/ask_exporter/, either command works:
 streamlit run streamlit_main.py --server.fileWatcherType none
 # or
 streamlit run src/ui/streamlit_app.py --server.fileWatcherType none

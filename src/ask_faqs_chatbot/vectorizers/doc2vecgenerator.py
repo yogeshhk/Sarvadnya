@@ -1,3 +1,4 @@
+import logging
 import os
 
 import gensim
@@ -53,7 +54,7 @@ class Doc2VecGenerator:
             clean_usr_msg = gensim.utils.simple_preprocess(clean_usr_msg)
             t_usr = self.vectorizer.infer_vector(clean_usr_msg)
         except Exception as e:
-            print(e)
+            logging.error(e)
             return "Could not follow your question [" + t_usr + "], Try again"
             
         return np.array([t_usr])

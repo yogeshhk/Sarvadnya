@@ -1,0 +1,11 @@
+# Based on https://github.com/hwchase17/langchain-streamlit-template (2023).
+# create_csv_agent/create_pandas_dataframe_agent moved around between
+# langchain.agents and langchain_experimental across 2023 releases — if the
+# import fails against this pin, try installing langchain-experimental and
+# importing the agents from there instead.
+langchain==0.0.353
+openai>=0.27.0,<1.0.0
+streamlit>=1.20.0
+streamlit-chat>=0.1.1
+pandas>=1.5.0
+tabulate>=0.9.0

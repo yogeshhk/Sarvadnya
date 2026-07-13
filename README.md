@@ -1,6 +1,13 @@
 # Sarvadnya (सर्वज्ञ), an All-Knowing Chatbot!!
 
-Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs. Indic-languages models info is being collected [here](./README_AABB.md)
+[![License: MIT](https://img.shields.io/github/license/yogeshhk/Sarvadnya)](./LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/yogeshhk/Sarvadnya)](https://github.com/yogeshhk/Sarvadnya/commits/master)
+[![Issues](https://img.shields.io/github/issues/yogeshhk/Sarvadnya)](https://github.com/yogeshhk/Sarvadnya/issues)
+[![Stars](https://img.shields.io/github/stars/yogeshhk/Sarvadnya?style=social)](https://github.com/yogeshhk/Sarvadnya/stargazers)
+
+![Ask GST demo — asking "Who decides the rates?" and getting "1st July 2017"](./assets/screenshot_ask_gst.jpg)
+
+Chatbots can be real WoW!! The recent evidence is: ChatGPT. Now that they are more human-like with the latest LLMs (Large Language Models). But these LLMs are Pretrained on their own (HUGE) data. Mere mortals don't have any ways ($$, time, expertise) to train own LLMs. RAG and/or Fine-tuning is the way out for Domain Adaptation ie. LLMs answering on your corpus. This repo is a collection of various [PoCs (Proof-of-Concepts)](./src/README.md) to interface custom data using LLMs.
 
 
 # What?
