@@ -4,7 +4,7 @@
 # integration packages). Both libraries went through several breaking renames
 # since then, so these are best-effort pins matching that import style — adjust
 # if `pip install` or imports fail.
-langchain==0.0.353
+langchain==1.3.9
 llama-index==0.13.0
 transformers>=4.35.0
 torch>=2.0.0
