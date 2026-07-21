@@ -3,7 +3,7 @@
 # langchain.agents and langchain_experimental across 2023 releases — if the
 # import fails against this pin, try installing langchain-experimental and
 # importing the agents from there instead.
-langchain==0.0.353
+langchain==1.3.9
 openai>=0.27.0,<1.0.0
 streamlit>=1.20.0
 streamlit-chat>=0.1.1
